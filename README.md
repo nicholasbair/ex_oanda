@@ -1,6 +1,7 @@
 # ExOanda
+Unofficial Elixir SDK for the Oanda API.
 
-**TODO: Add description**
+Note - this is highly experimental and in active development.
 
 ## Installation
 

@@ -58,7 +58,7 @@ defmodule ExOandaTest.API do
     end
 
     test "returns the request unchanged when telemetry key is missing", %{req: req} do
-      conn = %Conn{token: "abc",}
+      conn = %Conn{token: "abc"}
       assert API.maybe_attach_telemetry(req, conn) == req
     end
   end

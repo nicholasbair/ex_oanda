@@ -1,11 +1,6 @@
 defmodule ExOanda.CodeGenerator do
   @moduledoc false
 
-  # TODO:
-  # - Add tests
-  # - Generate models
-  # - Add streaming
-
   alias ExOanda.Config
 
   defmacro __using__(_opts) do
