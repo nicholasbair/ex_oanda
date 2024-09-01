@@ -33,9 +33,18 @@ defmodule ExOandaTest.API do
   end
 
   describe "handle_response/1" do
-    test "returns the response as is" do
-      response = {:ok, %{"data" => "sample_data"}}
-      assert API.handle_response(response) == response
+    test "returns {:ok, _} for 2xx responses" do
+      res = API.handle_response({:ok, %{status: 200}})
+      assert match?({:ok, _}, res)
+    end
+
+    test "returns {:error, _} for non-2xx responses" do
+      res = API.handle_response({:error, %{status: 400}})
+      assert match?({:error, _}, res)
+    end
+
+    test "returns {:error, reason} for HTTP issues, e.g. timeout" do
+      assert API.handle_response({:error, "timeout"}) == {:error, "timeout"}
     end
   end
 
