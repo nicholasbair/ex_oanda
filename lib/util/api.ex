@@ -10,8 +10,6 @@ defmodule ExOanda.API do
     "user-agent": "ExOanda/" <> Mix.Project.config()[:version]
   ]
 
-  # @success_codes Enum.to_list(200..299)
-
   @spec auth_bearer(Conn.t()) :: {:bearer, String.t()}
   def auth_bearer(%Conn{token: token}) do
     {:bearer, token}

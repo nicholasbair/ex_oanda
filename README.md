@@ -10,7 +10,7 @@ by adding `ex_oanda` to your list of dependencies in `mix.exs`:
 ```elixir
 def deps do
   [
-    {:ex_oanda, "~> 0.1.0"}
+    {:ex_oanda, "~> 0.0.1"}
   ]
 end
 ```

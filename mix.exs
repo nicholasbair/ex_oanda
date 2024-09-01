@@ -5,7 +5,7 @@ defmodule ExOanda.MixProject do
     [
       app: :ex_oanda,
       version: "0.0.1",
-      elixir: "~> 1.16",
+      elixir: "~> 1.14",
       start_permanent: Mix.env() == :prod,
       deps: deps(),
       dialyzer: [plt_add_apps: [:mix]],
