@@ -161,15 +161,15 @@ defmodule ExOanda.CodeGenerator do
     end
   end
 
-   @doc false
-   def format_module_name(module_name) do
+  @doc false
+  def format_module_name(module_name) do
     module_name
     |> Atom.to_string()
     |> String.replace("Elixir.", "")
     |> String.to_atom()
   end
 
-  defp generate_module_name(module_name), do: String.to_atom("Elixir.ExOanda.#{module_name}")
+  defp generate_module_name(module_name), do: Module.concat([ExOanda, module_name])
 
   defp format_args(args) do
     for a <- args, do: {String.to_atom(a), [], nil}
