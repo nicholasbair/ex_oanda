@@ -1,4 +1,6 @@
 defmodule ExOanda.TestGenerator do
+  @moduledoc false
+
   use ExUnit.Case, async: true
 
   def generate_tests(configs) do
