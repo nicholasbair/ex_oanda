@@ -4,7 +4,7 @@ defmodule ExOanda.Config do
   use TypedEctoSchema
   import Ecto.Changeset
 
-  @yaml_file "./config.yml"
+  @config_file "./config.yml"
 
   @primary_key false
 
@@ -29,6 +29,7 @@ defmodule ExOanda.Config do
     end
   end
 
+  @doc false
   def changeset(config, params \\ %{}) do
     config
     |> cast(params, [:module_name, :description])
@@ -36,8 +37,9 @@ defmodule ExOanda.Config do
     |> cast_embed(:functions, with: &functions_changeset/2)
   end
 
+  @doc false
   def load_config do
-    @yaml_file
+    @config_file
     |> YamlElixir.read_all_from_file!()
     |> List.first()
     |> Map.fetch!("interfaces")
