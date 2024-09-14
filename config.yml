@@ -439,14 +439,13 @@ interfaces:
             doc: "The number of units used to calculate the volume-weighted average bid and ask prices."
             default: 1
 
-
-# schemas:
-#   - module_name: "Account"
-#     description: "Schema for Oanda account"
-#     properties:
-#       - name: "id"
-#         type: "string"
-#         description: "The account id"
-#       - name: "name"
-#         type: "string"
-#         description: "The account name"
+schemas:
+  - module_name: "AccountProperties"
+    description: "Schema for Oanda account properties."
+    fields:
+      - name: "id"
+        type: "string"
+      - name: "mt4AccountID"
+        type: "integer"
+      - name: "tags"
+        type: "list[string]"

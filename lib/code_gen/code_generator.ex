@@ -1,6 +1,10 @@
 defmodule ExOanda.CodeGenerator do
   @moduledoc false
 
+  # TODO:
+  # - How to handle nested schemas?
+  # - How to handle snake vs camel case on encode/decode?
+
   alias ExOanda.Config
 
   defmacro __using__(_opts) do
@@ -15,18 +19,46 @@ defmodule ExOanda.CodeGenerator do
   end
 
   defp generate_code(config) do
-    Enum.map(config, fn %{module_name: name, description: desc, functions: funcs} ->
-      quote do
-        defmodule unquote(generate_module_name(name)) do
-          @moduledoc """
-          #{unquote(desc)}
-          """
-          alias ExOanda.API
-          alias ExOanda.Connection, as: Conn
-          unquote_splicing(generate_functions(funcs))
+    interfaces =
+      Enum.map(config.interfaces, fn %{module_name: name, description: desc, functions: funcs} ->
+        quote do
+          defmodule unquote(generate_module_name(name)) do
+            @moduledoc """
+            #{unquote(desc)}
+            """
+            alias ExOanda.API
+            alias ExOanda.Connection, as: Conn
+            unquote_splicing(generate_functions(funcs))
+          end
         end
-      end
-    end)
+      end)
+
+    schemas =
+      Enum.map(config.schemas, fn %{module_name: name, description: desc, fields: fields} ->
+        schema_fields_macro = generate_schema_macro(fields)
+
+        quote do
+          defmodule unquote(generate_module_name(name)) do
+            @moduledoc """
+            #{unquote(desc)}
+            """
+            use TypedEctoSchema
+            import Ecto.Changeset
+
+            @primary_key false
+
+            unquote(schema_fields_macro)
+
+            @doc false
+            def changeset(config, params \\ %{}) do
+              config
+              |> cast(params, __MODULE__.__schema__(:fields))
+            end
+          end
+        end
+      end)
+
+    interfaces ++ schemas
   end
 
   defp generate_functions(functions), do: Enum.map(functions, &generate_function/1)
@@ -160,6 +192,24 @@ defmodule ExOanda.CodeGenerator do
       end
     end
   end
+
+  defp generate_schema_macro(fields) do
+    field_defs =
+      Enum.map(fields, fn %{name: name, type: type} ->
+        quote do
+          field unquote(String.to_atom(name)), unquote(format_type(type))
+        end
+      end)
+
+    quote do
+      typed_embedded_schema do
+        unquote_splicing(field_defs)
+      end
+    end
+  end
+
+  defp format_type("list[string]"), do: {:array, :string}
+  defp format_type(type), do: String.to_atom(type)
 
   @doc false
   def format_module_name(module_name) do

@@ -1,5 +1,7 @@
 defmodule ExOandaTest.GeneratedFunctions do
   use ExUnit.Case, async: true
 
-  ExOanda.TestGenerator.generate_tests(ExOanda.Config.load_config())
+  ExOanda.Config.load_config()
+  |> Map.get(:interfaces)
+  |> ExOanda.TestGenerator.generate_tests()
 end
