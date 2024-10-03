@@ -99,10 +99,11 @@ defmodule ExOanda.CodeGenerator do
   end
 
   defp generate_function(config) do
-    %{function_name: name, description: desc, http_method: method, path: path, arguments: args, parameters: parameters} = config
+    %{function_name: name, description: desc, http_method: method, path: path, arguments: args, parameters: parameters, response_schema: response_schema} = config
     formatted_args = format_args(args)
     formatted_params = format_params(parameters)
     arg_types = generate_arg_types(args)
+    model = generate_module_name(response_schema)
 
     quote do
       @doc"""
@@ -130,11 +131,11 @@ defmodule ExOanda.CodeGenerator do
               path_params: path_params,
               method: unquote(method),
               headers: API.base_headers(),
-              params: params
+              params: ExOanda.CodeGenerator.convert_params(params)
             )
             |> API.maybe_attach_telemetry(conn)
             |> Req.request(conn.options)
-            |> API.handle_response()
+            |> API.handle_response(unquote(model))
 
           {:error, reason} ->
             {:error, reason}
@@ -169,6 +170,19 @@ defmodule ExOanda.CodeGenerator do
     |> String.to_atom()
   end
 
+  @doc false
+  def convert_params(params) do
+    params
+    |> Enum.into(%{})
+    |> Recase.Enumerable.convert_keys(&Recase.to_camel/1)
+    |> Enum.map(fn {k, v} ->
+      case String.ends_with?(k, "Id") do
+        true -> {String.replace(k, "Id", "ID"), v}
+        false -> {k, v}
+      end
+    end)
+  end
+
   defp generate_module_name(module_name), do: Module.concat([ExOanda, module_name])
 
   defp format_args(args) do
@@ -177,11 +191,15 @@ defmodule ExOanda.CodeGenerator do
 
   defp format_params(params) do
     Enum.reduce(params, [], fn %{name: name, type: type, required: required, default: default, doc: doc}, acc ->
-      acc
-      |> Keyword.put(
-        String.to_atom(name),
-        [type: String.to_atom(type), required: required, default: default, doc: doc]
-      )
+      params_list = [
+        type: String.to_atom(type),
+        required: required,
+        default: default,
+        doc: doc
+      ]
+
+      filtered_params = Enum.reject(params_list, fn {_, value} -> is_nil(value) end)
+      Keyword.put(acc, String.to_atom(name), filtered_params)
     end)
   end
 

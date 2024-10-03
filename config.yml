@@ -6,22 +6,26 @@ interfaces:
         description: "Get a list of accounts."
         http_method: "GET"
         path: "/accounts"
+        response_schema: "ListAccounts"
       - function_name: "find"
         description: "Fetch an account."
         http_method: "GET"
         path: "/accounts/:account_id"
+        response_schema: "FindAccount"
         arguments:
           - "account_id"
       - function_name: "summary"
         description: "Get a summary of an account."
         http_method: "GET"
         path: "/accounts/:account_id/summary"
+        response_schema: "AccountSummary"
         arguments:
           - "account_id"
       - function_name: "list_instruments"
         description: "Get a list of tradeable instruments for the given account."
         http_method: "GET"
         path: "/accounts/:account_id/instruments"
+        response_schema: "AccountInstruments"
         arguments:
           - "account_id"
         parameters:
@@ -42,7 +46,7 @@ interfaces:
         arguments:
           - "account_id"
         parameters:
-          - name: "sinceTransactionID"
+          - name: "since_transaction_id"
             type: "string"
             doc: "ID of the Transaction to get Account changes since."
   - module_name: "Instruments"
@@ -77,19 +81,19 @@ interfaces:
             type: "boolean"
             doc: "A flag that controls whether the candlestick is smoothed or not."
             default: false
-          - name: "includeFirst"
+          - name: "include_first"
             type: "boolean"
             doc: "A flag that controls whether the candlestick that is covered by the from time should be included in the results."
             default: true
-          - name: "dailyAlignment"
+          - name: "daily_alignment"
             type: "non_neg_integer"
             doc: "The hour of the day (in the specified timezone) to use for granularities that have daily alignments, minimum 0, maximum 23."
             default: 17
-          - name: "alignmentTimezone"
+          - name: "alignment_timezone"
             type: "string"
             doc: "The timezone to use for the dailyAlignment parameter, note that the returned times will still be represented in UTC."
             default: "America/New_York"
-          - name: "weeklyAlignment"
+          - name: "weekly_alignment"
             type: "string"
             doc: "The day of the week used for granularities that have weekly alignment."
             default: "Friday"
@@ -143,7 +147,7 @@ interfaces:
             type: "non_neg_integer"
             doc: "The maximum number of Orders to return."
             default: 50
-          - name: "beforeID"
+          - name: "before_id"
             type: "string"
             doc: "The maximum Order ID to return. If not provided the most recent Orders in the Account are returned."
       - function_name: "list_pending"
@@ -205,7 +209,7 @@ interfaces:
             type: "non_neg_integer"
             doc: "The maximum number of Trades to return."
             default: 50
-          - name: "beforeID"
+          - name: "before_id"
             type: "string"
             doc: "The maximum Trade ID to return. If not provided the most recent Trades in the Account are returned."
       - function_name: "list_open"
@@ -291,7 +295,7 @@ interfaces:
           - name: "to"
             type: "string"
             doc: "The ending time (inclusive) of the time range for the Transactions being queried. Defaults to current time."
-          - name: "pageSize"
+          - name: "page_size"
             type: "non_neg_integer"
             doc: "The number of Transactions to include in each page. [default=100, maximum=1000]."
             default: 100
@@ -342,7 +346,7 @@ interfaces:
         arguments:
           - "account_id"
         parameters:
-          - name: "candleSpecifications"
+          - name: "candle_specifications"
             type: "string"
             doc: "The specification of the candles to fetch."
             required: true
@@ -354,15 +358,15 @@ interfaces:
             type: "boolean"
             doc: "A flag that controls whether the candlestick is smoothed or not."
             default: false
-          - name: "dailyAlignment"
+          - name: "daily_alignment"
             type: "non_neg_integer"
             doc: "The hour of the day (in the specified timezone) to use for granularities that have daily alignments, minimum 0, maximum 23."
             default: 17
-          - name: "alignmentTimezone"
+          - name: "alignment_timezone"
             type: "string"
             doc: "The timezone to use for the dailyAlignment parameter, note that the returned times will still be represented in UTC."
             default: "America/New_York"
-          - name: "weeklyAlignment"
+          - name: "weekly_alignment"
             type: "string"
             doc: "The day of the week used for granularities that have weekly alignment."
             default: "Friday"
@@ -380,11 +384,11 @@ interfaces:
           - name: "since"
             type: "string"
             doc: "The time of the snapshot to fetch using either RFC 3339 or Unix format. If not specified, then the most recent snapshot is fetched."
-          - name: "includeUnitsAvailable"
+          - name: "include_units_available"
             type: "boolean"
             doc: "Flag that enables the inclusion of the unitsAvailable field in the returned Price objects."
             default: false
-          - name: "includeHomeConversion"
+          - name: "include_home_conversion"
             type: "boolean"
             doc: "Flag that enables the inclusion of the homeConversions field in the returned response."
             default: false
@@ -418,19 +422,19 @@ interfaces:
             type: "boolean"
             doc: "A flag that controls whether the candlestick is smoothed or not."
             default: false
-          - name: "includeFirst"
+          - name: "include_first"
             type: "boolean"
             doc: "A flag that controls whether the candlestick that is covered by the from time should be included in the results."
             default: true
-          - name: "dailyAlignment"
+          - name: "daily_alignment"
             type: "non_neg_integer"
             doc: "The hour of the day (in the specified timezone) to use for granularities that have daily alignments, minimum 0, maximum 23."
             default: 17
-          - name: "alignmentTimezone"
+          - name: "alignment_timezone"
             type: "string"
             doc: "The timezone to use for the dailyAlignment parameter, note that the returned times will still be represented in UTC."
             default: "America/New_York"
-          - name: "weeklyAlignment"
+          - name: "weekly_alignment"
             type: "string"
             doc: "The day of the week used for granularities that have weekly alignment."
             default: "Friday"
@@ -438,15 +442,3 @@ interfaces:
             type: "string"
             doc: "The number of units used to calculate the volume-weighted average bid and ask prices."
             default: 1
-
-
-# schemas:
-#   - module_name: "Account"
-#     description: "Schema for Oanda account"
-#     properties:
-#       - name: "id"
-#         type: "string"
-#         description: "The account id"
-#       - name: "name"
-#         type: "string"
-#         description: "The account name"
