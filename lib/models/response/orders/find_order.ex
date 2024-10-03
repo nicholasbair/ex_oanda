@@ -5,6 +5,7 @@ defmodule ExOanda.FindOrder do
 
   use TypedEctoSchema
   import Ecto.Changeset
+  alias ExOanda.Order
 
   @primary_key false
 

@@ -17,11 +17,23 @@ defmodule ExOanda.Transform do
   end
 
   defp preprocess_body(model, response) do
-    %{
-      "data" => preprocess_data(model, response.body),
-      "status" => HttpStatus.status_to_atom(response.status),
-      "request_id" => Map.get(response.headers, "requestid", []) |> List.first()
-    }
+    data =
+      response
+      |> Map.get(:body)
+      |> then(&preprocess_data(model, &1))
+
+    status =
+      response
+      |> Map.get(:status)
+      |> HttpStatus.status_to_atom()
+
+    request_id =
+      response
+      |> Map.get(:headers, %{})
+      |> Map.get("requestid", [])
+      |> List.first()
+
+    %{"data" => data, "status" => status, "request_id" => request_id}
   end
 
   @spec preprocess_data(nil | atom(), map()) :: [Ecto.Schema.t()] | [map()] | Ecto.Schema.t() | map()

@@ -26,11 +26,14 @@ defmodule ExOanda.API do
   @spec handle_response({atom(), Req.Response.t() | map()}, atom() | nil) :: {:ok, any()} | {:error, any()}
   def handle_response(res, transform_to \\ nil) do
     case format_response(res) do
-      {:ok, r} -> {:ok, TF.transform(r, transform_to)}
-      {:error, r} -> {:error, TF.transform(r, transform_to)}
+      # 2xx status codes
+      {:ok, fr} -> {:ok, TF.transform(fr, transform_to)}
 
-      # TODO: handle this one
-      # {:error, reason} -> {:error, reason}
+      # HTTP error, e.g. transport error
+      {:error, %{reason: reason}} -> {:error, reason}
+
+      # Non-2xx status codes
+      {:error, fr} -> {:error, TF.transform(fr, transform_to)}
 
       _ -> res
     end
@@ -38,7 +41,6 @@ defmodule ExOanda.API do
 
   defp format_response({:ok, %{status: status} = res}) when status in @success_codes, do: {:ok, res}
   defp format_response({:ok, res}), do: {:error, res}
-  defp format_response({:error, %{reason: reason}}), do: {:error, reason}
   defp format_response(res), do: res
 
   # Telemetry ##############################################################
