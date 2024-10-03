@@ -43,6 +43,7 @@ interfaces:
         description: "Get a list of changes to an account."
         http_method: "GET"
         path: "/accounts/:account_id/changes"
+        response_schema: "AccountChanges"
         arguments:
           - "account_id"
         parameters:
@@ -56,6 +57,7 @@ interfaces:
         description: "Get candlestick data for an instrument."
         http_method: "GET"
         path: "/instruments/:instrument/candles"
+        response_schema: "ListCandles"
         arguments:
           - "instrument"
         parameters:
@@ -97,17 +99,7 @@ interfaces:
             type: "string"
             doc: "The day of the week used for granularities that have weekly alignment."
             default: "Friday"
-      - function_name: "list_order_book"
-        description: "Get order book data for an instrument."
-        http_method: "GET"
-        path: "/instruments/:instrument/orderBook"
-        arguments:
-          - "instrument"
-        parameters:
-          - name: "time"
-            type: "string"
-            doc: "The time of the snapshot to fetch using either RFC 3339 or Unix format. If not specified, then the most recent snapshot is fetched."
-      - function_name: "list_position_book"
+
         description: "Get position book data for an instrument."
         http_method: "GET"
         path: "/instruments/:instrument/positionBook"
@@ -131,6 +123,7 @@ interfaces:
         description: "Get a list of orders for an account."
         http_method: "GET"
         path: "/accounts/:account_id/orders"
+        response_schema: "ListOrders"
         arguments:
           - "account_id"
         parameters:
@@ -154,12 +147,14 @@ interfaces:
         description: "Get a list of pending orders for an account."
         http_method: "GET"
         path: "/accounts/:account_id/pendingOrders"
+        response_schema: "ListPendingOrders"
         arguments:
           - "account_id"
       - function_name: "find"
         description: "Get details for a single order in an account."
         http_method: "GET"
         path: "/accounts/:account_id/orders/:order_id"
+        response_schema: "FindOrder"
         arguments:
           - "account_id"
           - "order_id"
