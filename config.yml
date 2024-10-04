@@ -188,6 +188,7 @@ interfaces:
         description: "Get a list of trades for an account."
         http_method: "GET"
         path: "/accounts/:account_id/trades"
+        response_schema: "ListTrades"
         arguments:
           - "account_id"
         parameters:
@@ -211,12 +212,14 @@ interfaces:
         description: "Get a list of open trades for an account."
         http_method: "GET"
         path: "/accounts/:account_id/openTrades"
+        response_schema: "ListTrades"
         arguments:
           - "account_id"
       - function_name: "find"
         description: "Get details for a single trade in an account."
         http_method: "GET"
         path: "/accounts/:account_id/trades/:trade_id"
+        response_schema: "FindTrade"
         arguments:
           - "account_id"
           - "trade_id"
@@ -251,18 +254,21 @@ interfaces:
         description: "Get a list of positions for an account."
         http_method: "GET"
         path: "/accounts/:account_id/positions"
+        response_schema: "ListPositions"
         arguments:
           - "account_id"
       - function_name: "list_open"
         description: "Get a list of open positions for an account."
         http_method: "GET"
         path: "/accounts/:account_id/openPositions"
+        response_schema: "ListPositions"
         arguments:
           - "account_id"
       - function_name: "find"
         description: "Get the details of a single instrument's position in an account."
         http_method: "GET"
         path: "/accounts/:account_id/positions/:instrument"
+        response_schema: "ListPositions"
         arguments:
           - "account_id"
           - "instrument"
@@ -281,6 +287,7 @@ interfaces:
         description: "Get a list of transactions for an account."
         http_method: "GET"
         path: "/accounts/:account_id/transactions"
+        response_schema: "ListTransactions"
         arguments:
           - "account_id"
         parameters:
@@ -301,6 +308,7 @@ interfaces:
         description: "Get the details of a single transaction in an account."
         http_method: "GET"
         path: "/accounts/:account_id/transactions/:transaction_id"
+        response_schema: "FindTransaction"
         arguments:
           - "account_id"
           - "transaction_id"
@@ -308,6 +316,7 @@ interfaces:
         description: "Get a list of transactions for an account within a specific TransactionID range."
         http_method: "GET"
         path: "/accounts/:account_id/transactions/idrange"
+        response_schema: "ListTransactionsIdRange"
         arguments:
           - "account_id"
         parameters:
@@ -324,6 +333,7 @@ interfaces:
         description: "Get a list of transactions for an account since a specific TransactionID."
         http_method: "GET"
         path: "/accounts/:account_id/transactions/sinceid"
+        response_schema: "ListTransactionsIdRange"
         arguments:
           - "account_id"
           - "transaction_id"
@@ -338,6 +348,7 @@ interfaces:
         description: "Get most recently completed candles within an account for specified combinations of instrument, granularity and price component."
         http_method: "GET"
         path: "/accounts/:account_id/candles/latest"
+        response_schema: "LatestCandles"
         arguments:
           - "account_id"
         parameters:
@@ -369,6 +380,7 @@ interfaces:
         description: "Get pricing information for a list of instruments."
         http_method: "GET"
         path: "/accounts/:account_id/pricing"
+        response_schema: "ListPricing"
         arguments:
           - "account_id"
         parameters:
@@ -391,6 +403,7 @@ interfaces:
         description: "Fetch candlestick data for an instrument."
         http_method: "GET"
         path: "/accounts/:account_id/instruments/:instrument/candles"
+        response_schema: "ListCandles"
         arguments:
           - "account_id"
           - "instrument"
