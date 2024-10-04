@@ -176,12 +176,17 @@ defmodule ExOanda.CodeGenerator do
     |> Enum.into(%{})
     |> Recase.Enumerable.convert_keys(&Recase.to_camel/1)
     |> Enum.map(fn {k, v} ->
+      k = maybe_convert_to_string(k)
+
       case String.ends_with?(k, "Id") do
         true -> {String.replace(k, "Id", "ID"), v}
         false -> {k, v}
       end
     end)
   end
+
+  def maybe_convert_to_string(val) when is_atom(val), do: Atom.to_string(val)
+  def maybe_convert_to_string(val), do: val
 
   defp generate_module_name(module_name), do: Module.concat([ExOanda, module_name])
 
