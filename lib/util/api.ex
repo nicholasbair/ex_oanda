@@ -2,6 +2,7 @@ defmodule ExOanda.API do
   @moduledoc false
 
   alias ExOanda.Connection, as: Conn
+  alias ExOanda.Transform, as: TF
 
   # Requests ###################################################################
 
@@ -21,27 +22,25 @@ defmodule ExOanda.API do
   def base_headers(opts \\ []), do: Keyword.merge(@base_headers, opts)
 
   # Responses ####################################################################
-  @spec handle_response({atom(), Req.Response.t() | map()}) :: {:ok, any()} | {:error, any()}
-  def handle_response(res) do
+
+  @spec handle_response({atom(), Req.Response.t() | map()}, atom() | nil) :: {:ok, any()} | {:error, any()}
+  def handle_response(res, transform_to \\ nil) do
     case format_response(res) do
-      {:ok, body} -> {:ok, body}
-      {:error, body} -> {:error, body}
+      # 2xx status codes
+      {:ok, fr} -> {:ok, TF.transform(fr, transform_to)}
+
+      # HTTP error, e.g. transport error
+      {:error, %{reason: reason}} -> {:error, reason}
+
+      # Non-2xx status codes
+      {:error, fr} -> {:error, TF.transform(fr, transform_to)}
+
       _ -> res
     end
   end
 
-  defp format_response({:ok, %{status: status, body: body}}) when status in @success_codes do
-    {:ok, body, status}
-  end
-
-  defp format_response({:ok, %{status: status, body: body}}) do
-    {:error, body, status}
-  end
-
-  defp format_response({:error, %{reason: reason}}) do
-    {:error, reason}
-  end
-
+  defp format_response({:ok, %{status: status} = res}) when status in @success_codes, do: {:ok, res}
+  defp format_response({:ok, res}), do: {:error, res}
   defp format_response(res), do: res
 
   # Telemetry ##############################################################

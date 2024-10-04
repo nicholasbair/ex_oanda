@@ -6,22 +6,26 @@ interfaces:
         description: "Get a list of accounts."
         http_method: "GET"
         path: "/accounts"
+        response_schema: "ListAccounts"
       - function_name: "find"
         description: "Fetch an account."
         http_method: "GET"
         path: "/accounts/:account_id"
+        response_schema: "FindAccount"
         arguments:
           - "account_id"
       - function_name: "summary"
         description: "Get a summary of an account."
         http_method: "GET"
         path: "/accounts/:account_id/summary"
+        response_schema: "AccountSummary"
         arguments:
           - "account_id"
       - function_name: "list_instruments"
         description: "Get a list of tradeable instruments for the given account."
         http_method: "GET"
         path: "/accounts/:account_id/instruments"
+        response_schema: "AccountInstruments"
         arguments:
           - "account_id"
         parameters:
@@ -39,10 +43,11 @@ interfaces:
         description: "Get a list of changes to an account."
         http_method: "GET"
         path: "/accounts/:account_id/changes"
+        response_schema: "AccountChanges"
         arguments:
           - "account_id"
         parameters:
-          - name: "sinceTransactionID"
+          - name: "since_transaction_id"
             type: "string"
             doc: "ID of the Transaction to get Account changes since."
   - module_name: "Instruments"
@@ -52,6 +57,7 @@ interfaces:
         description: "Get candlestick data for an instrument."
         http_method: "GET"
         path: "/instruments/:instrument/candles"
+        response_schema: "ListCandles"
         arguments:
           - "instrument"
         parameters:
@@ -77,33 +83,23 @@ interfaces:
             type: "boolean"
             doc: "A flag that controls whether the candlestick is smoothed or not."
             default: false
-          - name: "includeFirst"
+          - name: "include_first"
             type: "boolean"
             doc: "A flag that controls whether the candlestick that is covered by the from time should be included in the results."
             default: true
-          - name: "dailyAlignment"
+          - name: "daily_alignment"
             type: "non_neg_integer"
             doc: "The hour of the day (in the specified timezone) to use for granularities that have daily alignments, minimum 0, maximum 23."
             default: 17
-          - name: "alignmentTimezone"
+          - name: "alignment_timezone"
             type: "string"
             doc: "The timezone to use for the dailyAlignment parameter, note that the returned times will still be represented in UTC."
             default: "America/New_York"
-          - name: "weeklyAlignment"
+          - name: "weekly_alignment"
             type: "string"
             doc: "The day of the week used for granularities that have weekly alignment."
             default: "Friday"
-      - function_name: "list_order_book"
-        description: "Get order book data for an instrument."
-        http_method: "GET"
-        path: "/instruments/:instrument/orderBook"
-        arguments:
-          - "instrument"
-        parameters:
-          - name: "time"
-            type: "string"
-            doc: "The time of the snapshot to fetch using either RFC 3339 or Unix format. If not specified, then the most recent snapshot is fetched."
-      - function_name: "list_position_book"
+
         description: "Get position book data for an instrument."
         http_method: "GET"
         path: "/instruments/:instrument/positionBook"
@@ -127,6 +123,7 @@ interfaces:
         description: "Get a list of orders for an account."
         http_method: "GET"
         path: "/accounts/:account_id/orders"
+        response_schema: "ListOrders"
         arguments:
           - "account_id"
         parameters:
@@ -143,19 +140,21 @@ interfaces:
             type: "non_neg_integer"
             doc: "The maximum number of Orders to return."
             default: 50
-          - name: "beforeID"
+          - name: "before_id"
             type: "string"
             doc: "The maximum Order ID to return. If not provided the most recent Orders in the Account are returned."
       - function_name: "list_pending"
         description: "Get a list of pending orders for an account."
         http_method: "GET"
         path: "/accounts/:account_id/pendingOrders"
+        response_schema: "ListPendingOrders"
         arguments:
           - "account_id"
       - function_name: "find"
         description: "Get details for a single order in an account."
         http_method: "GET"
         path: "/accounts/:account_id/orders/:order_id"
+        response_schema: "FindOrder"
         arguments:
           - "account_id"
           - "order_id"
@@ -189,6 +188,7 @@ interfaces:
         description: "Get a list of trades for an account."
         http_method: "GET"
         path: "/accounts/:account_id/trades"
+        response_schema: "ListTrades"
         arguments:
           - "account_id"
         parameters:
@@ -205,19 +205,21 @@ interfaces:
             type: "non_neg_integer"
             doc: "The maximum number of Trades to return."
             default: 50
-          - name: "beforeID"
+          - name: "before_id"
             type: "string"
             doc: "The maximum Trade ID to return. If not provided the most recent Trades in the Account are returned."
       - function_name: "list_open"
         description: "Get a list of open trades for an account."
         http_method: "GET"
         path: "/accounts/:account_id/openTrades"
+        response_schema: "ListTrades"
         arguments:
           - "account_id"
       - function_name: "find"
         description: "Get details for a single trade in an account."
         http_method: "GET"
         path: "/accounts/:account_id/trades/:trade_id"
+        response_schema: "FindTrade"
         arguments:
           - "account_id"
           - "trade_id"
@@ -252,18 +254,21 @@ interfaces:
         description: "Get a list of positions for an account."
         http_method: "GET"
         path: "/accounts/:account_id/positions"
+        response_schema: "ListPositions"
         arguments:
           - "account_id"
       - function_name: "list_open"
         description: "Get a list of open positions for an account."
         http_method: "GET"
         path: "/accounts/:account_id/openPositions"
+        response_schema: "ListPositions"
         arguments:
           - "account_id"
       - function_name: "find"
         description: "Get the details of a single instrument's position in an account."
         http_method: "GET"
         path: "/accounts/:account_id/positions/:instrument"
+        response_schema: "ListPositions"
         arguments:
           - "account_id"
           - "instrument"
@@ -282,6 +287,7 @@ interfaces:
         description: "Get a list of transactions for an account."
         http_method: "GET"
         path: "/accounts/:account_id/transactions"
+        response_schema: "ListTransactions"
         arguments:
           - "account_id"
         parameters:
@@ -291,7 +297,7 @@ interfaces:
           - name: "to"
             type: "string"
             doc: "The ending time (inclusive) of the time range for the Transactions being queried. Defaults to current time."
-          - name: "pageSize"
+          - name: "page_size"
             type: "non_neg_integer"
             doc: "The number of Transactions to include in each page. [default=100, maximum=1000]."
             default: 100
@@ -302,6 +308,7 @@ interfaces:
         description: "Get the details of a single transaction in an account."
         http_method: "GET"
         path: "/accounts/:account_id/transactions/:transaction_id"
+        response_schema: "FindTransaction"
         arguments:
           - "account_id"
           - "transaction_id"
@@ -309,6 +316,7 @@ interfaces:
         description: "Get a list of transactions for an account within a specific TransactionID range."
         http_method: "GET"
         path: "/accounts/:account_id/transactions/idrange"
+        response_schema: "ListTransactionsIdRange"
         arguments:
           - "account_id"
         parameters:
@@ -325,6 +333,7 @@ interfaces:
         description: "Get a list of transactions for an account since a specific TransactionID."
         http_method: "GET"
         path: "/accounts/:account_id/transactions/sinceid"
+        response_schema: "ListTransactionsIdRange"
         arguments:
           - "account_id"
           - "transaction_id"
@@ -339,10 +348,11 @@ interfaces:
         description: "Get most recently completed candles within an account for specified combinations of instrument, granularity and price component."
         http_method: "GET"
         path: "/accounts/:account_id/candles/latest"
+        response_schema: "LatestCandles"
         arguments:
           - "account_id"
         parameters:
-          - name: "candleSpecifications"
+          - name: "candle_specifications"
             type: "string"
             doc: "The specification of the candles to fetch."
             required: true
@@ -354,15 +364,15 @@ interfaces:
             type: "boolean"
             doc: "A flag that controls whether the candlestick is smoothed or not."
             default: false
-          - name: "dailyAlignment"
+          - name: "daily_alignment"
             type: "non_neg_integer"
             doc: "The hour of the day (in the specified timezone) to use for granularities that have daily alignments, minimum 0, maximum 23."
             default: 17
-          - name: "alignmentTimezone"
+          - name: "alignment_timezone"
             type: "string"
             doc: "The timezone to use for the dailyAlignment parameter, note that the returned times will still be represented in UTC."
             default: "America/New_York"
-          - name: "weeklyAlignment"
+          - name: "weekly_alignment"
             type: "string"
             doc: "The day of the week used for granularities that have weekly alignment."
             default: "Friday"
@@ -370,6 +380,7 @@ interfaces:
         description: "Get pricing information for a list of instruments."
         http_method: "GET"
         path: "/accounts/:account_id/pricing"
+        response_schema: "ListPricing"
         arguments:
           - "account_id"
         parameters:
@@ -380,11 +391,11 @@ interfaces:
           - name: "since"
             type: "string"
             doc: "The time of the snapshot to fetch using either RFC 3339 or Unix format. If not specified, then the most recent snapshot is fetched."
-          - name: "includeUnitsAvailable"
+          - name: "include_units_available"
             type: "boolean"
             doc: "Flag that enables the inclusion of the unitsAvailable field in the returned Price objects."
             default: false
-          - name: "includeHomeConversion"
+          - name: "include_home_conversion"
             type: "boolean"
             doc: "Flag that enables the inclusion of the homeConversions field in the returned response."
             default: false
@@ -392,6 +403,7 @@ interfaces:
         description: "Fetch candlestick data for an instrument."
         http_method: "GET"
         path: "/accounts/:account_id/instruments/:instrument/candles"
+        response_schema: "ListCandles"
         arguments:
           - "account_id"
           - "instrument"
@@ -418,19 +430,19 @@ interfaces:
             type: "boolean"
             doc: "A flag that controls whether the candlestick is smoothed or not."
             default: false
-          - name: "includeFirst"
+          - name: "include_first"
             type: "boolean"
             doc: "A flag that controls whether the candlestick that is covered by the from time should be included in the results."
             default: true
-          - name: "dailyAlignment"
+          - name: "daily_alignment"
             type: "non_neg_integer"
             doc: "The hour of the day (in the specified timezone) to use for granularities that have daily alignments, minimum 0, maximum 23."
             default: 17
-          - name: "alignmentTimezone"
+          - name: "alignment_timezone"
             type: "string"
             doc: "The timezone to use for the dailyAlignment parameter, note that the returned times will still be represented in UTC."
             default: "America/New_York"
-          - name: "weeklyAlignment"
+          - name: "weekly_alignment"
             type: "string"
             doc: "The day of the week used for granularities that have weekly alignment."
             default: "Friday"
@@ -438,15 +450,3 @@ interfaces:
             type: "string"
             doc: "The number of units used to calculate the volume-weighted average bid and ask prices."
             default: 1
-
-
-# schemas:
-#   - module_name: "Account"
-#     description: "Schema for Oanda account"
-#     properties:
-#       - name: "id"
-#         type: "string"
-#         description: "The account id"
-#       - name: "name"
-#         type: "string"
-#         description: "The account name"

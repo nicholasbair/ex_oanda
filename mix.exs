@@ -34,6 +34,7 @@ defmodule ExOanda.MixProject do
       {:excoveralls, "~> 0.18.1", only: :test},
       {:ex_doc, "~> 0.31", only: :dev, runtime: false},
       {:nimble_options, "~> 1.1"},
+      {:recase, "~> 0.8.1"},
       {:req, "~> 0.5.2"},
       {:req_telemetry, "~> 0.1.1"},
       {:typed_ecto_schema, "~> 0.4.1", runtime: false},

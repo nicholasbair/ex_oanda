@@ -44,7 +44,7 @@ defmodule ExOandaTest.API do
     end
 
     test "returns {:error, reason} for HTTP issues, e.g. timeout" do
-      assert API.handle_response({:error, "timeout"}) == {:error, "timeout"}
+      assert API.handle_response({:error, %Req.TransportError{reason: :nxdomain}}) == {:error, :nxdomain}
     end
   end
 
