@@ -11,7 +11,7 @@ defmodule ExOanda.ListPricing do
 
   typed_embedded_schema do
     embeds_many :prices, ClientPrice, primary_key: false do
-      field(:type, :string)
+      field(:type, :string, default: "PRICE")
       field(:instrument, :string)
       field(:time, :utc_datetime_usec)
       field(:tradeable, :boolean)

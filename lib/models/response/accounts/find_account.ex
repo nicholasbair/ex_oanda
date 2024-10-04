@@ -5,6 +5,11 @@ defmodule ExOanda.FindAccount do
 
   use TypedEctoSchema
   import Ecto.Changeset
+  alias ExOanda.{
+    Order,
+    Position,
+    TradeSummary
+  }
 
   @primary_key false
 
@@ -52,10 +57,9 @@ defmodule ExOanda.FindAccount do
         field(:mutability_market_halted, Ecto.Enum, values: [:FIXED, :REPLACEABLE, :CANCELABLE, :PRICE_WIDEN_ONLY])
       end
 
-      # TODO
-      field(:trades, {:array, :map}, primary_key: false)
-      field(:positions, {:array, :map}, primary_key: false)
-      field(:orders, {:array, :map}, primary_key: false)
+      embeds_many :trades, TradeSummary
+      embeds_many :positions, Position
+      embeds_many :orders, Order
     end
 
     field(:last_transaction_id, :string)
@@ -81,6 +85,9 @@ defmodule ExOanda.FindAccount do
       :last_margin_call_extension_time, :last_transaction_id
     ])
     |> cast_embed(:guaranteed_stop_loss_order_parameters, with: &guaranteed_stop_loss_order_parameters_changeset/2)
+    |> cast_embed(:trades)
+    |> cast_embed(:positions)
+    |> cast_embed(:orders)
   end
 
   defp guaranteed_stop_loss_order_parameters_changeset(struct, params) do
