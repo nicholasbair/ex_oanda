@@ -1,15 +1,16 @@
-defmodule ExOanda.LatestCandles do
+defmodule ExOanda.Response.LatestCandles do
   @moduledoc """
   Schema for Oanda list candles response.
   """
 
   use TypedEctoSchema
   import Ecto.Changeset
+  alias ExOanda.Response.ListCandles
 
   @primary_key false
 
   typed_embedded_schema do
-    embeds_one :latest_candles, ExOanda.ListCandles
+    embeds_one :latest_candles, ListCandles
   end
 
   @doc false

@@ -36,6 +36,7 @@ interfaces:
         description: "Update an account."
         http_method: "PATCH"
         path: "/accounts/:account_id/configuration"
+        response_schema: "UpdateAccount"
         arguments:
           - "account_id"
           - "body"

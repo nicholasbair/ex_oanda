@@ -1,4 +1,4 @@
-defmodule ExOanda.ListOrders do
+defmodule ExOanda.Response.ListOrders do
   @moduledoc """
   Schema for Oanda list orders response.
   """

@@ -1,4 +1,4 @@
-defmodule ExOanda.ListPendingOrders do
+defmodule ExOanda.Response.ListPendingOrders do
   @moduledoc """
   Schema for Oanda list pending orders response.
   """

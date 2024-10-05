@@ -1,4 +1,4 @@
-defmodule ExOanda.ListTransactions do
+defmodule ExOanda.Response.ListTransactions do
   @moduledoc """
   Schema for Oanda list transactions response.
   """
