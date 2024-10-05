@@ -23,8 +23,6 @@ defmodule ExOanda.Response.ReplaceOrder do
     embeds_one :order_reject_transaction, Transaction
     embeds_one :order_cancel_reject_transaction, Transaction
 
-    field(:error_code, :string)
-    field(:error_message, :string)
     field(:related_transaction_ids, {:array, :string})
     field(:last_transaction_id, :string)
   end

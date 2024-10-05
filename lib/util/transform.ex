@@ -33,7 +33,23 @@ defmodule ExOanda.Transform do
       |> Map.get("requestid", [])
       |> List.first()
 
-    %{"data" => data, "status" => status, "request_id" => request_id}
+    error_code =
+      response
+      |> Map.get(:body, %{})
+      |> Map.get("errorCode", nil)
+
+    error_message =
+      response
+      |> Map.get(:body, %{})
+      |> Map.get("errorMessage", nil)
+
+    %{
+      "data" => data,
+      "status" => status,
+      "request_id" => request_id,
+      "error_code" => error_code,
+      "error_message" => error_message
+    }
   end
 
   @spec preprocess_data(nil | atom(), map()) :: [Ecto.Schema.t()] | [map()] | Ecto.Schema.t() | map()

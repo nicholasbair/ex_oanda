@@ -16,15 +16,13 @@ defmodule ExOanda.Response.UpdateAccount do
     embeds_one :client_configure_transaction, ClientConfigureTransaction
     embeds_one :client_configure_reject_transaction, ClientConfigureRejectTransaction
 
-    field(:error_code, :string)
-    field(:error_message, :string)
     field(:last_transaction_id, :string)
   end
 
   @doc false
   def changeset(struct, params) do
     struct
-    |> cast(params, [:error_code, :error_message, :last_transaction_id])
+    |> cast(params, [:last_transaction_id])
     |> cast_embed(:client_configure_transaction)
     |> cast_embed(:client_configure_reject_transaction)
   end

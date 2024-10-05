@@ -15,7 +15,7 @@ defmodule ExOanda.AccountSummary do
     field(:currency, :string)
     field(:created_by_user_id, :integer)
     field(:created_time, :utc_datetime_usec)
-    field(:resettabled_pl_time, :utc_datetime_usec)
+    field(:resettable_pl_time, :utc_datetime_usec)
     field(:margin_rate, :float)
     field(:open_trade_count, :integer)
     field(:open_position_count, :integer)
@@ -54,7 +54,7 @@ defmodule ExOanda.AccountSummary do
   def changeset(struct, params) do
     struct
     |> cast(params, [
-      :id, :alias, :currency, :created_by_user_id, :created_time, :resettabled_pl_time,
+      :id, :alias, :currency, :created_by_user_id, :created_time, :resettable_pl_time,
       :margin_rate, :open_trade_count, :open_position_count, :pending_order_count,
       :hedging_enabled, :unrealized_pl, :nav, :margin_used, :margin_available,
       :position_value, :margin_closeout_unrealized_pl, :margin_closeout_nav,
@@ -66,7 +66,7 @@ defmodule ExOanda.AccountSummary do
     ])
     |> cast_embed(:guaranteed_stop_loss_order_parameters)
     |> validate_required([
-      :id, :alias, :currency, :created_by_user_id, :created_time, :resettabled_pl_time,
+      :id, :alias, :currency, :created_by_user_id, :created_time, :resettable_pl_time,
       :margin_rate, :open_trade_count, :open_position_count, :pending_order_count,
       :hedging_enabled, :unrealized_pl, :nav, :margin_used, :margin_available,
       :position_value, :margin_closeout_unrealized_pl, :margin_closeout_nav,

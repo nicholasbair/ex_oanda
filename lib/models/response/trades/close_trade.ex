@@ -17,8 +17,6 @@ defmodule ExOanda.Response.CloseTrade do
   typed_embedded_schema do
     field(:related_transaction_ids, {:array, :string})
     field(:last_transaction_id, :string)
-    field(:error_code, :string)
-    field(:error_message, :string)
 
     embeds_one :order_create_transaction, MarketOrderTransaction
     embeds_one :order_fill_transaction, OrderFillTransaction
@@ -29,7 +27,7 @@ defmodule ExOanda.Response.CloseTrade do
   @doc false
   def changeset(struct, params) do
     struct
-    |> cast(params, [:related_transaction_ids, :last_transaction_id, :error_code, :error_message])
+    |> cast(params, [:related_transaction_ids, :last_transaction_id])
     |> cast_embed(:order_create_transaction)
     |> cast_embed(:order_fill_transaction)
     |> cast_embed(:order_cancel_transaction)
