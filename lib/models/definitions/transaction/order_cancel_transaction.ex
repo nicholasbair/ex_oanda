@@ -19,27 +19,7 @@ defmodule ExOanda.OrderCancelTransaction do
     field(:type, Atom, default: :ORDER_CANCEL)
     field(:order_id, :string)
     field(:client_order_id, :string)
-    field(:reason, Ecto.Enum, values: [
-      # TODO: this list is incomplete for order cancel
-      :CLIENT_REQUEST,
-      :MIGRATION,
-      :REPLACEMENT,
-      :FILL,
-      :RESET,
-      :MARKET_HALTED,
-      :LINKED_TRADE_CLOSED,
-      :TIME_IN_FORCE_EXPIRED,
-      :INSUFFICIENT_MARGIN,
-      :STOP_LOSS_ON_FILL_LOSS,
-      :STOP_LOSS_ON_FILL_PRICE,
-      :TAKE_PROFIT_ON_FILL_PRICE,
-      :TRAILING_STOP_LOSS_ON_FILL_PRICE,
-      :MARKET_ORDER_MARGIN_CLOSEOUT,
-      :MARKET_ORDER_DELAYED_TRADE_CLOSE,
-      :MARKET_ORDER_POSITION_CLOSEOUT,
-      :MARKET_ORDER_TRADE_CLOSE,
-      :MARKET_ORDER
-    ])
+    field(:reason, Atom)
     field(:replaced_by_order_id, :string)
   end
 
