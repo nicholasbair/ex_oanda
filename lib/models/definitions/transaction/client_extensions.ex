@@ -1,4 +1,4 @@
-defmodule ExOanda.ClientExtension do
+defmodule ExOanda.ClientExtensions do
   @moduledoc """
   Schema for Oanda client extension.
   """

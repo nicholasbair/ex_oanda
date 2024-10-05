@@ -5,7 +5,7 @@ defmodule ExOanda.TradeOpened do
 
   use TypedEctoSchema
   import Ecto.Changeset
-  alias ExOanda.ClientExtension
+  alias ExOanda.ClientExtensions
 
   @primary_key false
 
@@ -18,7 +18,7 @@ defmodule ExOanda.TradeOpened do
     field(:guaranteed_execution_fee, :float)
     field(:quote_guaranteed_execution_fee, :float)
 
-    embeds_many :client_extensions, ClientExtension
+    embeds_many :client_extensions, ClientExtensions
   end
 
   @doc false

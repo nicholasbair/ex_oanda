@@ -5,7 +5,7 @@ defmodule ExOanda.TradeOrder do
 
   use TypedEctoSchema
   import Ecto.Changeset
-  alias ExOanda.ClientExtension
+  alias ExOanda.ClientExtensions
 
   @primary_key false
 
@@ -30,7 +30,7 @@ defmodule ExOanda.TradeOrder do
     field(:replaces_order_id, :string)
     field(:replaced_by_order_id, :string)
 
-    embeds_many :client_extensions, ClientExtension
+    embeds_many :client_extensions, ClientExtensions
   end
 
   @doc false

@@ -5,7 +5,7 @@ defmodule ExOanda.TradeSummary do
 
   use TypedEctoSchema
   import Ecto.Changeset
-  alias ExOanda.ClientExtension
+  alias ExOanda.ClientExtensions
 
   @primary_key false
 
@@ -31,7 +31,7 @@ defmodule ExOanda.TradeSummary do
     field(:guaranteed_stop_loss_order_id, :string)
     field(:trailing_stop_loss_order_id, :string)
 
-    embeds_many :client_extensions, ClientExtension
+    embeds_many :client_extensions, ClientExtensions
   end
 
   @doc false

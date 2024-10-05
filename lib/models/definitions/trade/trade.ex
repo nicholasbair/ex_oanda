@@ -6,7 +6,7 @@ defmodule ExOanda.Trade do
   use TypedEctoSchema
   import Ecto.Changeset
   alias ExOanda.{
-    ClientExtension,
+    ClientExtensions,
     TradeOrder
   }
 
@@ -34,7 +34,7 @@ defmodule ExOanda.Trade do
     embeds_one :stop_loss_order, TradeOrder
     embeds_one :trailing_stop_loss_order, TradeOrder
 
-    embeds_many :client_extensions, ClientExtension
+    embeds_many :client_extensions, ClientExtensions
   end
 
   @doc false

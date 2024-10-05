@@ -1,6 +1,6 @@
-defmodule ExOanda.Order do
+defmodule ExOanda.StopLossDetails do
   @moduledoc """
-  Schema for Oanda order.
+  Schema for Oanda stop loss details.
   """
 
   use TypedEctoSchema
@@ -10,9 +10,10 @@ defmodule ExOanda.Order do
   @primary_key false
 
   typed_embedded_schema do
-    field(:id, :string)
-    field(:creat_time, :utc_datetime_usec)
-    field(:state, Ecto.Enum, values: [:PENDING, :FILLED, :TRIGGERED, :CANCELLED])
+    field(:price, :float)
+    field(:distance, :float)
+    field(:time_in_force, Ecto.Enum, values: ~w(GTC GTD GFD FOK IOC)a)
+    field(:gtd_time, :utc_datetime_usec)
 
     embeds_one :client_extensions, ClientExtensions
   end
@@ -20,8 +21,7 @@ defmodule ExOanda.Order do
   @doc false
   def changeset(struct, params) do
     struct
-    |> cast(params, [:id, :creat_time, :state])
+    |> cast(params, [:price, :distance, :time_in_force, :gtd_time])
     |> cast_embed(:client_extensions)
-    |> validate_required([:id, :creat_time, :state])
   end
 end
