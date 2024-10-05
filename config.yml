@@ -51,6 +51,7 @@ interfaces:
           - name: "since_transaction_id"
             type: "string"
             doc: "ID of the Transaction to get Account changes since."
+            required: true
   - module_name: "Instruments"
     description: "Interface for Oanda instruments."
     functions:
@@ -100,16 +101,6 @@ interfaces:
             type: "string"
             doc: "The day of the week used for granularities that have weekly alignment."
             default: "Friday"
-
-        description: "Get position book data for an instrument."
-        http_method: "GET"
-        path: "/instruments/:instrument/positionBook"
-        arguments:
-          - "instrument"
-        parameters:
-          - name: "time"
-            type: "string"
-            doc: "The time of the snapshot to fetch using either RFC 3339 or Unix format. If not specified, then the most recent snapshot is fetched."
   - module_name: "Orders"
     description: "Interface for Oanda orders."
     functions:

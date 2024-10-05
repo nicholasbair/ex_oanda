@@ -44,8 +44,6 @@ defmodule ExOanda.Response.UpdateTrade do
     embeds_one :guaranteed_stop_loss_order_cancel_reject_transaction, OrderCancelRejectTransaction
     embeds_one :guaranteed_stop_loss_order_reject_transaction, GuaranteedStopLossOrderRejectTransaction
 
-    field(:error_code, :string)
-    field(:error_message, :string)
     field(:related_transaction_ids, {:array, :string})
     field(:last_transaction_id, :string)
   end
@@ -53,7 +51,7 @@ defmodule ExOanda.Response.UpdateTrade do
   @doc false
   def changeset(struct, params) do
     struct
-    |> cast(params, [:related_transaction_ids, :last_transaction_id, :error_code, :error_message])
+    |> cast(params, [:related_transaction_ids, :last_transaction_id])
     |> cast_embed(:take_profit_order_cancel_transaction)
     |> cast_embed(:take_profit_order_transaction)
     |> cast_embed(:take_profit_order_fill_transaction)

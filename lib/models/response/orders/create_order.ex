@@ -21,8 +21,6 @@ defmodule ExOanda.Response.CreateOrder do
     embeds_one :order_reissue_reject_transaction, Transaction
     embeds_one :order_reject_transaction, Transaction
 
-    field(:error_code, :string)
-    field(:error_message, :string)
     field(:related_transaction_ids, {:array, :string})
     field(:last_transaction_id, :string)
   end
@@ -30,7 +28,7 @@ defmodule ExOanda.Response.CreateOrder do
   @doc false
   def changeset(struct, params) do
     struct
-    |> cast(params, [:error_code, :error_message, :related_transaction_ids, :last_transaction_id])
+    |> cast(params, [:related_transaction_ids, :last_transaction_id])
     |> cast_embed(:order_create_transaction)
     |> cast_embed(:order_fill_transaction)
     |> cast_embed(:order_cancel_transaction)
