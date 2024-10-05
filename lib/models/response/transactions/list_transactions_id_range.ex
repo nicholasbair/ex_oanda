@@ -1,4 +1,4 @@
-defmodule ExOanda.ListTransactionsIdRange do
+defmodule ExOanda.Response.ListTransactionsIdRange do
   @moduledoc """
   Schema for Oanda list transactions id range response.
   """

@@ -1,4 +1,4 @@
-defmodule ExOanda.ListPositions do
+defmodule ExOanda.Response.ListPositions do
   @moduledoc """
   Schema for Oanda list positions response.
   """

@@ -5,6 +5,7 @@ defmodule ExOanda.TradeSummary do
 
   use TypedEctoSchema
   import Ecto.Changeset
+  alias ExOanda.ClientExtensions
 
   @primary_key false
 
@@ -30,11 +31,7 @@ defmodule ExOanda.TradeSummary do
     field(:guaranteed_stop_loss_order_id, :string)
     field(:trailing_stop_loss_order_id, :string)
 
-    embeds_many :client_extensions, ClientExtensions, primary_key: false do
-      field(:id, :string)
-      field(:tag, :string)
-      field(:comment, :string)
-    end
+    embeds_many :client_extensions, ClientExtensions
   end
 
   @doc false
@@ -47,7 +44,7 @@ defmodule ExOanda.TradeSummary do
       :dividend_adjustment, :close_time, :take_profit_order_id, :stop_loss_order_id,
       :guaranteed_stop_loss_order_id, :trailing_stop_loss_order_id
     ])
-    |> cast_embed(:client_extensions, with: &client_extensions_changeset/2)
+    |> cast_embed(:client_extensions)
     |> validate_required([
       :id, :instrument, :price, :open_time, :state, :initial_units,
       :initial_margin_required, :current_units, :realized_pl, :unrealized_pl,
@@ -55,11 +52,5 @@ defmodule ExOanda.TradeSummary do
       :dividend_adjustment, :close_time, :take_profit_order_id, :stop_loss_order_id,
       :guaranteed_stop_loss_order_id, :trailing_stop_loss_order_id
     ])
-  end
-
-  defp client_extensions_changeset(struct, params) do
-    struct
-    |> cast(params, [:id, :tag, :comment])
-    |> validate_required([:id])
   end
 end

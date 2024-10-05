@@ -32,10 +32,11 @@ defmodule ExOanda.CodeGenerator do
   defp generate_functions(functions), do: Enum.map(functions, &generate_function/1)
 
   defp generate_function(%{http_method: method} = config) when method in ["POST", "PUT", "PATCH"] do
-    %{function_name: name, description: desc, http_method: method, path: path, arguments: args, parameters: parameters} = config
+    %{function_name: name, description: desc, http_method: method, path: path, arguments: args, parameters: parameters, response_schema: response_schema} = config
     formatted_args = format_args(args)
     formatted_params = format_params(parameters)
     arg_types = generate_arg_types(args)
+    model = generate_module_name([Response, response_schema])
 
     quote do
       @doc"""
@@ -71,7 +72,7 @@ defmodule ExOanda.CodeGenerator do
             )
             |> API.maybe_attach_telemetry(conn)
             |> Req.request(conn.options)
-            |> API.handle_response()
+            |> API.handle_response(unquote(model))
 
           {:error, reason} ->
             {:error, reason}
@@ -103,7 +104,7 @@ defmodule ExOanda.CodeGenerator do
     formatted_args = format_args(args)
     formatted_params = format_params(parameters)
     arg_types = generate_arg_types(args)
-    model = generate_module_name(response_schema)
+    model = generate_module_name([Response, response_schema])
 
     quote do
       @doc"""
@@ -188,7 +189,8 @@ defmodule ExOanda.CodeGenerator do
   def maybe_convert_to_string(val) when is_atom(val), do: Atom.to_string(val)
   def maybe_convert_to_string(val), do: val
 
-  defp generate_module_name(module_name), do: Module.concat([ExOanda, module_name])
+  defp generate_module_name(input) when is_list(input), do: Module.concat([ExOanda] ++ input)
+  defp generate_module_name(input), do: Module.concat([ExOanda, input])
 
   defp format_args(args) do
     for a <- args, do: {String.to_atom(a), [], nil}

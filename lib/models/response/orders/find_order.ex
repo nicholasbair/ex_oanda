@@ -1,4 +1,4 @@
-defmodule ExOanda.FindOrder do
+defmodule ExOanda.Response.FindOrder do
   @moduledoc """
   Schema for Oanda find order response.
   """

@@ -1,4 +1,4 @@
-defmodule ExOanda.FindTransaction do
+defmodule ExOanda.Response.FindTransaction do
   @moduledoc """
   Schema for Oanda find transaction response.
   """

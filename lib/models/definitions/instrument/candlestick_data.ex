@@ -1,6 +1,6 @@
-defmodule ExOanda.Price do
+defmodule ExOanda.CandlestickData do
   @moduledoc """
-  Schema for Oanda price.
+  Schema for Oanda candlestick data.
   """
 
   use TypedEctoSchema

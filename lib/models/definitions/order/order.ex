@@ -5,6 +5,7 @@ defmodule ExOanda.Order do
 
   use TypedEctoSchema
   import Ecto.Changeset
+  alias ExOanda.ClientExtensions
 
   @primary_key false
 
@@ -13,24 +14,14 @@ defmodule ExOanda.Order do
     field(:creat_time, :utc_datetime_usec)
     field(:state, Ecto.Enum, values: [:PENDING, :FILLED, :TRIGGERED, :CANCELLED])
 
-    embeds_many :client_extensions, ClientExtensions, primary_key: false do
-      field(:id, :string)
-      field(:tag, :string)
-      field(:comment, :string)
-    end
+    embeds_one :client_extensions, ClientExtensions
   end
 
   @doc false
   def changeset(struct, params) do
     struct
     |> cast(params, [:id, :creat_time, :state])
-    |> cast_embed(:client_extensions, with: &client_extensions_changeset/2)
+    |> cast_embed(:client_extensions)
     |> validate_required([:id, :creat_time, :state])
-  end
-
-  defp client_extensions_changeset(struct, params) do
-    struct
-    |> cast(params, [:id, :tag, :comment])
-    |> validate_required([:id])
   end
 end

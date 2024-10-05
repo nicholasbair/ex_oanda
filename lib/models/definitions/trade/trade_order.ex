@@ -5,6 +5,7 @@ defmodule ExOanda.TradeOrder do
 
   use TypedEctoSchema
   import Ecto.Changeset
+  alias ExOanda.ClientExtensions
 
   @primary_key false
 
@@ -29,11 +30,7 @@ defmodule ExOanda.TradeOrder do
     field(:replaces_order_id, :string)
     field(:replaced_by_order_id, :string)
 
-    embeds_many :client_extensions, ClientExtensions, primary_key: false do
-      field(:id, :string)
-      field(:tag, :string)
-      field(:comment, :string)
-    end
+    embeds_many :client_extensions, ClientExtensions
   end
 
   @doc false
@@ -46,7 +43,7 @@ defmodule ExOanda.TradeOrder do
       :cancelling_transaction_id, :cancelled_time, :replaces_order_id,
       :replaced_by_order_id
     ])
-    |> cast_embed(:client_extensions, with: &client_extensions_changeset/2)
+    |> cast_embed(:client_extensions)
     |> validate_required([
       :id, :create_time, :state, :type, :trade_id, :client_trade_id, :price,
       :time_in_force, :gtd_time, :trigger_condition, :filling_transaction_id,
@@ -54,11 +51,5 @@ defmodule ExOanda.TradeOrder do
       :cancelling_transaction_id, :cancelled_time, :replaces_order_id,
       :replaced_by_order_id
     ])
-  end
-
-  defp client_extensions_changeset(struct, params) do
-    struct
-    |> cast(params, [:id, :tag, :comment])
-    |> validate_required([:id])
   end
 end
