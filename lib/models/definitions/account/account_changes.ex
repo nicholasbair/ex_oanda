@@ -20,13 +20,10 @@ defmodule ExOanda.AccountChanges do
     embeds_many :orders_cancelled, Order
     embeds_many :orders_filled, Order
     embeds_many :orders_triggered, Order
-
     embeds_many :trades_opened, TradeSummary
     embeds_many :trades_reduced, TradeSummary
     embeds_many :trades_closed, TradeSummary
-
     embeds_many :positions, Position
-
     embeds_many :transactions, Transaction
   end
 

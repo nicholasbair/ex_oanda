@@ -19,7 +19,7 @@ defmodule ExOanda.Trade do
     field(:open_time, :utc_datetime_usec)
     field(:initial_units, :integer)
     field(:initial_margin_required, :float)
-    field(:state, Ecto.Enum, values: [:OPEN, :CLOSED, :CLOSE_WHEN_TRADEABLE])
+    field(:state, Ecto.Enum, values: ~w(OPEN CLOSED CLOSE_WHEN_TRADEABLE)a)
     field(:current_units, :integer)
     field(:realized_pl, :float)
     field(:unrealized_pl, :float)
