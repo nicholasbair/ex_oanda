@@ -19,6 +19,7 @@ defmodule ExOanda.Config do
       field(:path, :string)
       field(:arguments, {:array, :string}, default: [])
       field(:response_schema, :string)
+      field(:request_schema, :string)
 
       embeds_many :parameters, Parameters, primary_key: false do
         field(:name, :string)
@@ -55,7 +56,7 @@ defmodule ExOanda.Config do
 
   defp functions_changeset(struct, params) do
     struct
-    |> cast(params, [:function_name, :description, :http_method, :path, :arguments, :response_schema])
+    |> cast(params, [:function_name, :description, :http_method, :path, :arguments, :request_schema, :response_schema])
     |> validate_required([:function_name, :description, :http_method, :path])
     |> cast_embed(:parameters, with: &embedded_changeset/2)
   end

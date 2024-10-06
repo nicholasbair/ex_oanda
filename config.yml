@@ -36,6 +36,7 @@ interfaces:
         description: "Update an account."
         http_method: "PATCH"
         path: "/accounts/:account_id/configuration"
+        request_schema: "UpdateAccount"
         response_schema: "UpdateAccount"
         arguments:
           - "account_id"
@@ -155,6 +156,7 @@ interfaces:
         description: "Replace an order in an account by simultaneously cancelling it and creating a replacement order."
         http_method: "PUT"
         path: "/accounts/:account_id/orders/:order_id"
+        request_schema: "ReplaceOrder"
         response_schema: "ReplaceOrder"
         arguments:
           - "account_id"
@@ -172,6 +174,7 @@ interfaces:
         description: "Update the Client Extensions for an Order in an Account. Do not set, modify, or delete clientExtensions if your account is associated with MT4."
         http_method: "PUT"
         path: "/accounts/:account_id/orders/:order_id/clientExtensions"
+        request_schema: "OrderModifyClientExtensions"
         response_schema: "OrderModifyClientExtensions"
         arguments:
           - "account_id"
@@ -223,6 +226,7 @@ interfaces:
         description: "Close (partially or fully) a specific open Trade in an Account."
         http_method: "PUT"
         path: "/accounts/:account_id/trades/:trade_id/close"
+        request_schema: "CloseTrade"
         response_schema: "CloseTrade"
         arguments:
           - "account_id"
@@ -232,6 +236,7 @@ interfaces:
         description: "Update the Client Extensions for a Trade. Do not set, modify, or delete clientExtensions if your account is associated with MT4."
         http_method: "PUT"
         path: "/accounts/:account_id/trades/:trade_id/clientExtensions"
+        request_schema: "TradeModifyClientExtensions"
         response_schema: "TradeModifyClientExtensions"
         arguments:
           - "account_id"
@@ -241,6 +246,7 @@ interfaces:
         decription: "Create, replace and cancel a Trade's dependent Orders (Take Profit, Stop Loss and Trailing Stop Loss) through the Trade itself."
         http_method: "PUT"
         path: "/accounts/:account_id/trades/:trade_id/orders"
+        request_schema: "UpdateTrade"
         response_schema: "UpdateTrade"
         arguments:
           - "account_id"
@@ -275,6 +281,7 @@ interfaces:
         description: "Closeout the open Position for a specific instrument in an Account."
         http_method: "PUT"
         path: "/accounts/:account_id/positions/:instrument/close"
+        request_schema: "ClosePosition"
         response_schema: "ClosePosition"
         arguments:
           - "account_id"

@@ -23,6 +23,7 @@ defmodule ExOanda.CodeGenerator do
           """
           alias ExOanda.API
           alias ExOanda.Connection, as: Conn
+          alias ExOanda.Response, as: Res
           unquote_splicing(generate_functions(funcs))
         end
       end
@@ -31,12 +32,12 @@ defmodule ExOanda.CodeGenerator do
 
   defp generate_functions(functions), do: Enum.map(functions, &generate_function/1)
 
-  defp generate_function(%{http_method: method} = config) when method in ["POST", "PUT", "PATCH"] do
+  defp generate_function(%{http_method: method, request_schema: req} = config) when method in ["POST", "PUT", "PATCH"] and is_nil(req) do
     %{function_name: name, description: desc, http_method: method, path: path, arguments: args, parameters: parameters, response_schema: response_schema} = config
     formatted_args = format_args(args)
     formatted_params = format_params(parameters)
     arg_types = generate_arg_types(args)
-    model = generate_module_name([Response, response_schema])
+    response_model = generate_module_name([Response, response_schema])
 
     quote do
       @doc"""
@@ -49,15 +50,13 @@ defmodule ExOanda.CodeGenerator do
       ## Supported parameters
       #{NimbleOptions.docs(unquote(formatted_params))}
       """
-      @spec unquote(String.to_atom(name))(Conn.t(), unquote_splicing(arg_types), Keyword.t()) :: {:ok, map()} | {:error, map()}
+      @spec unquote(String.to_atom(name))(Conn.t(), unquote_splicing(arg_types), Keyword.t()) :: {:ok, Res.t()} | {:error, Res.t()}
       def unquote(String.to_atom(name))(%Conn{} = conn, unquote_splicing(formatted_args), params \\ []) do
         path_params =
           unquote(args)
           |> Enum.map(&String.to_atom/1)
           |> Enum.filter(fn k -> k != :body end)
           |> Enum.zip(unquote(formatted_args))
-
-        body = binding()[:body] || %{}
 
         case NimbleOptions.validate(params, unquote(formatted_params)) do
           {:ok, _} ->
@@ -67,12 +66,11 @@ defmodule ExOanda.CodeGenerator do
               path_params: path_params,
               method: unquote(method),
               headers: API.base_headers(),
-              params: params,
-              json: body
+              params: params
             )
             |> API.maybe_attach_telemetry(conn)
             |> Req.request(conn.options)
-            |> API.handle_response(unquote(model))
+            |> API.handle_response(unquote(response_model))
 
           {:error, reason} ->
             {:error, reason}
@@ -89,7 +87,86 @@ defmodule ExOanda.CodeGenerator do
       ## Supported parameters
       #{NimbleOptions.docs(unquote(formatted_params))}
       """
-      @spec unquote(String.to_atom("#{name}!"))(Conn.t(), unquote_splicing(arg_types), Keyword.t()) :: map()
+      @spec unquote(String.to_atom("#{name}!"))(Conn.t(), unquote_splicing(arg_types), Keyword.t()) :: Res.t()
+      def unquote(String.to_atom("#{name}!"))(%Conn{} = conn, unquote_splicing(formatted_args), params \\ []) do
+        case unquote(String.to_atom(name))(conn, unquote_splicing(formatted_args), params) do
+          {:ok, res} -> res
+          {:error, reason} -> raise ExOandaError, reason
+        end
+      end
+    end
+  end
+
+  defp generate_function(%{http_method: method} = config) when method in ["POST", "PUT", "PATCH"] do
+    %{function_name: name, description: desc, http_method: method, path: path, arguments: args, parameters: parameters, response_schema: response_schema, request_schema: request_schema} = config
+    formatted_args = format_args(args)
+    formatted_params = format_params(parameters)
+    arg_types = generate_arg_types(args)
+    response_model = generate_module_name([Response, response_schema])
+    request_model = generate_module_name([Request, request_schema])
+
+    quote do
+      @doc"""
+      #{unquote(desc)}
+
+      ## Examples
+
+          iex> {:ok, res} = #{ExOanda.CodeGenerator.format_module_name(__MODULE__)}.#{unquote(name)}(conn, #{Enum.map_join(unquote(args), ", ", &"#{&1}")})
+
+      ## Supported parameters
+      #{NimbleOptions.docs(unquote(formatted_params))}
+      """
+      @spec unquote(String.to_atom(name))(Conn.t(), unquote_splicing(arg_types), Keyword.t()) :: {:ok, Res.t()} | {:error, Res.t()}
+      def unquote(String.to_atom(name))(%Conn{} = conn, unquote_splicing(formatted_args), params \\ []) do
+        path_params =
+          unquote(args)
+          |> Enum.map(&String.to_atom/1)
+          |> Enum.filter(fn k -> k != :body end)
+          |> Enum.zip(unquote(formatted_args))
+
+        body = binding()[:body] || %{}
+
+        validated_body =
+          unquote(request_model).changeset(unquote(request_model).__struct__(), body)
+          |> Ecto.Changeset.apply_action(:validate)
+
+        case validated_body do
+          {:error, err} ->
+            {:error, err}
+
+          {:ok, body} ->
+            case NimbleOptions.validate(params, unquote(formatted_params)) do
+              {:ok, _} ->
+                Req.new(
+                  auth: API.auth_bearer(conn),
+                  url: conn.api_server <> unquote(path),
+                  path_params: path_params,
+                  method: unquote(method),
+                  headers: API.base_headers(),
+                  params: params,
+                  json: ExOanda.CodeGenerator.transform_request_body(body)
+                )
+                |> API.maybe_attach_telemetry(conn)
+                |> Req.request(conn.options)
+                |> API.handle_response(unquote(response_model))
+
+              {:error, reason} ->
+                {:error, reason}
+            end
+        end
+      end
+
+      @doc"""
+      #{unquote(desc)}
+
+      ## Examples
+
+          iex> res = #{ExOanda.CodeGenerator.format_module_name(__MODULE__)}.#{unquote(name)}!(conn, #{Enum.map_join(unquote(args), ", ", &"#{&1}")})
+
+      ## Supported parameters
+      #{NimbleOptions.docs(unquote(formatted_params))}
+      """
+      @spec unquote(String.to_atom("#{name}!"))(Conn.t(), unquote_splicing(arg_types), Keyword.t()) :: Res.t()
       def unquote(String.to_atom("#{name}!"))(%Conn{} = conn, unquote_splicing(formatted_args), params \\ []) do
         case unquote(String.to_atom(name))(conn, unquote_splicing(formatted_args), params) do
           {:ok, res} -> res
@@ -117,7 +194,7 @@ defmodule ExOanda.CodeGenerator do
       ## Supported parameters
       #{NimbleOptions.docs(unquote(formatted_params))}
       """
-      @spec unquote(String.to_atom(name))(Conn.t(), unquote_splicing(arg_types), Keyword.t()) :: {:ok, map()} | {:error, map()}
+      @spec unquote(String.to_atom(name))(Conn.t(), unquote_splicing(arg_types), Keyword.t()) :: {:ok, Res.t()} | {:error, Res.t()}
       def unquote(String.to_atom(name))(%Conn{} = conn, unquote_splicing(formatted_args), params \\ []) do
         path_params =
           unquote(args)
@@ -132,7 +209,7 @@ defmodule ExOanda.CodeGenerator do
               path_params: path_params,
               method: unquote(method),
               headers: API.base_headers(),
-              params: ExOanda.CodeGenerator.convert_params(params)
+              params: ExOanda.CodeGenerator.to_camel(params)
             )
             |> API.maybe_attach_telemetry(conn)
             |> Req.request(conn.options)
@@ -153,7 +230,7 @@ defmodule ExOanda.CodeGenerator do
       ## Supported parameters
       #{NimbleOptions.docs(unquote(formatted_params))}
       """
-      @spec unquote(String.to_atom("#{name}!"))(Conn.t(), unquote_splicing(arg_types), Keyword.t()) :: map()
+      @spec unquote(String.to_atom("#{name}!"))(Conn.t(), unquote_splicing(arg_types), Keyword.t()) :: Res.t()
       def unquote(String.to_atom("#{name}!"))(%Conn{} = conn, unquote_splicing(formatted_args), params \\ []) do
         case unquote(String.to_atom(name))(conn, unquote_splicing(formatted_args), params) do
           {:ok, res} -> res
@@ -172,7 +249,7 @@ defmodule ExOanda.CodeGenerator do
   end
 
   @doc false
-  def convert_params(params) do
+  def to_camel(params) do
     params
     |> Enum.into(%{})
     |> Recase.Enumerable.convert_keys(&Recase.to_camel/1)
@@ -186,6 +263,13 @@ defmodule ExOanda.CodeGenerator do
     end)
   end
 
+  def transform_request_body(body) do
+    body
+    |> Miss.Map.from_nested_struct()
+    |> to_camel()
+  end
+
+  @doc false
   def maybe_convert_to_string(val) when is_atom(val), do: Atom.to_string(val)
   def maybe_convert_to_string(val), do: val
 

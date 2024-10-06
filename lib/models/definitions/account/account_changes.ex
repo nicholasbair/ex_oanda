@@ -31,8 +31,9 @@ defmodule ExOanda.AccountChanges do
   end
 
   @doc false
-  def changeset(struct, _params) do
+  def changeset(struct, params) do
     struct
+    |> cast(params, [])
     |> cast_embed(:orders_created)
     |> cast_embed(:orders_cancelled)
     |> cast_embed(:orders_filled)
