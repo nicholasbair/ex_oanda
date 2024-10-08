@@ -9,8 +9,8 @@ defmodule ExOanda.GuaranteedStopLossOrderParameters do
   @primary_key false
 
   typed_embedded_schema do
-    field(:mutability_market_open, Ecto.Enum, values: [:FIXED, :REPLACEABLE, :CANCELABLE, :PRICE_WIDEN_ONLY])
-    field(:mutability_market_halted, Ecto.Enum, values: [:FIXED, :REPLACEABLE, :CANCELABLE, :PRICE_WIDEN_ONLY])
+    field(:mutability_market_open, Ecto.Enum, values: ~w(FIXED REPLACEABLE CANCELABLE PRICE_WIDEN_ONLY)a)
+    field(:mutability_market_halted, Ecto.Enum, values: ~w(FIXED REPLACEABLE CANCELABLE PRICE_WIDEN_ONLY)a)
   end
 
   @doc false

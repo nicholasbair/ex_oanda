@@ -9,7 +9,7 @@ defmodule ExOanda.FinancingDayOfWeek do
   @primary_key false
 
   typed_embedded_schema do
-    field(:day_of_week, Ecto.Enum, values: [:SUNDAY, :MONDAY, :TUESDAY, :WEDNESDAY, :THURSDAY, :FRIDAY, :SATURDAY])
+    field(:day_of_week, Ecto.Enum, values: ~w(SUNDAY MONDAY TUESDAY WEDNESDAY THURSDAY FRIDAY SATURDAY)a)
     field(:days_charged, :integer)
   end
 

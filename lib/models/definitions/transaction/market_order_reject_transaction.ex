@@ -30,9 +30,9 @@ defmodule ExOanda.MarketOrderRejectTransaction do
     field(:type, Atom, default: :MARKET_ORDER)
     field(:instrument, :string)
     field(:units, :float)
-    field(:time_in_force, Ecto.Enum, values: [:GTC, :GTD, :GFD, :FOK, :IOC])
+    field(:time_in_force, Ecto.Enum, values: ~w(GTC GTD GFD FOK IOC)a)
     field(:price_bound, :float)
-    field(:position_fill, Ecto.Enum, values: [:DEFAULT, :REDUCE_FIRST, :REDUCE_ONLY, :OPEN_ONLY])
+    field(:position_fill, Ecto.Enum, values: ~w(DEFAULT REDUCE_FIRST REDUCE_ONLY OPEN_ONLY)a)
     field(:reason, Ecto.Enum, values: ~w(CLIENT_ORDER TRADE_CLOSE POSITION_CLOSEOUT MARGIN_CLOSEOUT DELAYED_TRADE_CLOSE)a)
 
     embeds_one :trade_close, MarketOrderTradeClose

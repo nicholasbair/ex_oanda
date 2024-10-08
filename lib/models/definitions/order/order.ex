@@ -12,7 +12,7 @@ defmodule ExOanda.Order do
   typed_embedded_schema do
     field(:id, :string)
     field(:creat_time, :utc_datetime_usec)
-    field(:state, Ecto.Enum, values: [:PENDING, :FILLED, :TRIGGERED, :CANCELLED])
+    field(:state, Ecto.Enum, values: ~w(PENDING FILLED TRIGGERED CANCELLED)a)
 
     embeds_one :client_extensions, ClientExtensions
   end

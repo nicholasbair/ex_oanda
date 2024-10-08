@@ -16,7 +16,7 @@ defmodule ExOanda.Instrument do
 
   typed_embedded_schema do
     field(:name, :string)
-    field(:type, Ecto.Enum, values: [:CURRENCY, :CFD, :METAL])
+    field(:type, Ecto.Enum, values: ~w(CURRENCY CFD METAL)a)
     field(:display_name, :string)
     field(:pip_location, :integer)
     field(:display_precision, :integer)
@@ -27,7 +27,7 @@ defmodule ExOanda.Instrument do
     field(:maximum_position_size, :float)
     field(:maximum_order_units, :float)
     field(:margin_rate, :float)
-    field(:guaranteed_stop_loss_order_mode, Ecto.Enum, values: [:DISABLED, :ALLOWED, :REQUIRED])
+    field(:guaranteed_stop_loss_order_mode, Ecto.Enum, values: ~w(DISABLED ALLOWED REQUIRED)a)
     field(:guaranteed_stop_loss_order_premium, :float)
 
     embeds_one :guaranteed_stop_loss_order_level_restriction, GuaranteedStopLossOrderLevelRestriction

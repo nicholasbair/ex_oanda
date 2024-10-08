@@ -14,7 +14,7 @@ defmodule ExOanda.TradeSummary do
     field(:instrument, :string)
     field(:price, :float)
     field(:open_time, :utc_datetime_usec)
-    field(:state, Ecto.Enum, values: [:OPEN, :CLOSED, :CLOSE_WHEN_TRADEABLE])
+    field(:state, Ecto.Enum, values: ~w(OPEN CLOSED CLOSE_WHEN_TRADEABLE)a)
     field(:initial_units, :integer)
     field(:initial_margin_required, :float)
     field(:current_units, :integer)

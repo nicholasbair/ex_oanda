@@ -50,7 +50,7 @@ defmodule ExOanda.Account do
     field(:margin_call_extension_count, :integer)
     field(:last_margin_call_extension_time, :utc_datetime_usec)
     field(:last_transaction_id, :string)
-    field(:guaranteed_stop_loss_order_mode, Ecto.Enum, values: [:DISABLED, :ALLOWED, :REQUIRED])
+    field(:guaranteed_stop_loss_order_mode, Ecto.Enum, values: ~w(DISABLED ALLOWED REQUIRED)a)
 
     embeds_one :guaranteed_stop_loss_order_parameters, GuaranteedStopLossOrderParameters
     embeds_many :trades, TradeSummary
