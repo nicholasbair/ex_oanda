@@ -35,6 +35,7 @@ defmodule ExOanda.MixProject do
       {:ex_doc, "~> 0.31", only: :dev, runtime: false},
       {:miss, "~> 0.1.5"},
       {:nimble_options, "~> 1.1"},
+      {:polymorphic_embed, "~> 5.0"},
       {:recase, "~> 0.8.1"},
       {:req, "~> 0.5.2"},
       {:req_telemetry, "~> 0.1.1"},

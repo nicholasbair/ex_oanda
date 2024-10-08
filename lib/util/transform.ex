@@ -6,7 +6,10 @@ defmodule ExOanda.Transform do
   alias ExOanda.{
     CodeGenerator,
     HttpStatus,
-    Response
+    Response,
+    Response.TransactionEvent,
+    Response.PricingHeartbeat,
+    Response.Pricing
   }
 
   @spec transform(map(), atom()) :: Response.t()
@@ -14,6 +17,13 @@ defmodule ExOanda.Transform do
     %Response{}
     |> Response.changeset(preprocess_body(model, response))
     |> apply_changes()
+  end
+
+  def transform_stream(val, stream_type) do
+    val
+    |> Jason.decode!()
+    |> find_stream_schema(stream_type)
+    |> then(fn {schema, data} -> preprocess_data(schema, data) end)
   end
 
   defp preprocess_body(model, response) do
@@ -77,4 +87,10 @@ defmodule ExOanda.Transform do
 
     changeset
   end
+
+  # Transactions are varied, so polymorphic embed is used to handle different types of transactions.
+  defp find_stream_schema(val, :transactions), do: {TransactionEvent, %{"event" => val}}
+
+  defp find_stream_schema(%{"type" => "HEARTBEAT"} = val, :pricing), do: {PricingHeartbeat, val}
+  defp find_stream_schema(val, :pricing), do: {Pricing, val}
 end
