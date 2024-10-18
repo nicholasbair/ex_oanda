@@ -9,7 +9,7 @@ defmodule ExOanda.Transform do
     Response,
     Response.TransactionEvent,
     Response.PricingHeartbeat,
-    Response.Pricing
+    ClientPrice
   }
 
   @spec transform(map(), atom()) :: Response.t()
@@ -92,5 +92,5 @@ defmodule ExOanda.Transform do
   defp find_stream_schema(val, :transactions), do: {TransactionEvent, %{"event" => val}}
 
   defp find_stream_schema(%{"type" => "HEARTBEAT"} = val, :pricing), do: {PricingHeartbeat, val}
-  defp find_stream_schema(val, :pricing), do: {Pricing, val}
+  defp find_stream_schema(val, :pricing), do: {ClientPrice, val}
 end
