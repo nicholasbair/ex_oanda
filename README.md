@@ -5,11 +5,14 @@ Note - this is highly experimental and in active development.
 
 ## Notes
 
-*Risk Dislaimer*
+*Forex Trading Risk Dislaimer*
+
 Trading foreign exchange (forex) on margin carries a high level of risk and may not be suitable for all investors. The leveraged nature of forex trading can amplify both profits and losses, potentially resulting in the loss of all invested capital. Before engaging in forex trading, please carefully consider your investment objectives, experience level, and risk tolerance.
 
+This SDK is provided "as-is," without any warranty of any kind, either expressed or implied, including but not limited to the implied warranties of merchantability, fitness for a particular purpose, or non-infringement. The use of this SDK is at your own risk, and we make no guarantees regarding its accuracy, reliability, or suitability for any specific trading strategy or purpose. Users are responsible for their own trading decisions and should seek independent financial advice if necessary.
+
 ## TODO / Known Issues
-1. Limited test coverage
+1. Limited test coverage, validaiton of schemas
 2. Not yet available on hex
 
 ## Installation
@@ -67,4 +70,3 @@ response = ExOanda.Accounts.first!(conn)
 ```
 
 4. [Ecto](https://hex.pm/packages/ecto) is also used when transforming the API response from Oanda into structs.  Any validation errors are logged, but errors are not returned/raised in order to make to SDK resilient to changes to the API contract.
-```
