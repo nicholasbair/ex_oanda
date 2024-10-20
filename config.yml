@@ -109,6 +109,7 @@ interfaces:
         description: "Create an order for an account."
         http_method: "POST"
         path: "/accounts/:account_id/orders"
+        request_schema: "CreateOrder"
         response_schema: "CreateOrder"
         arguments:
           - "account_id"

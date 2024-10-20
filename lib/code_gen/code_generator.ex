@@ -263,10 +263,12 @@ defmodule ExOanda.CodeGenerator do
     end)
   end
 
+  @doc false
   def transform_request_body(body) do
     body
     |> Miss.Map.from_nested_struct()
     |> to_camel()
+    |> Enum.into(%{})
   end
 
   @doc false

@@ -18,7 +18,7 @@ defmodule ExOanda.OrderRequest do
   typed_embedded_schema do
     field(:type, Ecto.Enum, values: ~w(MARKET LIMIT STOP MARKET_IF_TOUCHED TAKE_PROFIT STOP_LOSS GUARANTEED_STOP_LOSS TRAILING_STOP_LOSS)a, default: :MARKET)
     field(:instrument, :string)
-    field(:units, :float)
+    field(:units, :integer)
     field(:price, :float)
     field(:time_in_force, Ecto.Enum, values: ~w(GTC GTD GFD FOK IOC)a)
     field(:price_bound, :float)
