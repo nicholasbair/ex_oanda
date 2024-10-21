@@ -269,6 +269,7 @@ defmodule ExOanda.CodeGenerator do
     |> Miss.Map.from_nested_struct()
     |> to_camel()
     |> Enum.into(%{})
+    |> NestedFilter.drop_by_value([nil])
   end
 
   @doc false
