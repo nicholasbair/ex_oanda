@@ -34,6 +34,7 @@ defmodule ExOanda.MixProject do
       {:excoveralls, "~> 0.18.1", only: :test},
       {:ex_doc, "~> 0.31", only: :dev, runtime: false},
       {:miss, "~> 0.1.5"},
+      {:nested_filter, "~> 1.2"},
       {:nimble_options, "~> 1.1"},
       {:polymorphic_embed, "~> 5.0"},
       {:recase, "~> 0.8.1"},
