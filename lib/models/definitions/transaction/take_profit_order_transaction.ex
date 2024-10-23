@@ -56,8 +56,7 @@ defmodule ExOanda.TakeProfitOrderTransaction do
       :order_fill_transaction_id,
       :replaces_order_id,
       :cancelling_transaction_id,
-      :reject_reason,
-      :client_extensions
+      :reject_reason
     ])
     |> cast_embed(:client_extensions)
   end

@@ -40,7 +40,6 @@ defmodule ExOanda.TradeClientExtensionsModifyRejectTransaction do
       :type,
       :trade_id,
       :client_trade_id,
-      :trade_client_extensions_modify,
       :reject_reason
     ])
     |> cast_embed(:trade_client_extensions_modify)

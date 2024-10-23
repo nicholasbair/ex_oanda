@@ -42,8 +42,6 @@ defmodule ExOanda.OrderClientExtensionsModifyRejectTransaction do
       :type,
       :order_id,
       :client_order_id,
-      :trade_client_extensions_modify,
-      :order_client_extensions_modify,
       :transaction_reject_reason,
       :reject_reason
     ])

@@ -39,9 +39,7 @@ defmodule ExOanda.OrderClientExtensionsModifyTransaction do
       :request_id,
       :type,
       :order_id,
-      :client_order_id,
-      :trade_client_extensions_modify,
-      :order_client_extensions_modify
+      :client_order_id
     ])
     |> cast_embed(:trade_client_extensions_modify)
     |> cast_embed(:order_client_extensions_modify)

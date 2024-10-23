@@ -58,8 +58,7 @@ defmodule ExOanda.GuaranteedStopLossOrderTransaction do
       :reason,
       :order_fill_transaction_id,
       :replaces_order_id,
-      :cancelling_transaction_id,
-      :client_extensions
+      :cancelling_transaction_id
     ])
     |> cast_embed(:client_extensions)
   end

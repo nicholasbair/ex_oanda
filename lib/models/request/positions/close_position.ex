@@ -13,8 +13,8 @@ defmodule ExOanda.Request.ClosePosition do
   @primary_key false
 
   typed_embedded_schema do
-    field(:long_units, CloseoutUnits, default: "ALL")
-    field(:short_units, CloseoutUnits, default: "ALL")
+    field(:long_units, CloseoutUnits)
+    field(:short_units, CloseoutUnits)
 
     embeds_one :long_client_extensions, ClientExtensions
     embeds_one :short_client_extensions, ClientExtensions
@@ -29,5 +29,13 @@ defmodule ExOanda.Request.ClosePosition do
     ])
     |> cast_embed(:long_client_extensions)
     |> cast_embed(:short_client_extensions)
+    |> validate_required_one_of([:long_units, :short_units])
+  end
+
+  defp validate_required_one_of(changeset, fields) do
+    case Enum.any?(fields, fn field -> get_field(changeset, field) != nil end) do
+      true -> changeset
+      false -> add_error(changeset, hd(fields), "at least one of #{inspect(fields)} must be present")
+    end
   end
 end
