@@ -270,6 +270,7 @@ defmodule ExOanda.CodeGenerator do
     |> to_camel()
     |> Enum.into(%{})
     |> NestedFilter.drop_by_value([nil])
+    |> IO.inspect
   end
 
   @doc false

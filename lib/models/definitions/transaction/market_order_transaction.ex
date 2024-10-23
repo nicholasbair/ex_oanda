@@ -64,18 +64,7 @@ defmodule ExOanda.MarketOrderTransaction do
       :time_in_force,
       :price_bound,
       :position_fill,
-      :reason,
-      :trade_close,
-      :long_position_closeout,
-      :short_position_closeout,
-      :margin_closeout,
-      :delayed_trade_close,
-      :client_extensions,
-      :take_profit_on_fill,
-      :stop_loss_on_fill,
-      :trailing_stop_loss_on_fill,
-      :guaranteed_stop_loss_on_fill,
-      :trade_client_extensions
+      :reason
     ])
     |> cast_embed(:trade_close)
     |> cast_embed(:long_position_closeout)
