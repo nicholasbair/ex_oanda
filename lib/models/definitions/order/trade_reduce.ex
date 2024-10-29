@@ -31,8 +31,8 @@ defmodule ExOanda.TradeReduce do
       :quote_guaranteed_execution_fee, :half_spread_cost
     ])
     |> validate_required([
-      :trade_id, :units, :price, :realized_pl, :financing, :base_financing,
-      :quote_financing, :financing_rate, :guaranteed_execution_fee,
+      :trade_id, :units, :price, :realized_pl, :financing,
+      :base_financing, :guaranteed_execution_fee,
       :quote_guaranteed_execution_fee, :half_spread_cost
     ])
   end
