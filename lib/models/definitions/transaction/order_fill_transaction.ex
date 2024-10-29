@@ -6,6 +6,7 @@ defmodule ExOanda.OrderFillTransaction do
   use TypedEctoSchema
   import Ecto.Changeset
   alias ExOanda.{
+    ClientPrice,
     TradeOpened,
     TradeReduce,
     Type.Atom
@@ -26,7 +27,6 @@ defmodule ExOanda.OrderFillTransaction do
     field(:units, :integer)
     field(:client_order_id, :string)
     field(:full_vwap, :float)
-    field(:full_price, :float)
     field(:reason, Ecto.Enum, values: ~w(LIMIT_ORDER STOP_ORDER MARKET_IF_TOUCHED_ORDER TAKE_PROFIT_ORDER STOP_LOSS_ORDER GUARANTEED_STOP_LOSS_ORDER TRAILING_STOP_LOSS_ORDER MARKET_ORDER MARKET_ORDER_TRADE_CLOSE MARKET_ORDER_POSITION_CLOSEOUT MARKET_ORDER_MARGIN_CLOSEOUT MARKET_ORDER_DELAYED_TRADE_CLOSE FIXED_PRICE_ORDER FIXED_PRICE_ORDER_PLATFORM_ACCOUNT_MIGRATION FIXED_PRICE_ORDER_DIVISION_ACCOUNT_MIGRATION FIXED_PRICE_ORDER_ADMINISTRATIVE_ACTION
     )a)
     field(:pl, :float)
@@ -40,6 +40,7 @@ defmodule ExOanda.OrderFillTransaction do
     field(:account_balance, :float)
     field(:half_spread_cost, :float)
 
+    embeds_one :full_price, ClientPrice
     embeds_one :trade_opened, TradeOpened
     embeds_one :trade_reduced, TradeReduce
     embeds_many :trades_closed, TradeReduce
@@ -50,18 +51,19 @@ defmodule ExOanda.OrderFillTransaction do
     struct
     |> cast(params, [
       :id, :time, :user_id, :account_id, :batch_id, :request_id, :type, :order_id,
-      :instrument, :units, :client_order_id, :full_vwap, :full_price, :reason, :pl,
+      :instrument, :units, :client_order_id, :full_vwap, :reason, :pl,
       :quote_pl, :financing, :base_financing, :quote_financing, :commission,
       :guaranteed_execution_fee, :quote_guaranteed_execution_fee, :account_balance,
       :half_spread_cost
     ])
+    |> cast_embed(:full_price)
     |> cast_embed(:trade_opened)
     |> cast_embed(:trade_reduced)
     |> cast_embed(:trades_closed)
     |> validate_required([
       :id, :time, :user_id, :account_id, :batch_id, :request_id, :type, :order_id,
-      :instrument, :units, :client_order_id, :full_vwap, :full_price, :reason, :pl,
-      :quote_pl, :financing, :base_financing, :quote_financing, :commission,
+      :instrument, :units, :full_vwap, :reason, :pl,
+      :quote_pl, :financing, :base_financing, :commission,
       :guaranteed_execution_fee, :quote_guaranteed_execution_fee, :account_balance,
       :half_spread_cost
     ])
