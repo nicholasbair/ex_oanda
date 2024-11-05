@@ -10,7 +10,7 @@ defmodule ExOanda.MarketOrderPositionCloseout do
 
   typed_embedded_schema do
     field(:instrument, :string)
-    field(:units, :integer)
+    field(:units, :string)
   end
 
   @doc false

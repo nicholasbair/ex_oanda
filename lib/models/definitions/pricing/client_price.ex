@@ -30,6 +30,6 @@ defmodule ExOanda.ClientPrice do
     |> cast(params, [:type, :instrument, :time, :tradeable, :closeout_bid, :closeout_ask])
     |> cast_embed(:bids)
     |> cast_embed(:asks)
-    |> validate_required([:type, :instrument, :time, :tradeable, :closeout_bid, :closeout_ask])
+    |> validate_required([:type, :closeout_bid, :closeout_ask])
   end
 end
