@@ -18,18 +18,18 @@ jobs:
     strategy:
       matrix:
         elixir: ['1.14', '1.15', '1.16', '1.17']
-        otp: ['24.0', '25.0', '26.0', '27.0']
+        otp: ['24.3.4.13', '25.3.2.8', '26.2.1', '27.0.0']
         exclude:
         - elixir: '1.14'
-          otp: '26.0'
+          otp: '26.2.1'
         - elixir: '1.14'
-          otp: '27.0'
+          otp: '27.0.0'
         - elixir: '1.15'
-          otp: '27.0'
+          otp: '27.0.0'
         - elixir: '1.16'
-          otp: '27.0'
+          otp: '27.0.0'
         - elixir: '1.17'
-          otp: '24.0'
+          otp: '24.3.4.13'
 
     steps:
     - uses: actions/checkout@v3
@@ -38,7 +38,6 @@ jobs:
       with:
         elixir-version: ${{ matrix.elixir }}
         otp-version: ${{ matrix.otp }}
-        http-client-timeout: 300
     - name: Restore dependencies cache
       uses: actions/cache@v3
       with:
