@@ -18,6 +18,5 @@ defmodule ExOanda.ClientExtensions do
   def changeset(struct, params) do
     struct
     |> cast(params, [:id, :tag, :comment])
-    |> validate_required([:id])
   end
 end
