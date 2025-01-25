@@ -28,7 +28,7 @@ defmodule ExOanda.MarketOrderTransaction do
     field(:batch_id, :string)
     field(:request_id, :string)
     field(:type, Atom, default: :MARKET_ORDER)
-    field(:instrument, :string)
+    field(:instrument, Atom)
     field(:units, :float)
     field(:time_in_force, Ecto.Enum, values: ~w(GTC GTD GFD FOK IOC)a)
     field(:price_bound, :float)
