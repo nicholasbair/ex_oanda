@@ -34,7 +34,7 @@ defmodule ExOanda.Trade do
     embeds_one :stop_loss_order, TradeOrder
     embeds_one :trailing_stop_loss_order, TradeOrder
 
-    embeds_many :client_extensions, ClientExtensions
+    embeds_one :client_extensions, ClientExtensions
   end
 
   @doc false
@@ -53,8 +53,8 @@ defmodule ExOanda.Trade do
     |> validate_required([
       :id, :instrument, :price, :open_time, :initial_units,
       :initial_margin_required, :state, :current_units, :realized_pl,
-      :unrealized_pl, :margin_used, :average_close_price, :closing_transaction_ids,
-      :financing, :dividend_adjustment, :close_time
+      :unrealized_pl, :margin_used, :closing_transaction_ids,
+      :financing, :dividend_adjustment
     ])
   end
 end

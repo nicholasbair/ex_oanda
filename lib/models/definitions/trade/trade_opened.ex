@@ -18,7 +18,7 @@ defmodule ExOanda.TradeOpened do
     field(:guaranteed_execution_fee, :float)
     field(:quote_guaranteed_execution_fee, :float)
 
-    embeds_many :client_extensions, ClientExtensions
+    embeds_one :client_extensions, ClientExtensions
   end
 
   @doc false
