@@ -5,12 +5,15 @@ defmodule ExOanda.Position do
 
   use TypedEctoSchema
   import Ecto.Changeset
-  alias ExOanda.PositionSide
+  alias ExOanda.{
+    PositionSide,
+    Type.Atom
+  }
 
   @primary_key false
 
   typed_embedded_schema do
-    field(:instrument, :string)
+    field(:instrument, Atom)
     field(:pl, :float)
     field(:unrealized_pl, :float)
     field(:margin_used, :float)

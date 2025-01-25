@@ -5,11 +5,11 @@ defmodule ExOanda.MarketOrderPositionCloseout do
 
   use TypedEctoSchema
   import Ecto.Changeset
-
+  alias ExOanda.Type.Atom
   @primary_key false
 
   typed_embedded_schema do
-    field(:instrument, :string)
+    field(:instrument, Atom)
     field(:units, :string)
   end
 

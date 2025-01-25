@@ -23,7 +23,7 @@ defmodule ExOanda.OrderFillTransaction do
     field(:request_id, :string)
     field(:type, Atom, default: :ORDER_FILL)
     field(:order_id, :string)
-    field(:instrument, :string)
+    field(:instrument, Atom)
     field(:units, :integer)
     field(:client_order_id, :string)
     field(:full_vwap, :float)

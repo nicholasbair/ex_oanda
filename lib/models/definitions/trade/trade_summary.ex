@@ -5,13 +5,16 @@ defmodule ExOanda.TradeSummary do
 
   use TypedEctoSchema
   import Ecto.Changeset
-  alias ExOanda.ClientExtensions
+  alias ExOanda.{
+    ClientExtensions,
+    Type.Atom
+  }
 
   @primary_key false
 
   typed_embedded_schema do
     field(:id, :string)
-    field(:instrument, :string)
+    field(:instrument, Atom)
     field(:price, :float)
     field(:open_time, :utc_datetime_usec)
     field(:state, Ecto.Enum, values: ~w(OPEN CLOSED CLOSE_WHEN_TRADEABLE)a)

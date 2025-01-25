@@ -7,14 +7,15 @@ defmodule ExOanda.Trade do
   import Ecto.Changeset
   alias ExOanda.{
     ClientExtensions,
-    TradeOrder
+    TradeOrder,
+    Type.Atom
   }
 
   @primary_key false
 
   typed_embedded_schema do
     field(:id, :string)
-    field(:instrument, :string)
+    field(:instrument, Atom)
     field(:price, :float)
     field(:open_time, :utc_datetime_usec)
     field(:initial_units, :integer)
