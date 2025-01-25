@@ -31,7 +31,7 @@ defmodule ExOanda.TradeSummary do
     field(:guaranteed_stop_loss_order_id, :string)
     field(:trailing_stop_loss_order_id, :string)
 
-    embeds_many :client_extensions, ClientExtensions
+    embeds_one :client_extensions, ClientExtensions
   end
 
   @doc false
