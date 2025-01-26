@@ -13,7 +13,7 @@ defmodule ExOanda.Response.AccountChanges do
   @primary_key false
 
   typed_embedded_schema do
-    embeds_many :changes, AccountChanges
+    embeds_one :changes, AccountChanges
     embeds_one :state, AccountChangesState
 
     field(:last_transaction_id, :string)
