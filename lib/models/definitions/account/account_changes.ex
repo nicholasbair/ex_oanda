@@ -5,12 +5,17 @@ defmodule ExOanda.AccountChanges do
 
   use TypedEctoSchema
   import Ecto.Changeset
+  import PolymorphicEmbed
 
   alias ExOanda.{
     Order,
     Position,
     TradeSummary,
-    Transaction
+    DailyFinancing,
+    MarketOrderTransaction,
+    MarketOrderRejectTransaction,
+    OrderFillTransaction,
+    TradeClientExtensionsModifyTransaction
   }
 
   @primary_key false
@@ -24,7 +29,17 @@ defmodule ExOanda.AccountChanges do
     embeds_many :trades_reduced, TradeSummary
     embeds_many :trades_closed, TradeSummary
     embeds_many :positions, Position
-    embeds_many :transactions, Transaction
+    polymorphic_embeds_many :transactions,
+      types: [
+        DAILY_FINANCING: DailyFinancing,
+        MARKET_ORDER: MarketOrderTransaction,
+        MARKET_ORDER_REJECT: MarketOrderRejectTransaction,
+        ORDER_FILL: OrderFillTransaction,
+        TRADE_CLIENT_EXTENSIONS_MODIFY: TradeClientExtensionsModifyTransaction,
+      ],
+      on_type_not_found: :changeset_error,
+      on_replace: :delete,
+      type_field_name: :type
   end
 
   @doc false
@@ -39,6 +54,6 @@ defmodule ExOanda.AccountChanges do
     |> cast_embed(:trades_reduced)
     |> cast_embed(:trades_closed)
     |> cast_embed(:positions)
-    |> cast_embed(:transactions)
+    |> cast_polymorphic_embed(:transactions)
   end
 end

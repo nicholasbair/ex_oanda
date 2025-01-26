@@ -22,6 +22,6 @@ defmodule ExOanda.Response.ListTransactions do
   def changeset(struct, params) do
     struct
     |> cast(params, [:from, :to, :page_size, :type, :count, :pages, :last_transaction_id])
-    |> validate_required([:from, :to, :page_size, :type, :count, :pages, :last_transaction_id])
+    |> validate_required([:from, :to, :page_size, :count, :pages, :last_transaction_id])
   end
 end
