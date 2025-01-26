@@ -11,7 +11,7 @@ defmodule ExOanda.Order do
 
   typed_embedded_schema do
     field(:id, :string)
-    field(:creat_time, :utc_datetime_usec)
+    field(:create_time, :utc_datetime_usec)
     field(:state, Ecto.Enum, values: ~w(PENDING FILLED TRIGGERED CANCELLED)a)
 
     embeds_one :client_extensions, ClientExtensions
@@ -20,8 +20,8 @@ defmodule ExOanda.Order do
   @doc false
   def changeset(struct, params) do
     struct
-    |> cast(params, [:id, :creat_time, :state])
+    |> cast(params, [:id, :create_time, :state])
     |> cast_embed(:client_extensions)
-    |> validate_required([:id, :creat_time, :state])
+    |> validate_required([:id, :create_time, :state])
   end
 end

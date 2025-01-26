@@ -23,7 +23,6 @@ defmodule ExOanda.TradeSummary do
     field(:current_units, :integer)
     field(:realized_pl, :float)
     field(:unrealized_pl, :float)
-    field(:margin_used, :float)
     field(:average_close_price, :float)
     field(:closing_transaction_ids, {:array, :string})
     field(:financing, :float)
@@ -43,17 +42,14 @@ defmodule ExOanda.TradeSummary do
     |> cast(params, [
       :id, :instrument, :price, :open_time, :state, :initial_units,
       :initial_margin_required, :current_units, :realized_pl, :unrealized_pl,
-      :margin_used, :average_close_price, :closing_transaction_ids, :financing,
+      :average_close_price, :closing_transaction_ids, :financing,
       :dividend_adjustment, :close_time, :take_profit_order_id, :stop_loss_order_id,
       :guaranteed_stop_loss_order_id, :trailing_stop_loss_order_id
     ])
     |> cast_embed(:client_extensions)
     |> validate_required([
       :id, :instrument, :price, :open_time, :state, :initial_units,
-      :initial_margin_required, :current_units, :realized_pl, :unrealized_pl,
-      :margin_used, :average_close_price, :closing_transaction_ids, :financing,
-      :dividend_adjustment, :close_time, :take_profit_order_id, :stop_loss_order_id,
-      :guaranteed_stop_loss_order_id, :trailing_stop_loss_order_id
+      :initial_margin_required, :current_units
     ])
   end
 end

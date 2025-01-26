@@ -86,21 +86,14 @@ defmodule ExOanda.AccountChangesState do
       :margin_closeout_nav,
       :margin_closeout_margin_used,
       :margin_closeout_percent,
-      :margin_closeout_position_value,
       :withdrawal_limit,
       :margin_call_margin_used,
       :margin_call_percent,
       :balance,
       :pl,
       :resettable_pl,
-      :financing,
       :commission,
-      :dividend_adjustment,
       :guaranteed_execution_fees,
-      :margin_call_enter_time,
-      :margin_call_extension_count,
-      :last_margin_call_extension_time,
-      :last_transaction_id
     ])
   end
 end
