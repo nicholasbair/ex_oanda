@@ -1,6 +1,6 @@
-defmodule ExOanda.DailyFinancing do
+defmodule Oanda.Transaction.MarginCallExitTransaction do
   @moduledoc """
-  Schema for Oanda daily financing.
+  A MarginCallExitTransaction is created when an Account exits the margin call state.
   """
 
   use TypedEctoSchema
@@ -9,33 +9,34 @@ defmodule ExOanda.DailyFinancing do
 
   @primary_key false
 
-  typed_embedded_schema do
+  embedded_schema do
     field(:id, :string)
     field(:time, :utc_datetime_usec)
     field(:user_id, :integer)
     field(:account_id, :string)
     field(:batch_id, :string)
     field(:request_id, :string)
-    field(:type, Atom, default: :DAILY_FINANCING)
-    field(:financing, :float)
-    field(:account_balance, :float)
-    field(:position_financings, {:array, :map})
+    field(:type, Atom, default: :MARGIN_CALL_EXIT)
   end
 
-  @doc false
-  def changeset(struct, params) do
+  def changeset(struct, data) do
     struct
-    |> cast(params, [
+    |> cast(data, [
       :id,
       :time,
       :user_id,
       :account_id,
       :batch_id,
       :request_id,
-      :type,
-      :financing,
-      :account_balance,
-      :position_financings
+      :type
+    ])
+    |> validate_required([
+      :id,
+      :time,
+      :user_id,
+      :account_id,
+      :batch_id,
+      :type
     ])
   end
 end

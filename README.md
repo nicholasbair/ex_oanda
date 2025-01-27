@@ -12,14 +12,14 @@ Trading foreign exchange (forex) on margin carries a high level of risk and may 
 This SDK is provided "as-is," without any warranty of any kind, either expressed or implied, including but not limited to the implied warranties of merchantability, fitness for a particular purpose, or non-infringement. The use of this SDK is at your own risk, and we make no guarantees regarding its accuracy, reliability, or suitability for any specific trading strategy or purpose. Users are responsible for their own trading decisions and should seek independent financial advice if necessary.
 
 ## TODO / Known Issues
-1. Limited test coverage, validaiton of schemas
+1. Limited test coverage, validation of schemas
 2. Not yet available on hex
 
 ## Installation
 ```elixir
 def deps do
   [
-    {:ex_oanda, git: "https://github.com/nicholasbair/ex_oanda.git", tag: "v0.0.9"}
+    {:ex_oanda, git: "https://github.com/nicholasbair/ex_oanda.git", tag: "v0.0.10"}
   ]
 end
 ```
