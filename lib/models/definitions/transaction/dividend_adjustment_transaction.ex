@@ -17,7 +17,7 @@ defmodule Oanda.Transaction.DividendAdjustmentTransaction do
     field(:batch_id, :string)
     field(:request_id, :string)
     field(:type, Atom, default: :DIVIDEND_ADJUSTMENT)
-    field(:instrument, :string)
+    field(:instrument, Atom)
     field(:dividend_rate, :float)
     field(:quote_units, :float)
     field(:home_conversion_factors, :map)

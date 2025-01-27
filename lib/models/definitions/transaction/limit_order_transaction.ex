@@ -25,7 +25,7 @@ defmodule Oanda.Transaction.LimitOrderTransaction do
     field(:batch_id, :string)
     field(:request_id, :string)
     field(:type, Atom, default: :LIMIT_ORDER)
-    field(:instrument, :string)
+    field(:instrument, Atom)
     field(:units, :integer)
     field(:price, :float)
     field(:time_in_force, Ecto.Enum, values: ~w(GTC GTD GFD FOK IOC)a)

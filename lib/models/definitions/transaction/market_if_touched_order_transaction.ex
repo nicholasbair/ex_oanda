@@ -25,7 +25,7 @@ defmodule Oanda.Transaction.MarketIfTouchedOrderTransaction do
     field(:batch_id, :string)
     field(:request_id, :string)
     field(:type, Atom, default: :MARKET_IF_TOUCHED_ORDER)
-    field(:instrument, :string)
+    field(:instrument, Atom)
     field(:units, :float)
     field(:price, :float)
     field(:price_bound, :float)

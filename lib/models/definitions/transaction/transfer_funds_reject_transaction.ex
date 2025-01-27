@@ -17,7 +17,7 @@ defmodule Oanda.Transaction.TransferFundsRejectTransaction do
     field(:batch_id, :string)
     field(:request_id, :string)
     field(:type, Atom, default: :TRANSFER_FUNDS_REJECT)
-    field(:amount, :decimal)
+    field(:amount, :float)
     field(:funding_reason, :string)
     field(:comment, :string)
     field(:reject_reason, :string)

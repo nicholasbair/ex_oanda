@@ -17,7 +17,7 @@ defmodule Oanda.Transaction.FixedPriceOrderTransaction do
     field(:batch_id, :string)
     field(:request_id, :string)
     field(:type, Atom, default: :FIXED_PRICE_ORDER)
-    field(:instrument, :string)
+    field(:instrument, Atom)
     field(:units, :float)
     field(:price, :float)
     field(:position_fill, :string)
