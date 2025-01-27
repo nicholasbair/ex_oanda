@@ -1,6 +1,6 @@
-defmodule ExOanda.DailyFinancing do
+defmodule Oanda.Transaction.ResetResettablePLTransaction do
   @moduledoc """
-  Schema for Oanda daily financing.
+  A ResetResettablePLTransaction represents the resetting of the Account's resettable PL counters.
   """
 
   use TypedEctoSchema
@@ -16,26 +16,27 @@ defmodule ExOanda.DailyFinancing do
     field(:account_id, :string)
     field(:batch_id, :string)
     field(:request_id, :string)
-    field(:type, Atom, default: :DAILY_FINANCING)
-    field(:financing, :float)
-    field(:account_balance, :float)
-    field(:position_financings, {:array, :map})
+    field(:type, Atom, default: :RESET_RESETTABLE_PL)
   end
 
-  @doc false
-  def changeset(struct, params) do
+  def changeset(struct, data) do
     struct
-    |> cast(params, [
+    |> cast(data, [
       :id,
       :time,
       :user_id,
       :account_id,
       :batch_id,
       :request_id,
-      :type,
-      :financing,
-      :account_balance,
-      :position_financings
+      :type
+    ])
+    |> validate_required([
+      :id,
+      :time,
+      :user_id,
+      :account_id,
+      :batch_id,
+      :type
     ])
   end
 end
