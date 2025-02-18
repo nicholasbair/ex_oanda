@@ -11,7 +11,7 @@ defmodule ExOanda.MarketOrderTradeClose do
   typed_embedded_schema do
     field(:trade_id, :string)
     field(:client_trade_id, :string)
-    field(:units, :integer)
+    field(:units, :float)
   end
 
   @doc false
