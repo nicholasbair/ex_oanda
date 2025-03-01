@@ -34,10 +34,7 @@ defmodule ExOanda.Position do
       :instrument, :pl, :unrealized_pl, :margin_used, :resettable_pl,
       :financing, :commission, :dividend_adjustment, :guaranteed_execution_fees
     ])
-    |> validate_required([
-      :instrument, :pl, :resettable_pl,
-      :financing, :commission, :dividend_adjustment, :guaranteed_execution_fees
-    ])
+    |> validate_required([:instrument, :pl, :resettable_pl, :financing])
     |> cast_embed(:long)
     |> cast_embed(:short)
   end

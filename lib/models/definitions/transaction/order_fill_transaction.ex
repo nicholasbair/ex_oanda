@@ -63,8 +63,7 @@ defmodule ExOanda.OrderFillTransaction do
     |> validate_required([
       :id, :time, :user_id, :account_id, :batch_id, :request_id, :type, :order_id,
       :instrument, :units, :full_vwap, :reason, :pl,
-      :quote_pl, :financing, :base_financing, :commission,
-      :guaranteed_execution_fee, :quote_guaranteed_execution_fee, :account_balance,
+      :quote_pl, :financing, :base_financing, :account_balance,
       :half_spread_cost
     ])
   end
