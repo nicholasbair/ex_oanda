@@ -91,9 +91,7 @@ defmodule ExOanda.AccountChangesState do
       :margin_call_percent,
       :balance,
       :pl,
-      :resettable_pl,
-      :commission,
-      :guaranteed_execution_fees,
+      :resettable_pl
     ])
   end
 end

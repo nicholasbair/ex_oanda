@@ -28,9 +28,6 @@ defmodule ExOanda.PositionSide do
       :units, :average_price, :trade_ids, :pl, :unrealized_pl, :resettable_pl,
       :financing, :commission, :dividend_adjustment, :guaranteed_execution_fees
     ])
-    |> validate_required([
-      :units, :trade_ids, :pl, :resettable_pl,
-      :financing, :dividend_adjustment, :guaranteed_execution_fees
-    ])
+    |> validate_required([:units, :trade_ids, :pl, :resettable_pl, :financing])
   end
 end
