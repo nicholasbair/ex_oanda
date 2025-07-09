@@ -1,4 +1,4 @@
-defmodule Oanda.Transaction.TransferFundsTransaction do
+defmodule Oanda.TransferFundsTransaction do
   @moduledoc """
   A TransferFundsTransaction represents the transfer of funds in/out of an Account.
   """
