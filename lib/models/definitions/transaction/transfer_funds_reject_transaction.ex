@@ -1,4 +1,4 @@
-defmodule Oanda.Transaction.TransferFundsRejectTransaction do
+defmodule Oanda.TransferFundsRejectTransaction do
   @moduledoc """
   A TransferFundsRejectTransaction represents the rejection of the transfer of funds in/out of an Account.
   """
