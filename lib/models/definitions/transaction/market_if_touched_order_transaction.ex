@@ -1,4 +1,4 @@
-defmodule Oanda.Transaction.MarketIfTouchedOrderTransaction do
+defmodule ExOanda.MarketIfTouchedOrderTransaction do
   @moduledoc """
   A MarketIfTouchedOrderTransaction represents the creation of a MarketIfTouched Order in the user's Account.
   """
@@ -7,7 +7,7 @@ defmodule Oanda.Transaction.MarketIfTouchedOrderTransaction do
   import Ecto.Changeset
   alias ExOanda.Type.Atom
 
-  alias Oanda.Transaction.{
+  alias ExOanda.{
     ClientExtensions,
     TakeProfitDetails,
     StopLossDetails,

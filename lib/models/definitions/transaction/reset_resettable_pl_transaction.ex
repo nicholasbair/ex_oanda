@@ -1,4 +1,4 @@
-defmodule Oanda.Transaction.ResetResettablePLTransaction do
+defmodule ExOanda.ResetResettablePLTransaction do
   @moduledoc """
   A ResetResettablePLTransaction represents the resetting of the Account's resettable PL counters.
   """

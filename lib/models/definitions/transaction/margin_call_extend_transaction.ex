@@ -1,4 +1,4 @@
-defmodule Oanda.Transaction.MarginCallExtendTransaction do
+defmodule ExOanda.MarginCallExtendTransaction do
   @moduledoc """
   A MarginCallExtendTransaction is created when the margin call state for an Account
   has been extended.

@@ -1,4 +1,4 @@
-defmodule Oanda.Transaction.FixedPriceOrderTransaction do
+defmodule ExOanda.FixedPriceOrderTransaction do
   @moduledoc """
   A FixedPriceOrderTransaction represents the creation of a Fixed Price Order in the user's Account.
   """

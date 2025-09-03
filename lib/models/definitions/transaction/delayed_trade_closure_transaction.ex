@@ -1,4 +1,4 @@
-defmodule Oanda.Transaction.DelayedTradeClosureTransaction do
+defmodule ExOanda.DelayedTradeClosureTransaction do
   @moduledoc """
   A DelayedTradeClosureTransaction represents the immediate closure of a Trade that was
   requested to be delayed.

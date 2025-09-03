@@ -1,4 +1,4 @@
-defmodule Oanda.Transaction.LimitOrderRejectTransaction do
+defmodule ExOanda.LimitOrderRejectTransaction do
   @moduledoc """
   A LimitOrderRejectTransaction represents the rejection of the creation of a Limit Order.
   """
@@ -7,7 +7,7 @@ defmodule Oanda.Transaction.LimitOrderRejectTransaction do
   import Ecto.Changeset
   alias ExOanda.Type.Atom
 
-  alias Oanda.Transaction.{
+  alias ExOanda.{
     ClientExtensions,
     TakeProfitDetails,
     StopLossDetails,

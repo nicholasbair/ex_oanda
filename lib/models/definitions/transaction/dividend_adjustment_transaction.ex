@@ -1,4 +1,4 @@
-defmodule Oanda.Transaction.DividendAdjustmentTransaction do
+defmodule ExOanda.DividendAdjustmentTransaction do
   @moduledoc """
   A DividendAdjustmentTransaction represents a dividend adjustment made to an Account.
   """

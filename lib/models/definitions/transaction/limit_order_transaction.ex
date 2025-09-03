@@ -1,4 +1,4 @@
-defmodule Oanda.Transaction.LimitOrderTransaction do
+defmodule ExOanda.LimitOrderTransaction do
   @moduledoc """
   A LimitOrderTransaction represents the creation of a Limit Order in the user's Account.
   """
@@ -7,7 +7,7 @@ defmodule Oanda.Transaction.LimitOrderTransaction do
   import Ecto.Changeset
   alias ExOanda.Type.Atom
 
-  alias Oanda.Transaction.{
+  alias ExOanda.{
     ClientExtensions,
     TakeProfitDetails,
     StopLossDetails,

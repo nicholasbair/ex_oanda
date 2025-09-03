@@ -1,4 +1,4 @@
-defmodule Oanda.Transaction.MarginCallEnterTransaction do
+defmodule ExOanda.MarginCallEnterTransaction do
   @moduledoc """
   A MarginCallEnterTransaction is created when an Account enters the margin call state.
   """
