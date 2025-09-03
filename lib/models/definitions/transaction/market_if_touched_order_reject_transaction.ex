@@ -1,4 +1,4 @@
-defmodule Oanda.Transaction.MarketIfTouchedOrderRejectTransaction do
+defmodule ExOanda.MarketIfTouchedOrderRejectTransaction do
   @moduledoc """
   A MarketIfTouchedOrderRejectTransaction represents the rejection of the creation of a
   MarketIfTouched Order.
@@ -8,7 +8,7 @@ defmodule Oanda.Transaction.MarketIfTouchedOrderRejectTransaction do
   import Ecto.Changeset
   alias ExOanda.Type.Atom
 
-  alias Oanda.Transaction.{
+  alias ExOanda.{
     ClientExtensions,
     TakeProfitDetails,
     StopLossDetails,

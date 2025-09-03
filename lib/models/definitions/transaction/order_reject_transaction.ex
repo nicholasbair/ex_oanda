@@ -1,4 +1,4 @@
-defmodule Oanda.Transaction.OrderRejectTransaction do
+defmodule ExOanda.OrderRejectTransaction do
   @moduledoc """
   An OrderRejectTransaction represents the rejection of an Order creation request.
   """

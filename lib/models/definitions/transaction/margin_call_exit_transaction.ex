@@ -1,4 +1,4 @@
-defmodule Oanda.Transaction.MarginCallExitTransaction do
+defmodule ExOanda.MarginCallExitTransaction do
   @moduledoc """
   A MarginCallExitTransaction is created when an Account exits the margin call state.
   """
