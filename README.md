@@ -19,7 +19,7 @@ This SDK is provided "as-is," without any warranty of any kind, either expressed
 ```elixir
 def deps do
   [
-    {:ex_oanda, git: "https://github.com/nicholasbair/ex_oanda.git", tag: "v0.0.10"}
+    {:ex_oanda, git: "https://github.com/nicholasbair/ex_oanda.git", tag: "v0.0.16"}
   ]
 end
 ```
@@ -27,7 +27,7 @@ end
 ## Usage
 1. Connection is a struct that stores your Oanda API credentials.
 ```elixir
-conn = 
+conn =
   %ExOanda.Connection{
     token: "1234", # Configured in the Oanda API
     api_server: "https://api-fxpractice.oanda.com/v3",
@@ -64,7 +64,7 @@ response = ExOanda.Accounts.first!(conn)
 
 3. Where supported, queries and filters can be passed as keyword list and are validated by NimbleOptions:
 ```elixir
-{:ok, threads} = 
+{:ok, accounts} =
   %ExOanda.Connection{token: "1234"}
   |> ExOanda.Accounts.list_changes("account_id", since_transaction_id: "5678")
 ```
