@@ -1,6 +1,7 @@
 interfaces:
   - module_name: "Accounts"
     description: "Interface for Oanda accounts."
+    docs_link: "https://developer.oanda.com/rest-live-v20/account-ep/"
     functions:
       - function_name: "list"
         description: "Get a list of accounts."
@@ -55,6 +56,7 @@ interfaces:
             required: true
   - module_name: "Instruments"
     description: "Interface for Oanda instruments."
+    docs_link: "https://developer.oanda.com/rest-live-v20/instrument-ep/"
     functions:
       - function_name: "list_candles"
         description: "Get candlestick data for an instrument."
@@ -104,6 +106,7 @@ interfaces:
             default: "Friday"
   - module_name: "Orders"
     description: "Interface for Oanda orders."
+    docs_link: "https://developer.oanda.com/rest-live-v20/order-ep/"
     functions:
       - function_name: "create"
         description: "Create an order for an account."
@@ -183,6 +186,7 @@ interfaces:
           - "body"
   - module_name: "Trades"
     description: "Interface for Oanda trades."
+    docs_link: "https://developer.oanda.com/rest-live-v20/trade-ep/"
     functions:
       - function_name: "list"
         description: "Get a list of trades for an account."
@@ -255,6 +259,7 @@ interfaces:
           - "body"
   - module_name: "Positions"
     description: "Interface for Oanda positions."
+    docs_link: "https://developer.oanda.com/rest-live-v20/position-ep/"
     functions:
       - function_name: "list"
         description: "Get a list of positions for an account."
@@ -290,6 +295,7 @@ interfaces:
           - "body"
   - module_name: "Transactions"
     description: "Interface for Oanda transactions."
+    docs_link: "https://developer.oanda.com/rest-live-v20/transaction-ep/"
     functions:
       - function_name: "list"
         description: "Get a list of transactions for an account."
@@ -351,6 +357,7 @@ interfaces:
             doc: "A filter for restricting the types of Transactions to retrieve."
   - module_name: "Pricing"
     description: "Interface for Oanda pricing."
+    docs_link: "https://developer.oanda.com/rest-live-v20/pricing-ep/"
     functions:
       - function_name: "list_latest"
         description: "Get most recently completed candles within an account for specified combinations of instrument, granularity and price component."
