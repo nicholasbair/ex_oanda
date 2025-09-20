@@ -38,6 +38,7 @@ defmodule ExOanda.CodeGenerator do
   defp generate_function(%{http_method: method, request_schema: req} = config, docs_link) when method in ["POST", "PUT", "PATCH"] and is_nil(req) do
     %{function_name: name, description: desc, http_method: method, path: path, arguments: args, parameters: parameters, response_schema: response_schema} = config
     formatted_args = format_args(args)
+    arg_names = Enum.map(args, & &1.name)
     formatted_params = format_params(parameters)
     supported_params = generate_supported_params(formatted_params)
     arg_types = generate_arg_types(args)
@@ -49,7 +50,7 @@ defmodule ExOanda.CodeGenerator do
 
       ## Examples
 
-          iex> {:ok, res} = #{ExOanda.CodeGenerator.format_module_name(__MODULE__)}.#{unquote(name)}(conn, #{Enum.map_join(unquote(args), ", ", &"#{&1}")})
+          iex> {:ok, res} = #{ExOanda.CodeGenerator.format_module_name(__MODULE__)}.#{unquote(name)}(conn, #{Enum.map_join(unquote(arg_names), ", ", &"#{&1}")})
       #{unquote(supported_params)}
       ## Docs
       - [Oanda Docs](#{unquote(docs_link)})
@@ -57,7 +58,7 @@ defmodule ExOanda.CodeGenerator do
       @spec unquote(String.to_atom(name))(Conn.t(), unquote_splicing(arg_types), Keyword.t()) :: {:ok, Res.t()} | {:error, Res.t()}
       def unquote(String.to_atom(name))(%Conn{} = conn, unquote_splicing(formatted_args), params \\ []) do
         path_params =
-          unquote(args)
+          unquote(arg_names)
           |> Enum.map(&String.to_atom/1)
           |> Enum.filter(fn k -> k != :body end)
           |> Enum.zip(unquote(formatted_args))
@@ -86,7 +87,7 @@ defmodule ExOanda.CodeGenerator do
 
       ## Examples
 
-          iex> res = #{ExOanda.CodeGenerator.format_module_name(__MODULE__)}.#{unquote(name)}!(conn, #{Enum.map_join(unquote(args), ", ", &"#{&1}")})
+          iex> res = #{ExOanda.CodeGenerator.format_module_name(__MODULE__)}.#{unquote(name)}!(conn, #{Enum.map_join(unquote(arg_names), ", ", &"#{&1}")})
       #{unquote(supported_params)}
       ## Docs
       - [Oanda Docs](#{unquote(docs_link)})
@@ -104,6 +105,7 @@ defmodule ExOanda.CodeGenerator do
   defp generate_function(%{http_method: method} = config, docs_link) when method in ["POST", "PUT", "PATCH"] do
     %{function_name: name, description: desc, http_method: method, path: path, arguments: args, parameters: parameters, response_schema: response_schema, request_schema: request_schema} = config
     formatted_args = format_args(args)
+    arg_names = Enum.map(args, & &1.name)
     formatted_params = format_params(parameters)
     supported_params = generate_supported_params(formatted_params)
     arg_types = generate_arg_types(args)
@@ -116,7 +118,7 @@ defmodule ExOanda.CodeGenerator do
 
       ## Examples
 
-          iex> {:ok, res} = #{ExOanda.CodeGenerator.format_module_name(__MODULE__)}.#{unquote(name)}(conn, #{Enum.map_join(unquote(args), ", ", &"#{&1}")})
+          iex> {:ok, res} = #{ExOanda.CodeGenerator.format_module_name(__MODULE__)}.#{unquote(name)}(conn, #{Enum.map_join(unquote(arg_names), ", ", &"#{&1}")})
       #{unquote(supported_params)}
       ## Docs
       - [Oanda Docs](#{unquote(docs_link)})
@@ -124,7 +126,7 @@ defmodule ExOanda.CodeGenerator do
       @spec unquote(String.to_atom(name))(Conn.t(), unquote_splicing(arg_types), Keyword.t()) :: {:ok, Res.t()} | {:error, Res.t()}
       def unquote(String.to_atom(name))(%Conn{} = conn, unquote_splicing(formatted_args), params \\ []) do
         path_params =
-          unquote(args)
+          unquote(arg_names)
           |> Enum.map(&String.to_atom/1)
           |> Enum.filter(fn k -> k != :body end)
           |> Enum.zip(unquote(formatted_args))
@@ -166,7 +168,7 @@ defmodule ExOanda.CodeGenerator do
 
       ## Examples
 
-          iex> res = #{ExOanda.CodeGenerator.format_module_name(__MODULE__)}.#{unquote(name)}!(conn, #{Enum.map_join(unquote(args), ", ", &"#{&1}")})
+          iex> res = #{ExOanda.CodeGenerator.format_module_name(__MODULE__)}.#{unquote(name)}!(conn, #{Enum.map_join(unquote(arg_names), ", ", &"#{&1}")})
       #{unquote(supported_params)}
       ## Docs
       - [Oanda Docs](#{unquote(docs_link)})
@@ -184,6 +186,7 @@ defmodule ExOanda.CodeGenerator do
   defp generate_function(config, docs_link) do
     %{function_name: name, description: desc, http_method: method, path: path, arguments: args, parameters: parameters, response_schema: response_schema} = config
     formatted_args = format_args(args)
+    arg_names = Enum.map(args, & &1.name)
     formatted_params = format_params(parameters)
     supported_params = generate_supported_params(formatted_params)
     arg_types = generate_arg_types(args)
@@ -195,7 +198,7 @@ defmodule ExOanda.CodeGenerator do
 
       ## Examples
 
-          iex> {:ok, res} = #{ExOanda.CodeGenerator.format_module_name(__MODULE__)}.#{unquote(name)}(conn, #{Enum.map_join(unquote(args), ", ", &"#{&1}")})
+          iex> {:ok, res} = #{ExOanda.CodeGenerator.format_module_name(__MODULE__)}.#{unquote(name)}(conn, #{Enum.map_join(unquote(arg_names), ", ", &"#{&1}")})
       #{unquote(supported_params)}
       ## Docs
       - [Oanda Docs](#{unquote(docs_link)})
@@ -203,7 +206,7 @@ defmodule ExOanda.CodeGenerator do
       @spec unquote(String.to_atom(name))(Conn.t(), unquote_splicing(arg_types), Keyword.t()) :: {:ok, Res.t()} | {:error, Res.t()}
       def unquote(String.to_atom(name))(%Conn{} = conn, unquote_splicing(formatted_args), params \\ []) do
         path_params =
-          unquote(args)
+          unquote(arg_names)
           |> Enum.map(&String.to_atom/1)
           |> Enum.zip(unquote(formatted_args))
 
@@ -231,7 +234,7 @@ defmodule ExOanda.CodeGenerator do
 
       ## Examples
 
-          iex> res = #{ExOanda.CodeGenerator.format_module_name(__MODULE__)}.#{unquote(name)}!(conn, #{Enum.map_join(unquote(args), ", ", &"#{&1}")})
+          iex> res = #{ExOanda.CodeGenerator.format_module_name(__MODULE__)}.#{unquote(name)}!(conn, #{Enum.map_join(unquote(arg_names), ", ", &"#{&1}")})
       #{unquote(supported_params)}
       ## Docs
       - [Oanda Docs](#{unquote(docs_link)})
@@ -286,7 +289,7 @@ defmodule ExOanda.CodeGenerator do
   defp generate_module_name(input), do: Module.concat([ExOanda, input])
 
   defp format_args(args) do
-    for a <- args, do: {String.to_atom(a), [], nil}
+    for %{name: name} <- args, do: {String.to_atom(name), [], nil}
   end
 
   defp format_params(params) do
@@ -314,10 +317,10 @@ defmodule ExOanda.CodeGenerator do
   end
 
   defp generate_arg_types(args) do
-    Enum.map(args, fn arg_name ->
-      case arg_name do
-        "account_id" -> quote do: String.t()
-        "body" -> quote do: map()
+    Enum.map(args, fn %{type: type} ->
+      case type do
+        "string" -> quote do: String.t()
+        "map" -> quote do: map()
         _ -> quote do: any()
       end
     end)
