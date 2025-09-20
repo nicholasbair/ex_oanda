@@ -39,6 +39,7 @@ defmodule ExOanda.CodeGenerator do
     %{function_name: name, description: desc, http_method: method, path: path, arguments: args, parameters: parameters, response_schema: response_schema} = config
     formatted_args = format_args(args)
     formatted_params = format_params(parameters)
+    supported_params = generate_supported_params(formatted_params)
     arg_types = generate_arg_types(args)
     response_model = generate_module_name([Response, response_schema])
 
@@ -49,10 +50,7 @@ defmodule ExOanda.CodeGenerator do
       ## Examples
 
           iex> {:ok, res} = #{ExOanda.CodeGenerator.format_module_name(__MODULE__)}.#{unquote(name)}(conn, #{Enum.map_join(unquote(args), ", ", &"#{&1}")})
-
-      ## Supported parameters
-      #{NimbleOptions.docs(unquote(formatted_params))}
-
+      #{unquote(supported_params)}
       ## Docs
       - [Oanda Docs](#{unquote(docs_link)})
       """
@@ -89,10 +87,7 @@ defmodule ExOanda.CodeGenerator do
       ## Examples
 
           iex> res = #{ExOanda.CodeGenerator.format_module_name(__MODULE__)}.#{unquote(name)}!(conn, #{Enum.map_join(unquote(args), ", ", &"#{&1}")})
-
-      ## Supported parameters
-      #{NimbleOptions.docs(unquote(formatted_params))}
-
+      #{unquote(supported_params)}
       ## Docs
       - [Oanda Docs](#{unquote(docs_link)})
       """
@@ -110,6 +105,7 @@ defmodule ExOanda.CodeGenerator do
     %{function_name: name, description: desc, http_method: method, path: path, arguments: args, parameters: parameters, response_schema: response_schema, request_schema: request_schema} = config
     formatted_args = format_args(args)
     formatted_params = format_params(parameters)
+    supported_params = generate_supported_params(formatted_params)
     arg_types = generate_arg_types(args)
     response_model = generate_module_name([Response, response_schema])
     request_model = generate_module_name([Request, request_schema])
@@ -121,10 +117,7 @@ defmodule ExOanda.CodeGenerator do
       ## Examples
 
           iex> {:ok, res} = #{ExOanda.CodeGenerator.format_module_name(__MODULE__)}.#{unquote(name)}(conn, #{Enum.map_join(unquote(args), ", ", &"#{&1}")})
-
-      ## Supported parameters
-      #{NimbleOptions.docs(unquote(formatted_params))}
-
+      #{unquote(supported_params)}
       ## Docs
       - [Oanda Docs](#{unquote(docs_link)})
       """
@@ -174,10 +167,7 @@ defmodule ExOanda.CodeGenerator do
       ## Examples
 
           iex> res = #{ExOanda.CodeGenerator.format_module_name(__MODULE__)}.#{unquote(name)}!(conn, #{Enum.map_join(unquote(args), ", ", &"#{&1}")})
-
-      ## Supported parameters
-      #{NimbleOptions.docs(unquote(formatted_params))}
-
+      #{unquote(supported_params)}
       ## Docs
       - [Oanda Docs](#{unquote(docs_link)})
       """
@@ -195,6 +185,7 @@ defmodule ExOanda.CodeGenerator do
     %{function_name: name, description: desc, http_method: method, path: path, arguments: args, parameters: parameters, response_schema: response_schema} = config
     formatted_args = format_args(args)
     formatted_params = format_params(parameters)
+    supported_params = generate_supported_params(formatted_params)
     arg_types = generate_arg_types(args)
     model = generate_module_name([Response, response_schema])
 
@@ -205,10 +196,7 @@ defmodule ExOanda.CodeGenerator do
       ## Examples
 
           iex> {:ok, res} = #{ExOanda.CodeGenerator.format_module_name(__MODULE__)}.#{unquote(name)}(conn, #{Enum.map_join(unquote(args), ", ", &"#{&1}")})
-
-      ## Supported parameters
-      #{NimbleOptions.docs(unquote(formatted_params))}
-
+      #{unquote(supported_params)}
       ## Docs
       - [Oanda Docs](#{unquote(docs_link)})
       """
@@ -244,10 +232,7 @@ defmodule ExOanda.CodeGenerator do
       ## Examples
 
           iex> res = #{ExOanda.CodeGenerator.format_module_name(__MODULE__)}.#{unquote(name)}!(conn, #{Enum.map_join(unquote(args), ", ", &"#{&1}")})
-
-      ## Supported parameters
-      #{NimbleOptions.docs(unquote(formatted_params))}
-
+      #{unquote(supported_params)}
       ## Docs
       - [Oanda Docs](#{unquote(docs_link)})
       """
@@ -316,6 +301,16 @@ defmodule ExOanda.CodeGenerator do
       filtered_params = Enum.reject(params_list, fn {_, value} -> is_nil(value) end)
       Keyword.put(acc, String.to_atom(name), filtered_params)
     end)
+  end
+
+  defp generate_supported_params([]), do: ""
+  defp generate_supported_params(formatted_params) do
+    """
+
+    ## Supported parameters
+    #{NimbleOptions.docs(formatted_params)}
+
+    """
   end
 
   defp generate_arg_types(args) do
