@@ -11,6 +11,7 @@ defmodule ExOanda.Config do
   typed_embedded_schema do
     field(:module_name, :string)
     field(:description, :string)
+    field(:docs_link, :string)
 
     embeds_many :functions, Functions, primary_key: false do
       field(:function_name, :string)
@@ -34,7 +35,7 @@ defmodule ExOanda.Config do
   @doc false
   def changeset(config, params \\ %{}) do
     config
-    |> cast(params, [:module_name, :description])
+    |> cast(params, [:module_name, :description, :docs_link])
     |> validate_required([:module_name, :description])
     |> cast_embed(:functions, with: &functions_changeset/2)
   end
@@ -56,7 +57,15 @@ defmodule ExOanda.Config do
 
   defp functions_changeset(struct, params) do
     struct
-    |> cast(params, [:function_name, :description, :http_method, :path, :arguments, :request_schema, :response_schema])
+    |> cast(params, [
+      :function_name,
+      :description,
+      :http_method,
+      :path,
+      :arguments,
+      :request_schema,
+      :response_schema
+    ])
     |> validate_required([:function_name, :description, :http_method, :path])
     |> cast_embed(:parameters, with: &embedded_changeset/2)
   end
@@ -65,7 +74,7 @@ defmodule ExOanda.Config do
     keys =
       struct
       |> Map.keys()
-      |> Enum.reject(& &1 in [:__meta__, :__struct__])
+      |> Enum.reject(&(&1 in [:__meta__, :__struct__]))
 
     struct
     |> cast(params, keys)
