@@ -55,7 +55,7 @@ defmodule ExOanda.CodeGenerator do
       ## Docs
       - [Oanda Docs](#{unquote(docs_link)})
       """
-      @spec unquote(String.to_atom(name))(Conn.t(), unquote_splicing(arg_types), Keyword.t()) :: {:ok, Res.t()} | {:error, Res.t()}
+      @spec unquote(String.to_atom(name))(Conn.t(), unquote_splicing(arg_types), Keyword.t()) :: {:ok, Res.t(unquote(response_model).t())} | {:error, Res.t()}
       def unquote(String.to_atom(name))(%Conn{} = conn, unquote_splicing(formatted_args), params \\ []) do
         path_params =
           unquote(arg_names)
@@ -92,7 +92,7 @@ defmodule ExOanda.CodeGenerator do
       ## Docs
       - [Oanda Docs](#{unquote(docs_link)})
       """
-      @spec unquote(String.to_atom("#{name}!"))(Conn.t(), unquote_splicing(arg_types), Keyword.t()) :: Res.t()
+      @spec unquote(String.to_atom("#{name}!"))(Conn.t(), unquote_splicing(arg_types), Keyword.t()) :: Res.t(unquote(response_model).t())
       def unquote(String.to_atom("#{name}!"))(%Conn{} = conn, unquote_splicing(formatted_args), params \\ []) do
         case unquote(String.to_atom(name))(conn, unquote_splicing(formatted_args), params) do
           {:ok, res} -> res
@@ -123,7 +123,7 @@ defmodule ExOanda.CodeGenerator do
       ## Docs
       - [Oanda Docs](#{unquote(docs_link)})
       """
-      @spec unquote(String.to_atom(name))(Conn.t(), unquote_splicing(arg_types), Keyword.t()) :: {:ok, Res.t()} | {:error, Res.t()}
+      @spec unquote(String.to_atom(name))(Conn.t(), unquote_splicing(arg_types), Keyword.t()) :: {:ok, Res.t(unquote(response_model).t())} | {:error, Res.t()}
       def unquote(String.to_atom(name))(%Conn{} = conn, unquote_splicing(formatted_args), params \\ []) do
         path_params =
           unquote(arg_names)
@@ -173,7 +173,7 @@ defmodule ExOanda.CodeGenerator do
       ## Docs
       - [Oanda Docs](#{unquote(docs_link)})
       """
-      @spec unquote(String.to_atom("#{name}!"))(Conn.t(), unquote_splicing(arg_types), Keyword.t()) :: Res.t()
+      @spec unquote(String.to_atom("#{name}!"))(Conn.t(), unquote_splicing(arg_types), Keyword.t()) :: Res.t(unquote(response_model).t())
       def unquote(String.to_atom("#{name}!"))(%Conn{} = conn, unquote_splicing(formatted_args), params \\ []) do
         case unquote(String.to_atom(name))(conn, unquote_splicing(formatted_args), params) do
           {:ok, res} -> res
@@ -190,7 +190,7 @@ defmodule ExOanda.CodeGenerator do
     formatted_params = format_params(parameters)
     supported_params = generate_supported_params(formatted_params)
     arg_types = generate_arg_types(args)
-    model = generate_module_name([Response, response_schema])
+    response_model = generate_module_name([Response, response_schema])
 
     quote do
       @doc"""
@@ -203,7 +203,7 @@ defmodule ExOanda.CodeGenerator do
       ## Docs
       - [Oanda Docs](#{unquote(docs_link)})
       """
-      @spec unquote(String.to_atom(name))(Conn.t(), unquote_splicing(arg_types), Keyword.t()) :: {:ok, Res.t()} | {:error, Res.t()}
+      @spec unquote(String.to_atom(name))(Conn.t(), unquote_splicing(arg_types), Keyword.t()) :: {:ok, Res.t(unquote(response_model).t())} | {:error, Res.t()}
       def unquote(String.to_atom(name))(%Conn{} = conn, unquote_splicing(formatted_args), params \\ []) do
         path_params =
           unquote(arg_names)
@@ -222,7 +222,7 @@ defmodule ExOanda.CodeGenerator do
             )
             |> API.maybe_attach_telemetry(conn)
             |> Req.request(conn.options)
-            |> API.handle_response(unquote(model))
+            |> API.handle_response(unquote(response_model))
 
           {:error, reason} ->
             {:error, reason}
@@ -239,7 +239,7 @@ defmodule ExOanda.CodeGenerator do
       ## Docs
       - [Oanda Docs](#{unquote(docs_link)})
       """
-      @spec unquote(String.to_atom("#{name}!"))(Conn.t(), unquote_splicing(arg_types), Keyword.t()) :: Res.t()
+      @spec unquote(String.to_atom("#{name}!"))(Conn.t(), unquote_splicing(arg_types), Keyword.t()) :: Res.t(unquote(response_model).t())
       def unquote(String.to_atom("#{name}!"))(%Conn{} = conn, unquote_splicing(formatted_args), params \\ []) do
         case unquote(String.to_atom(name))(conn, unquote_splicing(formatted_args), params) do
           {:ok, res} -> res
