@@ -6,6 +6,7 @@ defmodule ExOanda.Response.TransactionEvent do
   use Ecto.Schema
   import Ecto.Changeset
   import PolymorphicEmbed
+
   alias ExOanda.{
     OrderFillTransaction,
     TakeProfitOrderTransaction,
@@ -22,7 +23,7 @@ defmodule ExOanda.Response.TransactionEvent do
   @primary_key false
 
   embedded_schema do
-    polymorphic_embeds_one :event,
+    polymorphic_embeds_one(:event,
       # Note: this list is incomplete based the Oanda docs
       types: [
         ORDERFILL: OrderFillTransaction,
@@ -39,6 +40,7 @@ defmodule ExOanda.Response.TransactionEvent do
       type_field_name: :type,
       on_type_not_found: :raise,
       on_replace: :update
+    )
   end
 
   @doc false

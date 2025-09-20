@@ -10,7 +10,7 @@ defmodule ExOanda.AccountChanges do
   alias ExOanda.{
     ClientConfigureRejectTransaction,
     ClientConfigureTransaction,
-    DailyFinancing,
+    DailyFinancingTransaction,
     DelayedTradeClosureTransaction,
     DividendAdjustmentTransaction,
     FixedPriceOrderTransaction,
@@ -50,19 +50,20 @@ defmodule ExOanda.AccountChanges do
   @primary_key false
 
   typed_embedded_schema do
-    embeds_many :orders_created, Order
-    embeds_many :orders_cancelled, Order
-    embeds_many :orders_filled, Order
-    embeds_many :orders_triggered, Order
-    embeds_many :trades_opened, TradeSummary
-    embeds_many :trades_reduced, TradeSummary
-    embeds_many :trades_closed, TradeSummary
-    embeds_many :positions, Position
-    polymorphic_embeds_many :transactions,
+    embeds_many(:orders_created, Order)
+    embeds_many(:orders_cancelled, Order)
+    embeds_many(:orders_filled, Order)
+    embeds_many(:orders_triggered, Order)
+    embeds_many(:trades_opened, TradeSummary)
+    embeds_many(:trades_reduced, TradeSummary)
+    embeds_many(:trades_closed, TradeSummary)
+    embeds_many(:positions, Position)
+
+    polymorphic_embeds_many(:transactions,
       types: [
         CLIENT_CONFIGURE: ClientConfigureTransaction,
         CLIENT_CONFIGURE_REJECT: ClientConfigureRejectTransaction,
-        DAILY_FINANCING: DailyFinancing,
+        DAILY_FINANCING: DailyFinancingTransaction,
         DELAYED_TRADE_CLOSURE: DelayedTradeClosureTransaction,
         DIVIDEND_ADJUSTMENT: DividendAdjustmentTransaction,
         FIXED_PRICE_ORDER: FixedPriceOrderTransaction,
@@ -98,6 +99,7 @@ defmodule ExOanda.AccountChanges do
       on_type_not_found: :raise,
       on_replace: :delete,
       type_field_name: :type
+    )
   end
 
   @doc false
