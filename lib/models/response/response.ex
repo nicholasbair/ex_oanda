@@ -3,18 +3,36 @@ defmodule ExOanda.Response do
   Common response schema for Oanda API.
   """
 
-  use TypedEctoSchema
+  use Ecto.Schema
   import Ecto.Changeset
 
-  alias ExOanda.{
-    Type.Atom,
-    Type.MapOrList
-  }
+  alias ExOanda.Type.Atom
 
-  @primary_key false
+  @typedoc """
+  Common response schema for ExOanda.
 
-  typed_embedded_schema do
-    field(:data, MapOrList)
+  The type of the `data` field is determined by the Oanda endpoint being called, however, the type of the nested schema is passed as a generic type parameter.
+  For example, the response schema for `ExOanda.Accounts.list` is `ExOanda.Response.t(ExOanda.Response.ListAccounts.t())`.
+  """
+
+  @type t(data) :: %__MODULE__{
+          data: data,
+          request_id: String.t(),
+          status: atom(),
+          error_code: String.t() | nil,
+          error_message: String.t() | nil
+        }
+
+  @type t() :: %__MODULE__{
+          data: nil,
+          request_id: String.t(),
+          status: atom(),
+          error_code: String.t() | nil,
+          error_message: String.t() | nil
+        }
+
+  embedded_schema do
+    field(:data, :map)
     field(:request_id, :string)
     field(:status, Atom)
     field(:error_code, :string)
