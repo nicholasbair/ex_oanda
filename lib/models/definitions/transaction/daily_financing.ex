@@ -1,4 +1,4 @@
-defmodule ExOanda.DailyFinancing do
+defmodule ExOanda.DailyFinancingTransaction do
   @moduledoc """
   Schema for Oanda daily financing.
   """

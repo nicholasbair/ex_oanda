@@ -4,14 +4,14 @@ defmodule ExOanda.MixProject do
   def project do
     [
       app: :ex_oanda,
-      version: "0.0.16",
+      version: "0.0.17",
       elixir: "~> 1.14",
       start_permanent: Mix.env() == :prod,
       deps: deps(),
       dialyzer: [plt_add_apps: [:mix]],
       docs: [
         main: "ExOanda",
-        extras: ["README.md"] # TODO add license
+        extras: ["README.md", "LICENSE"]
       ],
       test_coverage: [tool: ExCoveralls]
     ]
