@@ -18,16 +18,12 @@ defmodule ExOanda.Config do
       field(:description, :string)
       field(:http_method, :string)
       field(:path, :string)
-      # field(:arguments, {:array, :string}, default: [])
       field(:response_schema, :string)
       field(:request_schema, :string)
 
       embeds_many :arguments, Arguments, primary_key: false do
         field(:name, :string)
         field(:type, :string)
-        # field(:required, :boolean, default: false)
-        # field(:default, :string)
-        # field(:doc, :string)
       end
 
       embeds_many :parameters, Parameters, primary_key: false do
@@ -70,7 +66,6 @@ defmodule ExOanda.Config do
       :description,
       :http_method,
       :path,
-      # :arguments,
       :request_schema,
       :response_schema
     ])
