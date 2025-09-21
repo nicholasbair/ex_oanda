@@ -190,7 +190,8 @@ interfaces:
         arguments:
           - name: "account_id"
             type: "string"
-          - "order_id"
+          - name: "order_id"
+            type: "string"
       - function_name: "modify_client_extensions"
         description: "Update the Client Extensions for an Order in an Account. Do not set, modify, or delete clientExtensions if your account is associated with MT4."
         http_method: "PUT"
@@ -273,8 +274,10 @@ interfaces:
         arguments:
           - name: "account_id"
             type: "string"
-          - "trade_id"
-          - "body"
+          - name: "trade_id"
+            type: "string"
+          - name: "body"
+            type: "map"
       - function_name: "update"
         decription: "Create, replace and cancel a Trade's dependent Orders (Take Profit, Stop Loss and Trailing Stop Loss) through the Trade itself."
         http_method: "PUT"
