@@ -11,14 +11,16 @@ defmodule ExOanda.TestGenerator do
         Enum.map(functions, fn function ->
           function_name = function.function_name
           target_module = Module.concat([ExOanda, module_name])
-          arity = length(function.arguments) + 1 # Connection struct + configured arguments (less optional params)
+          arity = length(function.arguments) + 1
 
           quote do
             test "#{unquote(module_name)}.#{unquote(function_name)} is generated." do
+              Code.ensure_loaded(unquote(target_module))
               assert function_exported?(unquote(target_module), unquote(String.to_atom(function_name)), unquote(arity))
             end
 
             test "#{unquote(module_name)}.#{unquote(function_name)}! is generated." do
+              Code.ensure_loaded(unquote(target_module))
               assert function_exported?(unquote(target_module), unquote(String.to_atom("#{function_name}!")), unquote(arity))
             end
           end
