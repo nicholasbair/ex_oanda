@@ -106,7 +106,7 @@ defmodule ExOanda.TransformTest do
         "quote_pl" => 0.0,
         "financing" => 0.0,
         "base_financing" => 0.0,
-        "account_balance" => 10000.0,
+        "account_balance" => 10_000.0,
         "half_spread_cost" => 0.0
       }
 
