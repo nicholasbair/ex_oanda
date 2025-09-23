@@ -6,7 +6,7 @@ defmodule ExOanda.Streaming do
   """
 
   alias ExOanda.{API, ValidationError, TransportError}
-  alias ExOandaError
+  alias ExOanda.APIError
   alias ExOanda.Connection, as: Conn
   alias ExOanda.Transform, as: TF
 
@@ -65,7 +65,7 @@ defmodule ExOanda.Streaming do
       {:ok, result} -> result
       {:error, %ValidationError{} = validation_error} -> raise validation_error
       {:error, %TransportError{} = transport_error} -> raise transport_error
-      {:error, reason} -> raise ExOandaError, reason
+      {:error, reason} -> raise APIError, reason
     end
   end
 

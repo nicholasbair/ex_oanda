@@ -3,6 +3,7 @@ defmodule ExOanda.CodeGenerator do
 
   alias ExOanda.{
     Config,
+    APIError,
     ValidationError,
     TransportError
   }
@@ -102,7 +103,7 @@ defmodule ExOanda.CodeGenerator do
           {:ok, res} -> res
           {:error, %ValidationError{} = validation_error} -> raise validation_error
           {:error, %TransportError{} = transport_error} -> raise transport_error
-          {:error, reason} -> raise ExOandaError, reason
+          {:error, reason} -> raise APIError, reason
         end
       end
     end
@@ -185,7 +186,7 @@ defmodule ExOanda.CodeGenerator do
           {:ok, res} -> res
           {:error, %ValidationError{} = validation_error} -> raise validation_error
           {:error, %TransportError{} = transport_error} -> raise transport_error
-          {:error, reason} -> raise ExOandaError, reason
+          {:error, reason} -> raise APIError, reason
         end
       end
     end
@@ -253,7 +254,7 @@ defmodule ExOanda.CodeGenerator do
           {:ok, res} -> res
           {:error, %ValidationError{} = validation_error} -> raise validation_error
           {:error, %TransportError{} = transport_error} -> raise transport_error
-          {:error, reason} -> raise ExOandaError, reason
+          {:error, reason} -> raise APIError, reason
         end
       end
     end
