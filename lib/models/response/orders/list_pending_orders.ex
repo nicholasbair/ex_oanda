@@ -1,6 +1,8 @@
 defmodule ExOanda.Response.ListPendingOrders do
   @moduledoc """
   Schema for Oanda list pending orders response.
+
+  [Oanda Docs](https://developer.oanda.com/rest-live-v20/order-ep/)
   """
 
   use TypedEctoSchema

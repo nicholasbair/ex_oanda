@@ -1,6 +1,8 @@
 defmodule ExOanda.DividendAdjustmentTransaction do
   @moduledoc """
   A DividendAdjustmentTransaction represents a dividend adjustment made to an Account.
+
+  [Oanda Docs](https://developer.oanda.com/rest-live-v20/transaction-df/)
   """
 
   use TypedEctoSchema

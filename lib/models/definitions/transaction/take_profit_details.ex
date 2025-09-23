@@ -1,6 +1,8 @@
 defmodule ExOanda.TakeProfitDetails do
   @moduledoc """
   Schema for Oanda take profit details.
+
+  [Oanda Docs](https://developer.oanda.com/rest-live-v20/transaction-df/)
   """
 
   use TypedEctoSchema

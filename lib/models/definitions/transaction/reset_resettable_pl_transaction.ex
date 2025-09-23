@@ -1,6 +1,8 @@
 defmodule ExOanda.ResetResettablePLTransaction do
   @moduledoc """
   A ResetResettablePLTransaction represents the resetting of the Account's resettable PL counters.
+
+  [Oanda Docs](https://developer.oanda.com/rest-live-v20/transaction-df/)
   """
 
   use TypedEctoSchema

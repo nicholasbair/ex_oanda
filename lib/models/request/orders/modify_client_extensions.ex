@@ -1,6 +1,8 @@
 defmodule ExOanda.Request.OrderModifyClientExtensions do
   @moduledoc """
   Oanda order modify client extensions request.
+
+  [Oanda Docs](https://developer.oanda.com/rest-live-v20/order-ep/)
   """
 
   use TypedEctoSchema

@@ -1,6 +1,8 @@
 defmodule ExOanda.Response.AccountInstruments do
   @moduledoc """
   Schema for Oanda list account instruments response.
+
+  [Oanda Docs](https://developer.oanda.com/rest-live-v20/account-ep/)
   """
 
   use TypedEctoSchema

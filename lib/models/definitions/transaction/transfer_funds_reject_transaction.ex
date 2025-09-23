@@ -1,6 +1,8 @@
 defmodule ExOanda.TransferFundsRejectTransaction do
   @moduledoc """
   A TransferFundsRejectTransaction represents the rejection of the transfer of funds in/out of an Account.
+
+  [Oanda Docs](https://developer.oanda.com/rest-live-v20/transaction-df/)
   """
 
   use TypedEctoSchema

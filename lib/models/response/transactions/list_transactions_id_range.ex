@@ -1,6 +1,8 @@
 defmodule ExOanda.Response.ListTransactionsIdRange do
   @moduledoc """
   Schema for Oanda list transactions id range response.
+
+  [Oanda Docs](https://developer.oanda.com/rest-live-v20/transaction-ep/)
   """
 
   use TypedEctoSchema

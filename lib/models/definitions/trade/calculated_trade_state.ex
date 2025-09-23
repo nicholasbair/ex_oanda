@@ -1,6 +1,8 @@
 defmodule ExOanda.CalculatedTradeState do
   @moduledoc """
   Schema for Oanda calculated trade state.
+
+  [Oanda Docs](https://developer.oanda.com/rest-live-v20/trade-df/)
   """
 
   use TypedEctoSchema

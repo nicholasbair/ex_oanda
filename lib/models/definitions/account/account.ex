@@ -1,6 +1,8 @@
 defmodule ExOanda.Account do
   @moduledoc """
   Schema for Oanda account.
+
+  [Oanda Docs](https://developer.oanda.com/rest-live-v20/account-df/)
   """
 
   use TypedEctoSchema

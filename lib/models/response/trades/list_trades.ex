@@ -1,6 +1,8 @@
 defmodule ExOanda.Response.ListTrades do
   @moduledoc """
   Schema for Oanda list trades response.
+
+  [Oanda Docs](https://developer.oanda.com/rest-live-v20/trade-ep/)
   """
 
   use TypedEctoSchema

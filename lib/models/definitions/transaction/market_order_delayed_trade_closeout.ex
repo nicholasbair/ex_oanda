@@ -1,6 +1,8 @@
 defmodule ExOanda.MarketOrderDelayedTradeCloseout do
   @moduledoc """
   Schema for Oanda market order delayed trade closeout.
+
+  [Oanda Docs](https://developer.oanda.com/rest-live-v20/transaction-df/)
   """
 
   use TypedEctoSchema

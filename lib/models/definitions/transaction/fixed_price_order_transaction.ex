@@ -1,6 +1,8 @@
 defmodule ExOanda.FixedPriceOrderTransaction do
   @moduledoc """
   A FixedPriceOrderTransaction represents the creation of a Fixed Price Order in the user's Account.
+
+  [Oanda Docs](https://developer.oanda.com/rest-live-v20/transaction-df/)
   """
 
   use TypedEctoSchema

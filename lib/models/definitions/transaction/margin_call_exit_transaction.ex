@@ -1,6 +1,8 @@
 defmodule ExOanda.MarginCallExitTransaction do
   @moduledoc """
   A MarginCallExitTransaction is created when an Account exits the margin call state.
+
+  [Oanda Docs](https://developer.oanda.com/rest-live-v20/transaction-df/)
   """
 
   use TypedEctoSchema

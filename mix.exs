@@ -7,6 +7,11 @@ defmodule ExOanda.MixProject do
       version: "0.0.18",
       elixir: "~> 1.14",
       start_permanent: Mix.env() == :prod,
+      description: "Unofficial Elixir SDK for the Oanda API.",
+      package: package(),
+      name: "ExOanda",
+      source_url: url(),
+      homepage_url: url(),
       deps: deps(),
       dialyzer: [plt_add_apps: [:mix]],
       docs: [
@@ -44,4 +49,16 @@ defmodule ExOanda.MixProject do
       {:yaml_elixir, "~> 2.11"}
     ]
   end
+
+  defp package do
+    [
+      name: "ex_oanda",
+      licenses: ["MIT"],
+      links: %{
+        github: url()
+      }
+    ]
+  end
+
+  defp url, do: "https://github.com/nicholasbair/ex_oanda"
 end

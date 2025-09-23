@@ -1,6 +1,8 @@
 defmodule ExOanda.Tag do
   @moduledoc """
   Schema for Oanda tag.
+
+  [Oanda Docs](https://developer.oanda.com/rest-live-v20/primitives-df/)
   """
 
   use TypedEctoSchema

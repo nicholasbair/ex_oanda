@@ -1,6 +1,8 @@
 defmodule ExOanda.Response.FindAccount do
   @moduledoc """
   Schema for Oanda find account response.
+
+  [Oanda Docs](https://developer.oanda.com/rest-live-v20/account-ep/)
   """
 
   use TypedEctoSchema

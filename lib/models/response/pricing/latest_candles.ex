@@ -1,6 +1,8 @@
 defmodule ExOanda.Response.LatestCandles do
   @moduledoc """
   Schema for Oanda list candles response.
+
+  [Oanda Docs](https://developer.oanda.com/rest-live-v20/pricing-ep/)
   """
 
   use TypedEctoSchema

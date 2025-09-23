@@ -1,6 +1,8 @@
 defmodule ExOanda.GuaranteedStopLossOrderParameters do
   @moduledoc """
   Schema for Oanda guaranteed stop loss order parameters.
+
+  [Oanda Docs](https://developer.oanda.com/rest-live-v20/account-df/)
   """
 
   use TypedEctoSchema

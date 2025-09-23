@@ -1,6 +1,8 @@
 defmodule ExOanda.TransferFundsTransaction do
   @moduledoc """
   A TransferFundsTransaction represents the transfer of funds in/out of an Account.
+
+  [Oanda Docs](https://developer.oanda.com/rest-live-v20/transaction-df/)
   """
 
   use TypedEctoSchema

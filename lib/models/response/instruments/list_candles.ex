@@ -1,6 +1,8 @@
 defmodule ExOanda.Response.ListCandles do
   @moduledoc """
   Schema for Oanda instruments response.
+
+  [Oanda Docs](https://developer.oanda.com/rest-live-v20/instrument-ep/)
   """
 
   use TypedEctoSchema

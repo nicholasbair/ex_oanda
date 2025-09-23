@@ -1,6 +1,8 @@
 defmodule ExOanda.Instrument do
   @moduledoc """
   Schema for Oanda instrument.
+
+  [Oanda Docs](https://developer.oanda.com/rest-live-v20/primitives-df/)
   """
 
   use TypedEctoSchema

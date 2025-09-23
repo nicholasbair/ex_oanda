@@ -1,6 +1,8 @@
 defmodule ExOanda.Response.ClosePosition do
   @moduledoc """
   Schema for Oanda close position response.
+
+  [Oanda Docs](https://developer.oanda.com/rest-live-v20/position-ep/)
   """
 
   use TypedEctoSchema

@@ -1,6 +1,8 @@
 defmodule ExOanda.LimitOrderRejectTransaction do
   @moduledoc """
   A LimitOrderRejectTransaction represents the rejection of the creation of a Limit Order.
+
+  [Oanda Docs](https://developer.oanda.com/rest-live-v20/transaction-df/)
   """
 
   use TypedEctoSchema

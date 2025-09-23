@@ -1,6 +1,8 @@
 defmodule ExOanda.Request.TradeModifyClientExtensions do
   @moduledoc """
   Oanda trade modify client extensions request.
+
+  [Oanda Docs](https://developer.oanda.com/rest-live-v20/trade-ep/)
   """
 
   use TypedEctoSchema

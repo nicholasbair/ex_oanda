@@ -1,6 +1,8 @@
 defmodule ExOanda.Response.PricingHeartbeat do
   @moduledoc """
   Schema for Oanda pricing heartbeat response.
+
+  [Oanda Docs](https://developer.oanda.com/rest-live-v20/pricing-ep/)
   """
 
   use TypedEctoSchema

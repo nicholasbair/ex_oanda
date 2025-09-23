@@ -2,6 +2,8 @@ defmodule ExOanda.MarginCallExtendTransaction do
   @moduledoc """
   A MarginCallExtendTransaction is created when the margin call state for an Account
   has been extended.
+
+  [Oanda Docs](https://developer.oanda.com/rest-live-v20/transaction-df/)
   """
 
   use TypedEctoSchema

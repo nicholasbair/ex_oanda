@@ -1,6 +1,8 @@
 defmodule ExOanda.Response.AccountSummary do
   @moduledoc """
   Schmea for Oanda account summary response.
+
+  [Oanda Docs](https://developer.oanda.com/rest-live-v20/account-ep/)
   """
 
   use TypedEctoSchema
