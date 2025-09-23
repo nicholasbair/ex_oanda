@@ -34,16 +34,6 @@ defmodule ExOanda.TransportErrorTest do
       assert exception.error_type == :timeout
     end
 
-    test "creates exception from Mint.TransportError" do
-      mint_error = %Mint.TransportError{reason: :closed}
-      exception = TransportError.exception(mint_error)
-
-      assert %TransportError{} = exception
-      assert exception.message == "Connection error: closed"
-      assert exception.reason == :closed
-      assert exception.error_type == :connection
-    end
-
     test "creates exception from Req.TooManyRedirectsError" do
       redirect_error = %Req.TooManyRedirectsError{}
       exception = TransportError.exception(redirect_error)

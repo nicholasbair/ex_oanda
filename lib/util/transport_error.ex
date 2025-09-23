@@ -9,7 +9,7 @@ defmodule ExOanda.TransportError do
   @type t :: %__MODULE__{
           message: String.t(),
           reason: atom() | String.t(),
-          error_type: :transport | :http | :timeout | :connection | :other
+          error_type: :transport | :http | :timeout | :other
         }
 
   defexception [:message, :reason, :error_type]
@@ -30,10 +30,6 @@ defmodule ExOanda.TransportError do
     %__MODULE__{message: message, reason: reason, error_type: :http}
   end
 
-  def exception(%Mint.TransportError{reason: reason}) do
-    message = "Connection error: #{format_reason(reason)}"
-    %__MODULE__{message: message, reason: reason, error_type: :connection}
-  end
 
   def exception(%Req.TooManyRedirectsError{}) do
     message = "Too many redirects"

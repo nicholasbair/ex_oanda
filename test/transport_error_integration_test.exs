@@ -34,16 +34,6 @@ defmodule ExOanda.TransportErrorIntegrationTest do
       assert error.error_type == :timeout
     end
 
-    test "handle_response returns TransportError for Mint transport errors" do
-      mint_error = %Mint.TransportError{reason: :closed}
-      result = ExOanda.API.handle_response({:error, mint_error})
-
-      assert {:error, %TransportError{} = error} = result
-      assert error.message == "Connection error: closed"
-      assert error.reason == :closed
-      assert error.error_type == :connection
-    end
-
     test "handle_response returns TransportError for redirect errors" do
       redirect_error = %Req.TooManyRedirectsError{}
       result = ExOanda.API.handle_response({:error, redirect_error})
@@ -81,10 +71,6 @@ defmodule ExOanda.TransportErrorIntegrationTest do
       assert error.error_type == :timeout
     end
 
-    test "connection errors are classified correctly" do
-      error = TransportError.exception(%Mint.TransportError{reason: :closed})
-      assert error.error_type == :connection
-    end
 
     test "other errors are classified correctly" do
       error = TransportError.exception(:unknown_error)
