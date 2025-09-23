@@ -1,6 +1,8 @@
 defmodule ExOanda.CandlestickData do
   @moduledoc """
   Schema for Oanda candlestick data.
+
+  [Oanda Docs](https://developer.oanda.com/rest-live-v20/instrument-df/)
   """
 
   use TypedEctoSchema

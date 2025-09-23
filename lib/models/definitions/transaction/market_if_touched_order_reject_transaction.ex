@@ -2,6 +2,8 @@ defmodule ExOanda.MarketIfTouchedOrderRejectTransaction do
   @moduledoc """
   A MarketIfTouchedOrderRejectTransaction represents the rejection of the creation of a
   MarketIfTouched Order.
+
+  [Oanda Docs](https://developer.oanda.com/rest-live-v20/transaction-df/)
   """
 
   use TypedEctoSchema

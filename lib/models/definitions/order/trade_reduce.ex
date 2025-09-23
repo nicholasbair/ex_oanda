@@ -1,6 +1,8 @@
 defmodule ExOanda.TradeReduce do
   @moduledoc """
   Schema for Oanda trade reduce response.
+
+  [Oanda Docs](https://developer.oanda.com/rest-live-v20/order-df/)
   """
 
   use TypedEctoSchema

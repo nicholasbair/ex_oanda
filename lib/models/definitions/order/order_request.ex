@@ -1,6 +1,8 @@
 defmodule ExOanda.OrderRequest do
   @moduledoc """
   Schema for Oanda order request.
+
+  [Oanda Docs](https://developer.oanda.com/rest-live-v20/order-df/)
   """
 
   use TypedEctoSchema

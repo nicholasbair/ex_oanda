@@ -1,6 +1,8 @@
 defmodule ExOanda.Response.ReplaceOrder do
   @moduledoc """
   Schema for Oanda replace order response.
+
+  [Oanda Docs](https://developer.oanda.com/rest-live-v20/order-ep/)
   """
 
   use TypedEctoSchema

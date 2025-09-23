@@ -1,6 +1,8 @@
 defmodule ExOanda.ClientExtensions do
   @moduledoc """
   Schema for Oanda client extension.
+
+  [Oanda Docs](https://developer.oanda.com/rest-live-v20/transaction-df/)
   """
 
   use TypedEctoSchema

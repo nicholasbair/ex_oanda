@@ -1,6 +1,8 @@
 defmodule ExOanda.Response.AccountChanges do
   @moduledoc """
   Schema for Oanda account changes response.
+
+  [Oanda Docs](https://developer.oanda.com/rest-live-v20/account-ep/)
   """
 
   use TypedEctoSchema

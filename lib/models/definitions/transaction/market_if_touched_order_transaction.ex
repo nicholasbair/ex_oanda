@@ -1,6 +1,8 @@
 defmodule ExOanda.MarketIfTouchedOrderTransaction do
   @moduledoc """
   A MarketIfTouchedOrderTransaction represents the creation of a MarketIfTouched Order in the user's Account.
+
+  [Oanda Docs](https://developer.oanda.com/rest-live-v20/transaction-df/)
   """
 
   use TypedEctoSchema

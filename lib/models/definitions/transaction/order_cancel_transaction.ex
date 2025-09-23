@@ -1,6 +1,8 @@
 defmodule ExOanda.OrderCancelTransaction do
   @moduledoc """
   Schema for Oanda order cancel transaction.
+
+  [Oanda Docs](https://developer.oanda.com/rest-live-v20/transaction-df/)
   """
 
   use TypedEctoSchema

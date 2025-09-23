@@ -1,6 +1,8 @@
 defmodule ExOanda.Response.CreateOrder do
   @moduledoc """
   Schema for Oanda create order response.
+
+  [Oanda Docs](https://developer.oanda.com/rest-live-v20/order-ep/)
   """
 
   use TypedEctoSchema

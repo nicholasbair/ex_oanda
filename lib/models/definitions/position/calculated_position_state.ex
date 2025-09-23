@@ -1,6 +1,8 @@
 defmodule ExOanda.CalculatedPositionState do
   @moduledoc """
   Schema for Oanda calculated position state.
+
+  [Oanda Docs](https://developer.oanda.com/rest-live-v20/position-df/)
   """
 
   use TypedEctoSchema

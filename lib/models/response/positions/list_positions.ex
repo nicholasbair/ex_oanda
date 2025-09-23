@@ -1,6 +1,8 @@
 defmodule ExOanda.Response.ListPositions do
   @moduledoc """
   Schema for Oanda list positions response.
+
+  [Oanda Docs](https://developer.oanda.com/rest-live-v20/position-ep/)
   """
 
   use TypedEctoSchema

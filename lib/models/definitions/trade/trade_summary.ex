@@ -1,6 +1,8 @@
 defmodule ExOanda.TradeSummary do
   @moduledoc """
   Schema and type definitions for trade summary.
+
+  [Oanda Docs](https://developer.oanda.com/rest-live-v20/trade-df/)
   """
 
   use TypedEctoSchema

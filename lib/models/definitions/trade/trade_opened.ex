@@ -1,6 +1,8 @@
 defmodule ExOanda.TradeOpened do
   @moduledoc """
   Schema for Oanda trade opened.
+
+  [Oanda Docs](https://developer.oanda.com/rest-live-v20/trade-df/)
   """
 
   use TypedEctoSchema

@@ -1,6 +1,8 @@
 defmodule ExOanda.GuaranteedStopLossOrderRejectTransaction do
   @moduledoc """
   Schema for Oanda guaranteed stop loss order reject transaction.
+
+  [Oanda Docs](https://developer.oanda.com/rest-live-v20/transaction-df/)
   """
 
   use TypedEctoSchema

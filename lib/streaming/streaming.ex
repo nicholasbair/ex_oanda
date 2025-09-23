@@ -1,6 +1,8 @@
 defmodule ExOanda.Streaming do
   @moduledoc """
   Interface for Oanda streaming endpoints.
+
+  [Oanda Docs](https://developer.oanda.com/rest-live-v20/pricing-ep/)
   """
 
   alias ExOanda.API

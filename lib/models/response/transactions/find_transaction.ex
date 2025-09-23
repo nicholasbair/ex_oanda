@@ -1,6 +1,8 @@
 defmodule ExOanda.Response.FindTransaction do
   @moduledoc """
   Schema for Oanda find transaction response.
+
+  [Oanda Docs](https://developer.oanda.com/rest-live-v20/transaction-ep/)
   """
 
   use TypedEctoSchema

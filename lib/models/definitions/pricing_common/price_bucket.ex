@@ -1,6 +1,8 @@
 defmodule ExOanda.PriceBucket do
   @moduledoc """
   Schema for Oanda price bucket.
+
+  [Oanda Docs](https://developer.oanda.com/rest-live-v20/pricing-common-df/)
   """
 
   use TypedEctoSchema

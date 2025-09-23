@@ -1,6 +1,8 @@
 defmodule ExOanda.TrailingStopLossDetails do
   @moduledoc """
   Schema for Oanda trailing stop loss details.
+
+  [Oanda Docs](https://developer.oanda.com/rest-live-v20/transaction-df/)
   """
 
   use TypedEctoSchema

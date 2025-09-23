@@ -1,6 +1,8 @@
 defmodule ExOanda.HomeConversions do
   @moduledoc """
   Schema for Oanda home conversions.
+
+  [Oanda Docs](https://developer.oanda.com/rest-live-v20/pricing-df/)
   """
 
   use TypedEctoSchema

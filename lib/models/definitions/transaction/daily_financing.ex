@@ -1,6 +1,8 @@
 defmodule ExOanda.DailyFinancingTransaction do
   @moduledoc """
   Schema for Oanda daily financing.
+
+  [Oanda Docs](https://developer.oanda.com/rest-live-v20/transaction-df/)
   """
 
   use TypedEctoSchema

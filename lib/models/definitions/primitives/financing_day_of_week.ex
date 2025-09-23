@@ -1,6 +1,8 @@
 defmodule ExOanda.FinancingDayOfWeek do
   @moduledoc """
   Schema for Oanda financing day of week.
+
+  [Oanda Docs](https://developer.oanda.com/rest-live-v20/primitives-df/)
   """
 
   use TypedEctoSchema

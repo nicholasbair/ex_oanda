@@ -1,6 +1,8 @@
 defmodule ExOanda.OrderClientExtensionsModifyTransaction do
   @moduledoc """
   Schema for Oanda order client extensions modify transaction.
+
+  [Oanda Docs](https://developer.oanda.com/rest-live-v20/transaction-df/)
   """
 
   use TypedEctoSchema

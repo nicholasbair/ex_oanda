@@ -1,6 +1,8 @@
 defmodule ExOanda.TradeClientExtensionsModifyRejectTransaction do
   @moduledoc """
   Schema for Oanda trade client extension modify reject transaction.
+
+  [Oanda Docs](https://developer.oanda.com/rest-live-v20/transaction-df/)
   """
 
   use TypedEctoSchema

@@ -1,6 +1,8 @@
 defmodule ExOanda.Request.CloseTrade do
   @moduledoc """
   Schema for Oanda close trade request.
+
+  [Oanda Docs](https://developer.oanda.com/rest-live-v20/trade-ep/)
   """
 
   use TypedEctoSchema

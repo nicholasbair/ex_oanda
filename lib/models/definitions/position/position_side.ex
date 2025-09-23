@@ -1,6 +1,8 @@
 defmodule ExOanda.PositionSide do
   @moduledoc """
   Schema for Oanda position side.
+
+  [Oanda Docs](https://developer.oanda.com/rest-live-v20/position-df/)
   """
 
   use TypedEctoSchema

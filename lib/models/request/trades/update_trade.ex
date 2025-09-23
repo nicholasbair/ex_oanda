@@ -1,6 +1,8 @@
 defmodule ExOanda.Request.UpdateTrade do
   @moduledoc """
   Schema for Oanda trade update request.
+
+  [Oanda Docs](https://developer.oanda.com/rest-live-v20/trade-ep/)
   """
 
   use TypedEctoSchema

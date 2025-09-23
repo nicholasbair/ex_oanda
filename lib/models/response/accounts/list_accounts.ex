@@ -1,6 +1,8 @@
 defmodule ExOanda.Response.ListAccounts do
   @moduledoc """
   Schema for Oanda list accounts response.
+
+  [Oanda Docs](https://developer.oanda.com/rest-live-v20/account-ep/)
   """
 
   use TypedEctoSchema

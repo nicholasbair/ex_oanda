@@ -19,7 +19,7 @@ This SDK is provided "as-is," without any warranty of any kind, either expressed
 ```elixir
 def deps do
   [
-    {:ex_oanda, git: "https://github.com/nicholasbair/ex_oanda.git", tag: "v0.0.16"}
+    {:ex_oanda, git: "https://github.com/nicholasbair/ex_oanda.git", tag: "v0.0.18"}
   ]
 end
 ```

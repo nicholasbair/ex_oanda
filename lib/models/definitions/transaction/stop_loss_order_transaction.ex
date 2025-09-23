@@ -1,6 +1,8 @@
 defmodule ExOanda.StopLossOrderTransaction do
   @moduledoc """
   Schema for Oanda stop loss order transaction.
+
+  [Oanda Docs](https://developer.oanda.com/rest-live-v20/transaction-df/)
   """
 
   use TypedEctoSchema

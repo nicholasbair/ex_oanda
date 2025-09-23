@@ -1,6 +1,8 @@
 defmodule ExOanda.Response.FindOrder do
   @moduledoc """
   Schema for Oanda find order response.
+
+  [Oanda Docs](https://developer.oanda.com/rest-live-v20/order-ep/)
   """
 
   use TypedEctoSchema

@@ -1,6 +1,8 @@
 defmodule ExOanda.OrderRejectTransaction do
   @moduledoc """
   An OrderRejectTransaction represents the rejection of an Order creation request.
+
+  [Oanda Docs](https://developer.oanda.com/rest-live-v20/transaction-df/)
   """
 
   use TypedEctoSchema

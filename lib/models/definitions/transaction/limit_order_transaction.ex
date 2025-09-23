@@ -1,6 +1,8 @@
 defmodule ExOanda.LimitOrderTransaction do
   @moduledoc """
   A LimitOrderTransaction represents the creation of a Limit Order in the user's Account.
+
+  [Oanda Docs](https://developer.oanda.com/rest-live-v20/transaction-df/)
   """
 
   use TypedEctoSchema

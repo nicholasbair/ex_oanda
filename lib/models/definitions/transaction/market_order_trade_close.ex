@@ -1,6 +1,8 @@
 defmodule ExOanda.MarketOrderTradeClose do
   @moduledoc """
   Schema for Oanda market order trade close.
+
+  [Oanda Docs](https://developer.oanda.com/rest-live-v20/transaction-df/)
   """
 
   use TypedEctoSchema

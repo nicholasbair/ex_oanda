@@ -1,6 +1,8 @@
 defmodule ExOanda.GuaranteedStopLossOrderLevelRestriction do
   @moduledoc """
   Schema for Oanda guaranteed stop loss order level restriction.
+
+  [Oanda Docs](https://developer.oanda.com/rest-live-v20/primitives-df/)
   """
 
   use TypedEctoSchema

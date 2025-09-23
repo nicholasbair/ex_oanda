@@ -2,6 +2,8 @@ defmodule ExOanda.DelayedTradeClosureTransaction do
   @moduledoc """
   A DelayedTradeClosureTransaction represents the immediate closure of a Trade that was
   requested to be delayed.
+
+  [Oanda Docs](https://developer.oanda.com/rest-live-v20/transaction-df/)
   """
 
   use TypedEctoSchema
