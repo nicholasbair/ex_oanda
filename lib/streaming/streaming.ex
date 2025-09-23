@@ -5,8 +5,12 @@ defmodule ExOanda.Streaming do
   [Oanda Docs](https://developer.oanda.com/rest-live-v20/pricing-ep/)
   """
 
-  alias ExOanda.{API, ValidationError, TransportError}
-  alias ExOanda.APIError
+  alias ExOanda.{
+    API,
+    APIError,
+    TransportError,
+    ValidationError
+  }
   alias ExOanda.Connection, as: Conn
   alias ExOanda.Transform, as: TF
 

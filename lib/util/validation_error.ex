@@ -25,8 +25,6 @@ defmodule ExOanda.ValidationError do
   end
 
   defp format_errors(errors) do
-    errors
-    |> Enum.map(fn %{message: message, key: key} -> "#{key}: #{message}" end)
-    |> Enum.join(", ")
+    Enum.map_join(errors, ", ", fn %{message: message, key: key} -> "#{key}: #{message}" end)
   end
 end

@@ -1,9 +1,9 @@
 defmodule ExOanda.API do
   @moduledoc false
 
-  alias ExOanda.{TransportError}
   alias ExOanda.Connection, as: Conn
   alias ExOanda.Transform, as: TF
+  alias ExOanda.TransportError
 
   # Requests ###################################################################
 
