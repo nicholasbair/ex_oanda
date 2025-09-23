@@ -30,7 +30,6 @@ defmodule ExOanda.TransportError do
     %__MODULE__{message: message, reason: reason, error_type: :http}
   end
 
-
   def exception(%Req.TooManyRedirectsError{}) do
     message = "Too many redirects"
     %__MODULE__{message: message, reason: :too_many_redirects, error_type: :http}

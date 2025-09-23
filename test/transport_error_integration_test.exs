@@ -71,7 +71,6 @@ defmodule ExOanda.TransportErrorIntegrationTest do
       assert error.error_type == :timeout
     end
 
-
     test "other errors are classified correctly" do
       error = TransportError.exception(:unknown_error)
       assert error.error_type == :other
