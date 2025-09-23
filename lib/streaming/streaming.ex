@@ -5,7 +5,8 @@ defmodule ExOanda.Streaming do
   [Oanda Docs](https://developer.oanda.com/rest-live-v20/pricing-ep/)
   """
 
-  alias ExOanda.API
+  alias ExOanda.{API, ValidationError}
+  alias ExOandaError
   alias ExOanda.Connection, as: Conn
   alias ExOanda.Transform, as: TF
 
@@ -43,8 +44,27 @@ defmodule ExOanda.Streaming do
     case NimbleOptions.validate(params, @price_stream_params) do
       {:ok, params} ->
         stream(conn, account_id, :pricing, stream_to, format_instruments(params))
-      {:error, errors} ->
-        {:error, errors}
+      {:error, %NimbleOptions.ValidationError{} = validation_error} ->
+        {:error, ValidationError.exception(validation_error)}
+    end
+  end
+
+  @doc """
+  Stream prices for an instrument(s), raising an exception on error.
+
+  ## Examples
+
+      iex> ExOanda.Streaming.price_stream!(conn, "101-004-22222222-001", &IO.inspect/1, instruments: ["EUR_USD"])
+      :ok
+
+  ## Supported parameters
+  #{NimbleOptions.docs(@price_stream_params)}
+  """
+  def price_stream!(%Conn{} = conn, account_id, stream_to, params \\ []) do
+    case price_stream(conn, account_id, stream_to, params) do
+      {:ok, result} -> result
+      {:error, %ValidationError{} = validation_error} -> raise validation_error
+      {:error, reason} -> raise ExOandaError, reason
     end
   end
 
