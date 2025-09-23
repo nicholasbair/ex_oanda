@@ -3,7 +3,8 @@ defmodule ExOanda.CodeGenerator do
 
   alias ExOanda.{
     Config,
-    ValidationError
+    ValidationError,
+    TransportError
   }
 
   defmacro __using__(_opts) do
@@ -58,7 +59,7 @@ defmodule ExOanda.CodeGenerator do
       ## Docs
       - [Oanda Docs](#{unquote(docs_link)})
       """
-      @spec unquote(String.to_atom(name))(Conn.t(), unquote_splicing(arg_types), Keyword.t()) :: {:ok, Res.t(unquote(response_model).t())} | {:error, Res.t() | ValidationError.t()}
+      @spec unquote(String.to_atom(name))(Conn.t(), unquote_splicing(arg_types), Keyword.t()) :: {:ok, Res.t(unquote(response_model).t())} | {:error, Res.t() | ValidationError.t() | TransportError.t()}
       def unquote(String.to_atom(name))(%Conn{} = conn, unquote_splicing(formatted_args), params \\ []) do
         path_params =
           unquote(arg_names)
@@ -100,6 +101,7 @@ defmodule ExOanda.CodeGenerator do
         case unquote(String.to_atom(name))(conn, unquote_splicing(formatted_args), params) do
           {:ok, res} -> res
           {:error, %ValidationError{} = validation_error} -> raise validation_error
+          {:error, %TransportError{} = transport_error} -> raise transport_error
           {:error, reason} -> raise ExOandaError, reason
         end
       end
@@ -127,7 +129,7 @@ defmodule ExOanda.CodeGenerator do
       ## Docs
       - [Oanda Docs](#{unquote(docs_link)})
       """
-      @spec unquote(String.to_atom(name))(Conn.t(), unquote_splicing(arg_types), Keyword.t()) :: {:ok, Res.t(unquote(response_model).t())} | {:error, Res.t() | ValidationError.t()}
+      @spec unquote(String.to_atom(name))(Conn.t(), unquote_splicing(arg_types), Keyword.t()) :: {:ok, Res.t(unquote(response_model).t())} | {:error, Res.t() | ValidationError.t() | TransportError.t()}
       def unquote(String.to_atom(name))(%Conn{} = conn, unquote_splicing(formatted_args), params \\ []) do
         path_params =
           unquote(arg_names)
@@ -182,6 +184,7 @@ defmodule ExOanda.CodeGenerator do
         case unquote(String.to_atom(name))(conn, unquote_splicing(formatted_args), params) do
           {:ok, res} -> res
           {:error, %ValidationError{} = validation_error} -> raise validation_error
+          {:error, %TransportError{} = transport_error} -> raise transport_error
           {:error, reason} -> raise ExOandaError, reason
         end
       end
@@ -208,7 +211,7 @@ defmodule ExOanda.CodeGenerator do
       ## Docs
       - [Oanda Docs](#{unquote(docs_link)})
       """
-      @spec unquote(String.to_atom(name))(Conn.t(), unquote_splicing(arg_types), Keyword.t()) :: {:ok, Res.t(unquote(response_model).t())} | {:error, Res.t() | ValidationError.t()}
+      @spec unquote(String.to_atom(name))(Conn.t(), unquote_splicing(arg_types), Keyword.t()) :: {:ok, Res.t(unquote(response_model).t())} | {:error, Res.t() | ValidationError.t() | TransportError.t()}
       def unquote(String.to_atom(name))(%Conn{} = conn, unquote_splicing(formatted_args), params \\ []) do
         path_params =
           unquote(arg_names)
@@ -249,6 +252,7 @@ defmodule ExOanda.CodeGenerator do
         case unquote(String.to_atom(name))(conn, unquote_splicing(formatted_args), params) do
           {:ok, res} -> res
           {:error, %ValidationError{} = validation_error} -> raise validation_error
+          {:error, %TransportError{} = transport_error} -> raise transport_error
           {:error, reason} -> raise ExOandaError, reason
         end
       end

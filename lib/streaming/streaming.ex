@@ -5,7 +5,7 @@ defmodule ExOanda.Streaming do
   [Oanda Docs](https://developer.oanda.com/rest-live-v20/pricing-ep/)
   """
 
-  alias ExOanda.{API, ValidationError}
+  alias ExOanda.{API, ValidationError, TransportError}
   alias ExOandaError
   alias ExOanda.Connection, as: Conn
   alias ExOanda.Transform, as: TF
@@ -64,6 +64,7 @@ defmodule ExOanda.Streaming do
     case price_stream(conn, account_id, stream_to, params) do
       {:ok, result} -> result
       {:error, %ValidationError{} = validation_error} -> raise validation_error
+      {:error, %TransportError{} = transport_error} -> raise transport_error
       {:error, reason} -> raise ExOandaError, reason
     end
   end
