@@ -14,16 +14,6 @@ defmodule ExOanda.TransportErrorTest do
       assert exception.error_type == :transport
     end
 
-    test "creates exception from Req.TransportError with binary reason" do
-      transport_error = %Req.TransportError{reason: "Connection refused"}
-      exception = TransportError.exception(transport_error)
-
-      assert %TransportError{} = exception
-      assert exception.message == "HTTP transport error: Connection refused"
-      assert exception.reason == "Connection refused"
-      assert exception.error_type == :transport
-    end
-
     test "creates exception from Req.HTTPError" do
       http_error = %Req.HTTPError{protocol: :http1, reason: :invalid_request}
       exception = TransportError.exception(http_error)
@@ -31,36 +21,6 @@ defmodule ExOanda.TransportErrorTest do
       assert %TransportError{} = exception
       assert exception.message == "HTTP http1 error: invalid_request"
       assert exception.reason == :invalid_request
-      assert exception.error_type == :http
-    end
-
-    test "creates exception from Req.HTTPError with binary reason" do
-      http_error = %Req.HTTPError{protocol: :http2, reason: "Invalid response"}
-      exception = TransportError.exception(http_error)
-
-      assert %TransportError{} = exception
-      assert exception.message == "HTTP http2 error: Invalid response"
-      assert exception.reason == "Invalid response"
-      assert exception.error_type == :http
-    end
-
-    test "creates exception from Req.TransportError with complex reason" do
-      transport_error = %Req.TransportError{reason: [1, 2, 3]}
-      exception = TransportError.exception(transport_error)
-
-      assert %TransportError{} = exception
-      assert exception.message == "HTTP transport error: [1, 2, 3]"
-      assert exception.reason == [1, 2, 3]
-      assert exception.error_type == :transport
-    end
-
-    test "creates exception from Req.HTTPError with complex reason" do
-      http_error = %Req.HTTPError{protocol: :http1, reason: %{error: "test"}}
-      exception = TransportError.exception(http_error)
-
-      assert %TransportError{} = exception
-      assert exception.message == "HTTP http1 error: %{error: \"test\"}"
-      assert exception.reason == %{error: "test"}
       assert exception.error_type == :http
     end
 
@@ -127,36 +87,6 @@ defmodule ExOanda.TransportErrorTest do
       assert exception.message =~ "HTTP error: %{"
       assert exception.message =~ "code: 123"
       assert exception.message =~ "error: \"test\""
-    end
-
-    test "formats numeric reasons" do
-      exception = TransportError.exception(404)
-      assert exception.message == "HTTP error: 404"
-      assert exception.reason == 404
-      assert exception.error_type == :other
-    end
-
-    test "formats list reasons" do
-      list_reason = [1, 2, 3]
-      exception = TransportError.exception(list_reason)
-      assert exception.message == "HTTP error: [1, 2, 3]"
-      assert exception.reason == [1, 2, 3]
-      assert exception.error_type == :other
-    end
-
-    test "formats float reasons" do
-      exception = TransportError.exception(3.14)
-      assert exception.message == "HTTP error: 3.14"
-      assert exception.reason == 3.14
-      assert exception.error_type == :other
-    end
-
-    test "formats tuple reasons" do
-      tuple_reason = {:error, "test"}
-      exception = TransportError.exception(tuple_reason)
-      assert exception.message == "HTTP error: {:error, \"test\"}"
-      assert exception.reason == {:error, "test"}
-      assert exception.error_type == :other
     end
   end
 

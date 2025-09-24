@@ -3,6 +3,7 @@ defmodule ExOanda.API do
 
   alias ExOanda.Connection, as: Conn
   alias ExOanda.Transform, as: TF
+  alias ExOanda.TransportError
 
   # Requests ###################################################################
 
@@ -29,10 +30,20 @@ defmodule ExOanda.API do
       # 2xx status codes
       {:ok, fr} -> {:ok, TF.transform(fr, transform_to)}
 
-      # HTTP error, e.g. transport error
-      {:error, %{reason: reason}} -> {:error, reason}
+      # Req transport errors
+      {:error, %Req.TransportError{} = error} -> {:error, TransportError.exception(error)}
 
-      # Non-2xx status codes
+      # Req HTTP errors
+      {:error, %Req.HTTPError{} = error} -> {:error, TransportError.exception(error)}
+
+
+      # Req redirect errors
+      {:error, %Req.TooManyRedirectsError{} = error} -> {:error, TransportError.exception(error)}
+
+      # Legacy transport error format (for backward compatibility)
+      {:error, %{reason: reason}} -> {:error, TransportError.exception(reason)}
+
+      # Non-2xx status codes (Oanda API errors)
       {:error, fr} -> {:error, TF.transform(fr, transform_to)}
 
       _ -> res
