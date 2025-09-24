@@ -43,6 +43,6 @@ defmodule ExOanda.Response do
   def changeset(struct, params) do
     struct
     |> cast(params, [:data, :request_id, :status, :error_code, :error_message])
-    |> validate_required([:data, :request_id, :status])
+    |> validate_required([:request_id, :status])
   end
 end

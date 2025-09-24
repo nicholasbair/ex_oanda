@@ -1,5 +1,6 @@
 defmodule ExOandaTest.GeneratedFunctions do
   use ExUnit.Case, async: true
 
-  ExOanda.TestGenerator.generate_tests(ExOanda.Config.load_config())
+  # Test modules are now generated automatically by the code generator
+  # when Mix.env() is :test
 end
