@@ -90,7 +90,7 @@ defmodule ExOanda.TransformTest do
   describe "transform_stream/2" do
     test "transforms transaction stream data" do
       json_data = %{
-        "type" => "ORDERFILL",
+        "type" => "ORDER_FILL",
         "id" => "123",
         "time" => "2023-01-01T00:00:00.000000000Z",
         "user_id" => 1,
