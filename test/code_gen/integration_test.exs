@@ -162,13 +162,10 @@ defmodule ExOanda.CodeGenIntegrationTest do
 
       result = CodeGenerator.to_camel(params)
 
-      expected = [
-        {"accountID", "123"},
-        {"instrumentName", "EUR_USD"},
-        {"includeWeekly", true}
-      ]
+      result_map = Enum.into(result, %{})
+      expected_map = %{"accountID" => "123", "instrumentName" => "EUR_USD", "includeWeekly" => true}
 
-      assert result == expected
+      assert result_map == expected_map
     end
 
     test "transform_request_body is available" do

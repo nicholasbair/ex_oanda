@@ -1,13 +1,15 @@
 defmodule ExOanda.CodeGeneratorMacroTest do
   use ExUnit.Case, async: true
 
+  require ExOanda.CodeGenerator
+
   describe "macro functionality" do
     test "__using__ macro sets up before_compile" do
-      assert is_function(&ExOanda.CodeGenerator.__using__/1)
+      assert ExOanda.CodeGenerator.__info__(:macros) |> Keyword.has_key?(:__using__)
     end
 
     test "__before_compile__ macro is callable" do
-      assert is_function(&ExOanda.CodeGenerator.__before_compile__/1)
+      assert ExOanda.CodeGenerator.__info__(:macros) |> Keyword.has_key?(:__before_compile__)
     end
 
     test "CodeGenerator module can be loaded" do
@@ -77,31 +79,31 @@ defmodule ExOanda.CodeGeneratorMacroTest do
 
   describe "macro behavior" do
     test "macro is properly defined" do
-      assert is_function(&ExOanda.CodeGenerator.__using__/1)
+      assert ExOanda.CodeGenerator.__info__(:macros) |> Keyword.has_key?(:__using__)
     end
 
     test "before_compile macro is properly defined" do
-      assert is_function(&ExOanda.CodeGenerator.__before_compile__/1)
+      assert ExOanda.CodeGenerator.__info__(:macros) |> Keyword.has_key?(:__before_compile__)
     end
   end
 
   describe "code generation integration" do
     test "generate_code function exists and is callable" do
-      assert is_function(&ExOanda.CodeGenerator.__before_compile__/1)
+      assert ExOanda.CodeGenerator.__info__(:macros) |> Keyword.has_key?(:__before_compile__)
     end
 
     test "generate_functions function exists and is callable" do
-      assert is_function(&ExOanda.CodeGenerator.__before_compile__/1)
+      assert ExOanda.CodeGenerator.__info__(:macros) |> Keyword.has_key?(:__before_compile__)
     end
 
     test "generate_function function exists and is callable" do
-      assert is_function(&ExOanda.CodeGenerator.__before_compile__/1)
+      assert ExOanda.CodeGenerator.__info__(:macros) |> Keyword.has_key?(:__before_compile__)
     end
   end
 
   describe "macro edge cases" do
     test "macro handles different option types" do
-      assert is_function(&ExOanda.CodeGenerator.__using__/1)
+      assert ExOanda.CodeGenerator.__info__(:macros) |> Keyword.has_key?(:__using__)
 
       options = [
         [],
@@ -111,14 +113,14 @@ defmodule ExOanda.CodeGeneratorMacroTest do
       ]
 
       for _opts <- options do
-        assert is_function(&ExOanda.CodeGenerator.__using__/1)
+        assert ExOanda.CodeGenerator.__info__(:macros) |> Keyword.has_key?(:__using__)
       end
     end
   end
 
   describe "macro environment handling" do
     test "handles different environment structures" do
-      assert is_function(&ExOanda.CodeGenerator.__before_compile__/1)
+      assert ExOanda.CodeGenerator.__info__(:macros) |> Keyword.has_key?(:__before_compile__)
 
       envs = [
         %Macro.Env{},
@@ -127,7 +129,7 @@ defmodule ExOanda.CodeGeneratorMacroTest do
       ]
 
       for _env <- envs do
-        assert is_function(&ExOanda.CodeGenerator.__before_compile__/1)
+        assert ExOanda.CodeGenerator.__info__(:macros) |> Keyword.has_key?(:__before_compile__)
       end
     end
   end

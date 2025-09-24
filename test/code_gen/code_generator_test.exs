@@ -2,6 +2,7 @@ defmodule ExOanda.CodeGeneratorTest do
   use ExUnit.Case, async: true
 
   alias ExOanda.CodeGenerator
+  require ExOanda.CodeGenerator
 
   describe "format_module_name/1" do
     test "formats module name correctly" do
@@ -145,11 +146,11 @@ defmodule ExOanda.CodeGeneratorTest do
 
   describe "macros" do
     test "__using__ macro is defined" do
-      assert is_function(&CodeGenerator.__using__/1)
+      assert CodeGenerator.__info__(:macros) |> Keyword.has_key?(:__using__)
     end
 
     test "__before_compile__ macro is defined" do
-      assert is_function(&CodeGenerator.__before_compile__/1)
+      assert CodeGenerator.__info__(:macros) |> Keyword.has_key?(:__before_compile__)
     end
   end
 
