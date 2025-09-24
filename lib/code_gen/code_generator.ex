@@ -10,26 +10,82 @@ defmodule ExOanda.CodeGenerator do
   end
 
   defmacro __before_compile__(_env) do
-    Config.load_config()
+    config =
+      case Mix.env() do
+        :test -> load_test_config()
+        _ -> Config.load_config()
+      end
+
+    config
     |> generate_code()
   end
 
   defp generate_code(config) do
-    Enum.map(config, fn %{module_name: name, description: desc, docs_link: docs_link, functions: funcs} ->
-      quote do
-        defmodule unquote(generate_module_name(name)) do
-          @moduledoc """
-          #{unquote(desc)}
+    interface_modules = Enum.map(config, fn %{module_name: name, description: desc, docs_link: docs_link, functions: funcs} ->
+      module_name = generate_module_name(name)
 
-          ## Docs
-          - [Oanda Docs](#{unquote(docs_link)})
-          """
-          alias ExOanda.API
-          alias ExOanda.Connection, as: Conn
-          alias ExOanda.Response, as: Res
-          unquote_splicing(generate_functions(funcs, docs_link))
+      quote do
+        unless Code.ensure_loaded?(unquote(module_name)) do
+          defmodule unquote(module_name) do
+            @moduledoc """
+            #{unquote(desc)}
+
+            ## Docs
+            - [Oanda Docs](#{unquote(docs_link)})
+            """
+            alias ExOanda.API
+            alias ExOanda.Connection, as: Conn
+            alias ExOanda.Response, as: Res
+            unquote_splicing(generate_functions(funcs, docs_link))
+          end
         end
       end
+    end)
+
+    test_modules =
+      case Mix.env() do
+        :test -> generate_test_modules(config)
+        _ -> []
+      end
+
+    interface_modules ++ test_modules
+  end
+
+  defp generate_test_modules(config) do
+    Enum.map(config, fn %{module_name: name, functions: funcs} ->
+      test_module_name = Module.concat([ExOandaTest, name, "Generated"])
+      interface_module_name = generate_module_name(name)
+
+      quote do
+        unless Code.ensure_loaded?(unquote(test_module_name)) do
+          defmodule unquote(test_module_name) do
+            use ExUnit.Case, async: true
+            unquote_splicing(generate_test_functions(funcs, interface_module_name))
+          end
+        end
+      end
+    end)
+  end
+
+  defp generate_test_functions(functions, interface_module_name) do
+    Enum.flat_map(functions, fn function ->
+      function_name = function.function_name
+      arity = length(function.arguments) + 1
+
+      [
+        quote do
+          test "#{unquote(interface_module_name)}.#{unquote(function_name)} is generated." do
+            Code.ensure_loaded(unquote(interface_module_name))
+            assert function_exported?(unquote(interface_module_name), unquote(String.to_atom(function_name)), unquote(arity))
+          end
+        end,
+        quote do
+          test "#{unquote(interface_module_name)}.#{unquote(function_name)}! is generated." do
+            Code.ensure_loaded(unquote(interface_module_name))
+            assert function_exported?(unquote(interface_module_name), unquote(String.to_atom("#{function_name}!")), unquote(arity))
+          end
+        end
+      ]
     end)
   end
 
@@ -285,14 +341,17 @@ defmodule ExOanda.CodeGenerator do
   def maybe_convert_to_string(val) when is_atom(val), do: Atom.to_string(val)
   def maybe_convert_to_string(val), do: val
 
-  defp generate_module_name(input) when is_list(input), do: Module.concat([ExOanda] ++ input)
-  defp generate_module_name(input), do: Module.concat([ExOanda, input])
+  @doc false
+  def generate_module_name(input) when is_list(input), do: Module.concat([ExOanda] ++ input)
+  def generate_module_name(input), do: Module.concat([ExOanda, input])
 
-  defp format_args(args) do
+  @doc false
+  def format_args(args) do
     for %{name: name} <- args, do: {String.to_atom(name), [], nil}
   end
 
-  defp format_params(params) do
+  @doc false
+  def format_params(params) do
     Enum.reduce(params, [], fn %{name: name, type: type, required: required, default: default, doc: doc}, acc ->
       params_list = [
         type: String.to_atom(type),
@@ -306,8 +365,9 @@ defmodule ExOanda.CodeGenerator do
     end)
   end
 
-  defp generate_supported_params([]), do: ""
-  defp generate_supported_params(formatted_params) do
+  @doc false
+  def generate_supported_params([]), do: ""
+  def generate_supported_params(formatted_params) do
     """
 
     ## Supported parameters
@@ -316,7 +376,8 @@ defmodule ExOanda.CodeGenerator do
     """
   end
 
-  defp generate_arg_types(args) do
+  @doc false
+  def generate_arg_types(args) do
     Enum.map(args, fn %{type: type} ->
       case type do
         "string" -> quote do: String.t()
@@ -324,5 +385,52 @@ defmodule ExOanda.CodeGenerator do
         _ -> quote do: any()
       end
     end)
+  end
+
+  @doc false
+  def load_test_config do
+    [
+      %{
+        module_name: "TestAccounts",
+        description: "Test accounts interface for testing",
+        docs_link: "https://example.com/test-docs",
+        functions: [
+          %{
+            function_name: "list",
+            description: "List test accounts",
+            http_method: "GET",
+            path: "/test-accounts",
+            response_schema: "ListAccounts",
+            arguments: [],
+            parameters: []
+          },
+          %{
+            function_name: "find",
+            description: "Find test account",
+            http_method: "GET",
+            path: "/test-accounts/:id",
+            response_schema: "FindAccount",
+            arguments: [%{name: "id", type: "string"}],
+            parameters: []
+          }
+        ]
+      },
+      %{
+        module_name: "TestOrders",
+        description: "Test orders interface for testing",
+        docs_link: "https://example.com/test-docs",
+        functions: [
+          %{
+            function_name: "list",
+            description: "List test orders",
+            http_method: "GET",
+            path: "/test-orders",
+            response_schema: "ListOrders",
+            arguments: [%{name: "account_id", type: "string"}],
+            parameters: []
+          }
+        ]
+      }
+    ]
   end
 end
