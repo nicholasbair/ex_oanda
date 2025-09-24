@@ -48,8 +48,11 @@ defmodule ExOandaTest.API do
       assert match?({:error, _}, res)
     end
 
-    test "returns {:error, reason} for HTTP issues, e.g. timeout" do
-      assert API.handle_response({:error, %Req.TransportError{reason: :nxdomain}}) == {:error, :nxdomain}
+    test "returns {:error, TransportError} for HTTP issues, e.g. timeout" do
+      result = API.handle_response({:error, %Req.TransportError{reason: :nxdomain}})
+      assert {:error, %ExOanda.TransportError{}} = result
+      assert elem(result, 1).reason == :nxdomain
+      assert elem(result, 1).error_type == :transport
     end
 
     test "returns the response unchanged for unexpected format" do
@@ -76,10 +79,12 @@ defmodule ExOandaTest.API do
       assert match?({:error, _}, res)
     end
 
-    test "returns {:error, reason} for HTTP issues with transform" do
+    test "returns {:error, TransportError} for HTTP issues with transform" do
       response = {:error, %Req.TransportError{reason: :timeout}}
       res = API.handle_response(response, nil)
-      assert res == {:error, :timeout}
+      assert {:error, %ExOanda.TransportError{}} = res
+      assert elem(res, 1).reason == :timeout
+      assert elem(res, 1).error_type == :timeout
     end
 
     test "returns the response unchanged for unexpected format with transform" do
