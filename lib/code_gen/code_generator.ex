@@ -144,7 +144,7 @@ defmodule ExOanda.CodeGenerator do
       end
 
       @doc"""
-      #{unquote(desc)}
+      #{unquote(ExOanda.CodeGenerator.format_bang_description(desc))}
 
       ## Examples
 
@@ -227,7 +227,7 @@ defmodule ExOanda.CodeGenerator do
       end
 
       @doc"""
-      #{unquote(desc)}
+      #{unquote(ExOanda.CodeGenerator.format_bang_description(desc))}
 
       ## Examples
 
@@ -295,7 +295,7 @@ defmodule ExOanda.CodeGenerator do
       end
 
       @doc"""
-      #{unquote(desc)}
+      #{unquote(ExOanda.CodeGenerator.format_bang_description(desc))}
 
       ## Examples
 
@@ -355,6 +355,15 @@ defmodule ExOanda.CodeGenerator do
   @doc false
   def generate_module_name(input) when is_list(input), do: Module.concat([ExOanda] ++ input)
   def generate_module_name(input), do: Module.concat([ExOanda, input])
+
+  @doc false
+  def format_bang_description(desc) when is_binary(desc) do
+    desc
+    |> String.trim_trailing(".")
+    |> Kernel.<>(", raising an exception on error.")
+  end
+
+  def format_bang_description(nil), do: ""
 
   @doc false
   def format_args(args) do

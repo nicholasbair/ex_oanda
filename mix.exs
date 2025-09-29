@@ -16,7 +16,42 @@ defmodule ExOanda.MixProject do
       dialyzer: [plt_add_apps: [:mix]],
       docs: [
         main: "ExOanda",
-        extras: ["README.md", "LICENSE"]
+        extras: ["README.md", "LICENSE"],
+        groups_for_modules: [
+          "API Interfaces": [
+            ExOanda.Accounts,
+            ExOanda.Orders,
+            ExOanda.Trades,
+            ExOanda.Positions,
+            ExOanda.Pricing,
+            ExOanda.Instruments,
+            ExOanda.Transactions
+          ],
+          "Requests": ~r/^ExOanda\.(Request|CloseOutUnits)/,
+          "Responses": ~r/^ExOanda\.(Response|Atom)/,
+          "Data Models": ~r/^ExOanda\.(Account|Order|Trade|Position|Transaction|Instrument|Pricing|Candlestick|ClientPrice|HomeConversions|PriceBucket|Financing|GuaranteedStopLoss|Instrument|Tag|Calculated|Dynamic|Trade|StopLoss|TakeProfit|TrailingStopLoss|Transfer|Daily|Dividend|Delayed|Fixed|Limit|Market|Margin|Order|Reopen|Reset|ClientConfigure|Close|Create|GuaranteedStopLossOrder|OrderFill|OrderReject|OrderCancel|OrderClientExtensions|TradeClientExtensions|TransferFunds|ClientExtensions)/,
+          "Core": [
+            ExOanda.Connection
+          ],
+          "Streaming": [
+            ExOanda.Streaming
+          ],
+          "Errors": ~r/^ExOanda\.(APIError|ValidationError|TransportError|HTTPStatus)/,
+          "Utilities": ~r/^ExOanda\.(API|Transform|Type)/
+        ],
+        groups_for_docs: [
+          "API Calls": &(&1[:group] == :api),
+          "Data Access": &(&1[:group] == :data)
+        ],
+        nest_modules_by_prefix: [
+          ExOanda.Accounts,
+          ExOanda.Orders,
+          ExOanda.Trades,
+          ExOanda.Positions,
+          ExOanda.Pricing,
+          ExOanda.Instruments,
+          ExOanda.Transactions
+        ]
       ],
       test_coverage: [tool: ExCoveralls]
     ]

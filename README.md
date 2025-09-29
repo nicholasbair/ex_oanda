@@ -1,4 +1,3 @@
-# ExOanda
 Unofficial Elixir SDK for the Oanda API.
 
 Note - this is highly experimental and in active development.
@@ -19,7 +18,7 @@ This SDK is provided "as-is," without any warranty of any kind, either expressed
 ```elixir
 def deps do
   [
-    {:ex_oanda, git: "https://github.com/nicholasbair/ex_oanda.git", tag: "v0.0.18"}
+    {:ex_oanda, git: "https://github.com/nicholasbair/ex_oanda.git", tag: "v0.0.19"}
   ]
 end
 ```

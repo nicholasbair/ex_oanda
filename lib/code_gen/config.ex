@@ -14,6 +14,7 @@ defmodule ExOanda.Config do
     field(:docs_link, :string)
 
     embeds_many :functions, Functions, primary_key: false do
+      @moduledoc false
       field(:function_name, :string)
       field(:description, :string)
       field(:http_method, :string)
@@ -22,11 +23,13 @@ defmodule ExOanda.Config do
       field(:request_schema, :string)
 
       embeds_many :arguments, Arguments, primary_key: false do
+        @moduledoc false
         field(:name, :string)
         field(:type, :string)
       end
 
       embeds_many :parameters, Parameters, primary_key: false do
+        @moduledoc false
         field(:name, :string)
         field(:type, :string)
         field(:required, :boolean, default: false)

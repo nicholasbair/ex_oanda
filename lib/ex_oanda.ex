@@ -1,7 +1,6 @@
 defmodule ExOanda do
-  @moduledoc """
-  Unofficial OANDA API client for Elixir.
-  """
+  @external_resource "README.md"
+  @moduledoc File.read!("README.md")
 
   use ExOanda.CodeGenerator
 end
