@@ -2,7 +2,9 @@ defmodule ExOanda.Streaming do
   @moduledoc """
   Interface for Oanda streaming endpoints.
 
-  [Oanda Docs](https://developer.oanda.com/rest-live-v20/pricing-ep/)
+  ## Oanda Docs
+  - [Price Streaming](https://developer.oanda.com/rest-live-v20/pricing-ep/)
+  - [Transaction Streaming](https://developer.oanda.com/rest-live-v20/transaction-ep/)
   """
 
   alias ExOanda.{
@@ -31,6 +33,22 @@ defmodule ExOanda.Streaming do
   """
   def transaction_stream(%Conn{} = conn, account_id, stream_to, params \\ []) do
     stream(conn, account_id, :transactions, stream_to, params)
+  end
+
+  @doc """
+  Stream transactions for an account, raising an exception on error.
+
+  ## Examples
+
+      iex> ExOanda.Streaming.transaction_stream!(conn, "101-004-22222222-001", &IO.inspect/1)
+      :ok
+  """
+  def transaction_stream!(%Conn{} = conn, account_id, stream_to, params \\ []) do
+    case transaction_stream(conn, account_id, stream_to, params) do
+      {:ok, result} -> result
+      {:error, %TransportError{} = transport_error} -> raise transport_error
+      {:error, reason} -> raise APIError, reason
+    end
   end
 
   @doc """
