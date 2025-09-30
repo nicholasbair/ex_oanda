@@ -8,8 +8,8 @@ defmodule ExOanda.Response.OrderModifyClientExtensions do
   use TypedEctoSchema
   import Ecto.Changeset
   alias ExOanda.{
-    OrderClientExtensionsModifyTransaction,
-    OrderClientExtensionsModifyRejectTransaction
+    OrderClientExtensionsModifyRejectTransaction,
+    OrderClientExtensionsModifyTransaction
   }
 
   @primary_key false

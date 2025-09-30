@@ -1,12 +1,12 @@
 defmodule ExOanda.TransformTest do
   use ExUnit.Case, async: true
   import ExUnit.CaptureLog
-  alias ExOanda.Transform
-  alias ExOanda.Response
   alias ExOanda.ClientPrice
-  alias ExOanda.Response.TransactionEvent
+  alias ExOanda.Response
   alias ExOanda.Response.PricingHeartbeat
+  alias ExOanda.Response.TransactionEvent
   alias ExOanda.Test.Support.MockModel
+  alias ExOanda.Transform
 
   describe "transform/2" do
     test "transforms response with valid data" do
@@ -275,7 +275,6 @@ defmodule ExOanda.TransformTest do
     end
   end
 
-
   describe "edge cases and error handling" do
     test "handles empty response body" do
       response = %{
@@ -291,7 +290,6 @@ defmodule ExOanda.TransformTest do
       assert result.error_code == nil
       assert result.error_message == nil
     end
-
 
     test "handles empty list data" do
       data = []

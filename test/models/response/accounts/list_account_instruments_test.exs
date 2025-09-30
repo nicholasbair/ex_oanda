@@ -1,11 +1,13 @@
 defmodule ExOanda.Response.AccountInstrumentsTest do
   use ExUnit.Case, async: true
 
+  alias ExOanda.Response.AccountInstruments
+
   describe "changeset/2" do
     test "changeset with empty params" do
       params = %{}
 
-      changeset = ExOanda.Response.AccountInstruments.changeset(%ExOanda.Response.AccountInstruments{}, params)
+      changeset = AccountInstruments.changeset(%AccountInstruments{}, params)
 
       assert is_map(changeset)
     end
@@ -91,7 +93,7 @@ defmodule ExOanda.Response.AccountInstrumentsTest do
         last_margin_call_extension_time: ~U[2023-01-01 00:00:00.000000Z]
       }
 
-      changeset = ExOanda.Response.AccountInstruments.changeset(%ExOanda.Response.AccountInstruments{}, params)
+      changeset = AccountInstruments.changeset(%AccountInstruments{}, params)
 
       assert is_map(changeset)
     end

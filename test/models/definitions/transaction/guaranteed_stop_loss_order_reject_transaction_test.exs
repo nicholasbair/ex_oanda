@@ -1,11 +1,16 @@
 defmodule ExOanda.GuaranteedStopLossOrderRejectTransactionTest do
   use ExUnit.Case, async: true
+  alias ExOanda.GuaranteedStopLossOrderRejectTransaction
 
   describe "changeset/2" do
     test "changeset with empty params" do
       params = %{}
 
-      changeset = ExOanda.GuaranteedStopLossOrderRejectTransaction.changeset(%ExOanda.GuaranteedStopLossOrderRejectTransaction{}, params)
+      changeset =
+        GuaranteedStopLossOrderRejectTransaction.changeset(
+          %GuaranteedStopLossOrderRejectTransaction{},
+          params
+        )
 
       assert is_map(changeset)
     end
@@ -91,7 +96,11 @@ defmodule ExOanda.GuaranteedStopLossOrderRejectTransactionTest do
         last_margin_call_extension_time: ~U[2023-01-01 00:00:00.000000Z]
       }
 
-      changeset = ExOanda.GuaranteedStopLossOrderRejectTransaction.changeset(%ExOanda.GuaranteedStopLossOrderRejectTransaction{}, params)
+      changeset =
+        GuaranteedStopLossOrderRejectTransaction.changeset(
+          %GuaranteedStopLossOrderRejectTransaction{},
+          params
+        )
 
       assert is_map(changeset)
     end

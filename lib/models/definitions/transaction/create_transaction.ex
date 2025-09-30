@@ -29,6 +29,19 @@ defmodule ExOanda.CreateTransaction do
   @doc false
   def changeset(struct, params) do
     struct
-    |> cast(params, [:id, :time, :user_id, :account_id, :batch_id, :request_id, :type, :division_id, :site_id, :account_user_id, :account_number, :home_currency])
+    |> cast(params, [
+      :id,
+      :time,
+      :user_id,
+      :account_id,
+      :batch_id,
+      :request_id,
+      :type,
+      :division_id,
+      :site_id,
+      :account_user_id,
+      :account_number,
+      :home_currency
+    ])
   end
 end

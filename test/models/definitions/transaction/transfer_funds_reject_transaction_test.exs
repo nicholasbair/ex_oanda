@@ -1,11 +1,12 @@
 defmodule ExOanda.TransferFundsRejectTransactionTest do
   use ExUnit.Case, async: true
+  alias ExOanda.TransferFundsRejectTransaction
 
   describe "changeset/2" do
     test "changeset with empty params" do
       params = %{}
 
-      changeset = ExOanda.TransferFundsRejectTransaction.changeset(%ExOanda.TransferFundsRejectTransaction{}, params)
+      changeset = TransferFundsRejectTransaction.changeset(%TransferFundsRejectTransaction{}, params)
 
       assert is_map(changeset)
     end
@@ -91,7 +92,7 @@ defmodule ExOanda.TransferFundsRejectTransactionTest do
         last_margin_call_extension_time: ~U[2023-01-01 00:00:00.000000Z]
       }
 
-      changeset = ExOanda.TransferFundsRejectTransaction.changeset(%ExOanda.TransferFundsRejectTransaction{}, params)
+      changeset = TransferFundsRejectTransaction.changeset(%TransferFundsRejectTransaction{}, params)
 
       assert is_map(changeset)
     end

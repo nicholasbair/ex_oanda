@@ -1,11 +1,13 @@
 defmodule ExOanda.Response.CreateOrderTest do
   use ExUnit.Case, async: true
 
+  alias ExOanda.Response.CreateOrder
+
   describe "changeset/2" do
     test "valid changeset with minimal data" do
       params = get_valid_params()
 
-      changeset = ExOanda.Response.CreateOrder.changeset(%ExOanda.Response.CreateOrder{}, params)
+      changeset = CreateOrder.changeset(%CreateOrder{}, params)
 
       assert changeset.valid?
       assert changeset.errors == []
@@ -14,7 +16,7 @@ defmodule ExOanda.Response.CreateOrderTest do
     test "changeset with empty params" do
       params = %{}
 
-      changeset = ExOanda.Response.CreateOrder.changeset(%ExOanda.Response.CreateOrder{}, params)
+      changeset = CreateOrder.changeset(%CreateOrder{}, params)
 
       # Some models have no required fields, so empty params may be valid
       assert is_map(changeset)
@@ -24,7 +26,7 @@ defmodule ExOanda.Response.CreateOrderTest do
       params = get_valid_params()
       |> put_invalid_enum_values()
 
-      changeset = ExOanda.Response.CreateOrder.changeset(%ExOanda.Response.CreateOrder{}, params)
+      changeset = CreateOrder.changeset(%CreateOrder{}, params)
 
       # Some models may not have enum fields, so this test may pass
       # This test just ensures the changeset function handles invalid data gracefully
@@ -34,7 +36,7 @@ defmodule ExOanda.Response.CreateOrderTest do
     test "changeset with valid enum values" do
       params = get_valid_params()
 
-      changeset = ExOanda.Response.CreateOrder.changeset(%ExOanda.Response.CreateOrder{}, params)
+      changeset = CreateOrder.changeset(%CreateOrder{}, params)
 
       assert changeset.valid?
     end

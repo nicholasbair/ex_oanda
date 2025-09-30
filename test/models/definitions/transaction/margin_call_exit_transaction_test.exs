@@ -1,11 +1,12 @@
 defmodule ExOanda.MarginCallExitTransactionTest do
   use ExUnit.Case, async: true
+  alias ExOanda.MarginCallExitTransaction
 
   describe "changeset/2" do
     test "changeset with empty params" do
       params = %{}
 
-      changeset = ExOanda.MarginCallExitTransaction.changeset(%ExOanda.MarginCallExitTransaction{}, params)
+      changeset = MarginCallExitTransaction.changeset(%MarginCallExitTransaction{}, params)
 
       assert is_map(changeset)
     end
@@ -91,7 +92,7 @@ defmodule ExOanda.MarginCallExitTransactionTest do
         last_margin_call_extension_time: ~U[2023-01-01 00:00:00.000000Z]
       }
 
-      changeset = ExOanda.MarginCallExitTransaction.changeset(%ExOanda.MarginCallExitTransaction{}, params)
+      changeset = MarginCallExitTransaction.changeset(%MarginCallExitTransaction{}, params)
 
       assert is_map(changeset)
     end

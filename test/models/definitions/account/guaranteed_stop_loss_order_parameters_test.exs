@@ -5,7 +5,11 @@ defmodule ExOanda.GuaranteedStopLossOrderParametersTest do
     test "changeset with empty params" do
       params = %{}
 
-      changeset = ExOanda.GuaranteedStopLossOrderParameters.changeset(%ExOanda.GuaranteedStopLossOrderParameters{}, params)
+      changeset =
+        ExOanda.GuaranteedStopLossOrderParameters.changeset(
+          %ExOanda.GuaranteedStopLossOrderParameters{},
+          params
+        )
 
       assert is_map(changeset)
     end
@@ -91,7 +95,11 @@ defmodule ExOanda.GuaranteedStopLossOrderParametersTest do
         last_margin_call_extension_time: ~U[2023-01-01 00:00:00.000000Z]
       }
 
-      changeset = ExOanda.GuaranteedStopLossOrderParameters.changeset(%ExOanda.GuaranteedStopLossOrderParameters{}, params)
+      changeset =
+        ExOanda.GuaranteedStopLossOrderParameters.changeset(
+          %ExOanda.GuaranteedStopLossOrderParameters{},
+          params
+        )
 
       assert is_map(changeset)
     end

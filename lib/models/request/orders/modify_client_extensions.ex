@@ -8,9 +8,7 @@ defmodule ExOanda.Request.OrderModifyClientExtensions do
   use TypedEctoSchema
   import Ecto.Changeset
 
-  alias ExOanda.{
-    ClientExtensions,
-  }
+  alias ExOanda.ClientExtensions
 
   @primary_key false
 

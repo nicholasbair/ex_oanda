@@ -9,14 +9,14 @@ defmodule ExOanda.MarketOrderTransaction do
   import Ecto.Changeset
   alias ExOanda.{
     ClientExtensions,
-    MarketOrderPositionCloseout,
-    MarketOrderMarginCloseout,
-    MarketOrderTradeClose,
-    MarketOrderDelayedTradeCloseout,
-    TakeProfitDetails,
-    StopLossDetails,
-    TrailingStopLossDetails,
     GuaranteedStopLossDetails,
+    MarketOrderDelayedTradeCloseout,
+    MarketOrderMarginCloseout,
+    MarketOrderPositionCloseout,
+    MarketOrderTradeClose,
+    StopLossDetails,
+    TakeProfitDetails,
+    TrailingStopLossDetails,
     Type.Atom
   }
 

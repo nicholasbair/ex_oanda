@@ -7,9 +7,7 @@ defmodule ExOanda.Response.FindAccount do
 
   use TypedEctoSchema
   import Ecto.Changeset
-  alias ExOanda.{
-    Account
-  }
+  alias ExOanda.Account
 
   @primary_key false
 

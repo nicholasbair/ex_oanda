@@ -1,11 +1,13 @@
 defmodule ExOanda.Response.CloseTradeTest do
   use ExUnit.Case, async: true
 
+  alias ExOanda.Response.CloseTrade
+
   describe "changeset/2" do
     test "changeset with empty params" do
       params = %{}
 
-      changeset = ExOanda.Response.CloseTrade.changeset(%ExOanda.Response.CloseTrade{}, params)
+      changeset = CloseTrade.changeset(%CloseTrade{}, params)
 
       assert is_map(changeset)
     end
@@ -91,7 +93,7 @@ defmodule ExOanda.Response.CloseTradeTest do
         last_margin_call_extension_time: ~U[2023-01-01 00:00:00.000000Z]
       }
 
-      changeset = ExOanda.Response.CloseTrade.changeset(%ExOanda.Response.CloseTrade{}, params)
+      changeset = CloseTrade.changeset(%CloseTrade{}, params)
 
       assert is_map(changeset)
     end

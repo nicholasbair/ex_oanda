@@ -8,8 +8,8 @@ defmodule ExOanda.Response.UpdateAccount do
   use TypedEctoSchema
   import Ecto.Changeset
   alias ExOanda.{
-    ClientConfigureTransaction,
-    ClientConfigureRejectTransaction
+    ClientConfigureRejectTransaction,
+    ClientConfigureTransaction
   }
 
   @primary_key false

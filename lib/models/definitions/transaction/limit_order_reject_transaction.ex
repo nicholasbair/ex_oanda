@@ -11,10 +11,10 @@ defmodule ExOanda.LimitOrderRejectTransaction do
 
   alias ExOanda.{
     ClientExtensions,
-    TakeProfitDetails,
+    GuaranteedStopLossDetails,
     StopLossDetails,
-    TrailingStopLossDetails,
-    GuaranteedStopLossDetails
+    TakeProfitDetails,
+    TrailingStopLossDetails
   }
 
   @primary_key false

@@ -1,11 +1,12 @@
 defmodule ExOanda.DelayedTradeClosureTransactionTest do
   use ExUnit.Case, async: true
+  alias ExOanda.DelayedTradeClosureTransaction
 
   describe "changeset/2" do
     test "changeset with empty params" do
       params = %{}
 
-      changeset = ExOanda.DelayedTradeClosureTransaction.changeset(%ExOanda.DelayedTradeClosureTransaction{}, params)
+      changeset = DelayedTradeClosureTransaction.changeset(%DelayedTradeClosureTransaction{}, params)
 
       assert is_map(changeset)
     end
@@ -91,7 +92,7 @@ defmodule ExOanda.DelayedTradeClosureTransactionTest do
         last_margin_call_extension_time: ~U[2023-01-01 00:00:00.000000Z]
       }
 
-      changeset = ExOanda.DelayedTradeClosureTransaction.changeset(%ExOanda.DelayedTradeClosureTransaction{}, params)
+      changeset = DelayedTradeClosureTransaction.changeset(%DelayedTradeClosureTransaction{}, params)
 
       assert is_map(changeset)
     end

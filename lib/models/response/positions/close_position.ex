@@ -8,10 +8,10 @@ defmodule ExOanda.Response.ClosePosition do
   use TypedEctoSchema
   import Ecto.Changeset
   alias ExOanda.{
+    MarketOrderRejectTransaction,
     MarketOrderTransaction,
-    OrderFillTransaction,
     OrderCancelTransaction,
-    MarketOrderRejectTransaction
+    OrderFillTransaction
   }
 
   @primary_key false

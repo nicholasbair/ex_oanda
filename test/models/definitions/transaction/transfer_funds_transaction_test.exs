@@ -1,11 +1,12 @@
 defmodule ExOanda.TransferFundsTransactionTest do
   use ExUnit.Case, async: true
+  alias ExOanda.TransferFundsTransaction
 
   describe "changeset/2" do
     test "changeset with empty params" do
       params = %{}
 
-      changeset = ExOanda.TransferFundsTransaction.changeset(%ExOanda.TransferFundsTransaction{}, params)
+      changeset = TransferFundsTransaction.changeset(%TransferFundsTransaction{}, params)
 
       assert is_map(changeset)
     end
@@ -91,7 +92,7 @@ defmodule ExOanda.TransferFundsTransactionTest do
         last_margin_call_extension_time: ~U[2023-01-01 00:00:00.000000Z]
       }
 
-      changeset = ExOanda.TransferFundsTransaction.changeset(%ExOanda.TransferFundsTransaction{}, params)
+      changeset = TransferFundsTransaction.changeset(%TransferFundsTransaction{}, params)
 
       assert is_map(changeset)
     end

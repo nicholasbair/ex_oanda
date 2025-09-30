@@ -1,11 +1,13 @@
 defmodule ExOanda.Request.UpdateTradeTest do
   use ExUnit.Case, async: true
 
+  alias ExOanda.Request.UpdateTrade
+
   describe "changeset/2" do
     test "changeset with empty params" do
       params = %{}
 
-      changeset = ExOanda.Request.UpdateTrade.changeset(%ExOanda.Request.UpdateTrade{}, params)
+      changeset = UpdateTrade.changeset(%UpdateTrade{}, params)
 
       assert is_map(changeset)
     end
@@ -91,7 +93,7 @@ defmodule ExOanda.Request.UpdateTradeTest do
         last_margin_call_extension_time: ~U[2023-01-01 00:00:00.000000Z]
       }
 
-      changeset = ExOanda.Request.UpdateTrade.changeset(%ExOanda.Request.UpdateTrade{}, params)
+      changeset = UpdateTrade.changeset(%UpdateTrade{}, params)
 
       assert is_map(changeset)
     end

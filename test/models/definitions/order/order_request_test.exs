@@ -91,7 +91,16 @@ defmodule ExOanda.OrderRequestTest do
     end
 
     test "changeset with valid enum values" do
-      valid_types = [:MARKET, :LIMIT, :STOP, :MARKET_IF_TOUCHED, :TAKE_PROFIT, :STOP_LOSS, :GUARANTEED_STOP_LOSS, :TRAILING_STOP_LOSS]
+      valid_types = [
+        :MARKET,
+        :LIMIT,
+        :STOP,
+        :MARKET_IF_TOUCHED,
+        :TAKE_PROFIT,
+        :STOP_LOSS,
+        :GUARANTEED_STOP_LOSS,
+        :TRAILING_STOP_LOSS
+      ]
       valid_time_in_force = [:GTC, :GTD, :GFD, :FOK, :IOC]
       valid_position_fill = [:DEFAULT, :REDUCE_ONLY]
       valid_trigger_conditions = [:DEFAULT, :INVERSE, :BID, :ASK, :MID]
