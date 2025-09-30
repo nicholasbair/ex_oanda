@@ -315,5 +315,22 @@ defmodule ExOanda.TransformTest do
         Transform.transform_stream("invalid json", :pricing)
       end
     end
+
+    test "covers preprocess_data with model and map data" do
+      data = %{"required_field" => "test_value"}
+      result = Transform.preprocess_data(MockModel, data)
+
+      assert %MockModel{} = result
+      assert result.required_field == "test_value"
+    end
+
+    test "covers preprocess_data with model and list data" do
+      data = [%{"required_field" => "test1"}, %{"required_field" => "test2"}]
+      result = Transform.preprocess_data(MockModel, data)
+
+      assert is_list(result)
+      assert length(result) == 2
+      assert Enum.all?(result, &(%MockModel{} = &1))
+    end
   end
 end
