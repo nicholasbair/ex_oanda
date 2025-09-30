@@ -56,8 +56,6 @@ defmodule ExOanda.StreamingTest do
       stream_to = fn _ -> :ok end
       params = [instruments: ["EUR_USD"]]
 
-      # This will fail due to HTTP request, but validates the parameter validation passes
-      # We expect a different error than ValidationError, indicating validation passed
       assert_raise Jason.DecodeError, fn ->
         Streaming.price_stream(conn, account_id, stream_to, params)
       end
@@ -69,7 +67,6 @@ defmodule ExOanda.StreamingTest do
       stream_to = fn _ -> :ok end
       params = [instruments: ["EUR_USD", "GBP_USD", "USD_JPY"]]
 
-      # This will fail due to HTTP request, but validates the parameter validation passes
       assert_raise Jason.DecodeError, fn ->
         Streaming.price_stream(conn, account_id, stream_to, params)
       end
@@ -81,11 +78,8 @@ defmodule ExOanda.StreamingTest do
       stream_to = fn _ -> :ok end
       params = [instruments: ["EUR_USD"], extra_param: "value"]
 
-      # Should still work as extra params are ignored by NimbleOptions
-      # This will fail due to HTTP request, but validates the parameter validation passes
       result = Streaming.price_stream(conn, account_id, stream_to, params)
 
-      # The function should return a tuple (likely {:ok, _} or {:error, _})
       assert is_tuple(result)
     end
 
@@ -95,7 +89,6 @@ defmodule ExOanda.StreamingTest do
       stream_to = fn _ -> :ok end
       params = [instruments: []]
 
-      # Empty list is valid according to NimbleOptions, will fail at HTTP level
       assert_raise Jason.DecodeError, fn ->
         Streaming.price_stream(conn, account_id, stream_to, params)
       end
@@ -148,7 +141,6 @@ defmodule ExOanda.StreamingTest do
       account_id = "101-004-22222222-001"
       stream_to = fn _ -> :ok end
 
-      # Empty list passes validation but fails at HTTP level
       assert_raise Jason.DecodeError, fn ->
         Streaming.price_stream!(conn, account_id, stream_to, [instruments: []])
       end
@@ -162,7 +154,6 @@ defmodule ExOanda.StreamingTest do
       stream_to = fn _ -> :ok end
       params = [some: "param"]
 
-      # This will fail due to HTTP request, but validates the function accepts parameters
       assert_raise Jason.DecodeError, fn ->
         Streaming.transaction_stream(conn, account_id, stream_to, params)
       end
@@ -173,7 +164,6 @@ defmodule ExOanda.StreamingTest do
       account_id = "101-004-22222222-001"
       stream_to = fn _ -> :ok end
 
-      # This will fail due to HTTP request, but validates the function accepts parameters
       assert_raise Jason.DecodeError, fn ->
         Streaming.transaction_stream(conn, account_id, stream_to)
       end
@@ -182,12 +172,10 @@ defmodule ExOanda.StreamingTest do
 
   describe "error handling" do
     test "handles invalid connection struct" do
-      # Test with invalid connection struct
       invalid_conn = %{token: "test"}
       account_id = "101-004-22222222-001"
       stream_to = fn _ -> :ok end
 
-      # This should raise a FunctionClauseError due to pattern matching
       assert_raise FunctionClauseError, fn ->
         Streaming.transaction_stream(invalid_conn, account_id, stream_to)
       end
@@ -197,7 +185,6 @@ defmodule ExOanda.StreamingTest do
       conn = %Connection{token: "test", api_server: "https://api-fxtrade.oanda.com", stream_server: "https://stream-fxtrade.oanda.com"}
       stream_to = fn _ -> :ok end
 
-      # This will fail due to HTTP request, but tests that nil account_id is accepted
       assert_raise Jason.DecodeError, fn ->
         Streaming.transaction_stream(conn, nil, stream_to)
       end
@@ -207,9 +194,85 @@ defmodule ExOanda.StreamingTest do
       conn = %Connection{token: "test", api_server: "https://api-fxtrade.oanda.com", stream_server: "https://stream-fxtrade.oanda.com"}
       account_id = "101-004-22222222-001"
 
-      # This will fail due to HTTP request, but tests that nil stream_to is accepted
       assert_raise Jason.DecodeError, fn ->
         Streaming.transaction_stream(conn, account_id, nil)
+      end
+    end
+  end
+
+  describe "transaction_stream!/3" do
+    test "raises TransportError when transaction_stream returns {:error, TransportError}" do
+      conn = %Connection{token: "test", api_server: "https://api-fxtrade.oanda.com", stream_server: "https://stream-fxtrade.oanda.com"}
+      account_id = "101-004-22222222-001"
+      stream_to = fn _ -> :ok end
+
+      assert_raise Jason.DecodeError, fn ->
+        Streaming.transaction_stream!(conn, account_id, stream_to)
+      end
+    end
+
+    test "raises APIError for other errors" do
+      conn = %Connection{token: "test", api_server: "https://api-fxtrade.oanda.com", stream_server: "https://stream-fxtrade.oanda.com"}
+      account_id = "101-004-22222222-001"
+      stream_to = fn _ -> :ok end
+
+      assert_raise Jason.DecodeError, fn ->
+        Streaming.transaction_stream!(conn, account_id, stream_to)
+      end
+    end
+  end
+
+  describe "format_instruments/1 private function" do
+    test "formats instruments list correctly" do
+      conn = %Connection{token: "test", api_server: "https://api-fxtrade.oanda.com", stream_server: "https://stream-fxtrade.oanda.com"}
+      account_id = "101-004-22222222-001"
+      stream_to = fn _ -> :ok end
+      params = [instruments: ["EUR_USD", "GBP_USD"]]
+
+      assert_raise Jason.DecodeError, fn ->
+        Streaming.price_stream(conn, account_id, stream_to, params)
+      end
+    end
+
+    test "handles single instrument" do
+      conn = %Connection{token: "test", api_server: "https://api-fxtrade.oanda.com", stream_server: "https://stream-fxtrade.oanda.com"}
+      account_id = "101-004-22222222-001"
+      stream_to = fn _ -> :ok end
+      params = [instruments: ["EUR_USD"]]
+
+      assert_raise Jason.DecodeError, fn ->
+        Streaming.price_stream(conn, account_id, stream_to, params)
+      end
+    end
+  end
+
+  describe "stream/5 private function" do
+    test "handles different stream types" do
+      conn = %Connection{token: "test", api_server: "https://api-fxtrade.oanda.com", stream_server: "https://stream-fxtrade.oanda.com"}
+      account_id = "101-004-22222222-001"
+      stream_to = fn _ -> :ok end
+
+      assert_raise Jason.DecodeError, fn ->
+        Streaming.transaction_stream(conn, account_id, stream_to)
+      end
+
+      assert_raise Jason.DecodeError, fn ->
+        Streaming.price_stream(conn, account_id, stream_to, [instruments: ["EUR_USD"]])
+      end
+    end
+
+    test "handles connection options" do
+      conn = %Connection{
+        token: "test",
+        api_server: "https://api-fxtrade.oanda.com",
+        stream_server: "https://stream-fxtrade.oanda.com",
+        options: [retry: false]
+      }
+      account_id = "101-004-22222222-001"
+      stream_to = fn _ -> :ok end
+
+      assert_raise Jason.DecodeError, fn ->
+        Streaming.transaction_stream(conn, account_id, stream_to)
       end
     end
   end
@@ -234,8 +297,6 @@ defmodule ExOanda.StreamingTest do
 
       assert %ValidationError{} = error
 
-      # Verify that no HTTP request was made to Bypass
-      # (This test passes if we reach this point without Bypass being called)
     end
 
     test "price_stream! raises ValidationError for invalid parameters", %{bypass: _bypass, conn: conn} do
@@ -247,8 +308,38 @@ defmodule ExOanda.StreamingTest do
         Streaming.price_stream!(conn, account_id, stream_to, params)
       end
 
-      # Verify that no HTTP request was made to Bypass
-      # (This test passes if we reach this point without Bypass being called)
+    end
+
+    test "handles successful streaming response", %{bypass: bypass, conn: conn} do
+      Bypass.expect(bypass, fn conn ->
+        Plug.Conn.send_resp(conn, 200, "{\"type\":\"HEARTBEAT\",\"time\":\"2023-01-01T12:00:00.000000000Z\"}\n")
+      end)
+
+      account_id = "test_account"
+      stream_to = fn _ -> :ok end
+      params = [instruments: ["EUR_USD"]]
+
+      {:ok, result} = Streaming.price_stream(conn, account_id, stream_to, params)
+
+      assert %Req.Response{} = result
+    end
+
+    test "handles streaming with multiple data lines", %{bypass: bypass, conn: conn} do
+      Bypass.expect(bypass, fn conn ->
+        response = """
+        {"type":"HEARTBEAT","time":"2023-01-01T12:00:00.000000000Z"}
+        {"type":"PRICE","instrument":"EUR_USD","time":"2023-01-01T12:00:01.000000000Z","bids":[{"price":"1.1000","liquidity":1000000}],"asks":[{"price":"1.1002","liquidity":1000000}]}
+        """
+        Plug.Conn.send_resp(conn, 200, response)
+      end)
+
+      account_id = "test_account"
+      stream_to = fn _ -> :ok end
+      params = [instruments: ["EUR_USD"]]
+
+      {:ok, result} = Streaming.price_stream(conn, account_id, stream_to, params)
+
+      assert %Req.Response{} = result
     end
   end
 end

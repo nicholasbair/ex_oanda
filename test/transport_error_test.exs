@@ -99,4 +99,42 @@ defmodule ExOanda.TransportErrorTest do
       end
     end
   end
+
+  describe "format_reason edge cases" do
+    test "handles nil reason" do
+      exception = TransportError.exception(nil)
+
+      assert %TransportError{} = exception
+      assert exception.message == "HTTP error: "
+      assert exception.reason == nil
+      assert exception.error_type == :other
+    end
+
+    test "handles boolean reason" do
+      exception = TransportError.exception(true)
+
+      assert %TransportError{} = exception
+      assert exception.message == "HTTP error: true"
+      assert exception.reason == true
+      assert exception.error_type == :other
+    end
+
+    test "handles numeric reason" do
+      exception = TransportError.exception(42)
+
+      assert %TransportError{} = exception
+      assert exception.message == "HTTP error: 42"
+      assert exception.reason == 42
+      assert exception.error_type == :other
+    end
+
+    test "handles list reason" do
+      exception = TransportError.exception([1, 2, 3])
+
+      assert %TransportError{} = exception
+      assert exception.message == "HTTP error: [1, 2, 3]"
+      assert exception.reason == [1, 2, 3]
+      assert exception.error_type == :other
+    end
+  end
 end
