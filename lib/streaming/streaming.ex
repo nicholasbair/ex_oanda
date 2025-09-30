@@ -10,6 +10,7 @@ defmodule ExOanda.Streaming do
   alias ExOanda.{
     API,
     APIError,
+    DecodeError,
     TransportError,
     ValidationError
   }
@@ -47,6 +48,7 @@ defmodule ExOanda.Streaming do
     case transaction_stream(conn, account_id, stream_to, params) do
       {:ok, result} -> result
       {:error, %TransportError{} = transport_error} -> raise transport_error
+      {:error, %DecodeError{} = decode_error} -> raise decode_error
       {:error, reason} -> raise APIError, reason
     end
   end
@@ -87,6 +89,7 @@ defmodule ExOanda.Streaming do
       {:ok, result} -> result
       {:error, %ValidationError{} = validation_error} -> raise validation_error
       {:error, %TransportError{} = transport_error} -> raise transport_error
+      {:error, %DecodeError{} = decode_error} -> raise decode_error
       {:error, reason} -> raise APIError, reason
     end
   end

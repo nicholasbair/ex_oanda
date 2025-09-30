@@ -6,6 +6,7 @@ defmodule ExOanda.Transform do
   alias ExOanda.{
     ClientPrice,
     CodeGenerator,
+    DecodeError,
     HttpStatus,
     Response,
     Response.PricingHeartbeat,
@@ -20,10 +21,15 @@ defmodule ExOanda.Transform do
   end
 
   def transform_stream(val, stream_type) do
-    val
-    |> Jason.decode!()
-    |> find_stream_schema(stream_type)
-    |> then(fn {schema, data} -> preprocess_data(schema, data) end)
+    case Jason.decode(val) do
+      {:ok, decoded} ->
+        decoded
+        |> find_stream_schema(stream_type)
+        |> then(fn {schema, data} -> preprocess_data(schema, data) end)
+
+      {:error, error} ->
+        raise DecodeError.exception(error)
+    end
   end
 
   defp preprocess_body(model, response) do
