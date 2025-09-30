@@ -56,7 +56,7 @@ defmodule ExOanda.StreamingTest do
       stream_to = fn _ -> :ok end
       params = [instruments: ["EUR_USD"]]
 
-      assert_raise Jason.DecodeError, fn ->
+      assert_raise ExOanda.DecodeError, fn ->
         Streaming.price_stream(conn, account_id, stream_to, params)
       end
     end
@@ -67,7 +67,7 @@ defmodule ExOanda.StreamingTest do
       stream_to = fn _ -> :ok end
       params = [instruments: ["EUR_USD", "GBP_USD", "USD_JPY"]]
 
-      assert_raise Jason.DecodeError, fn ->
+      assert_raise ExOanda.DecodeError, fn ->
         Streaming.price_stream(conn, account_id, stream_to, params)
       end
     end
@@ -89,7 +89,7 @@ defmodule ExOanda.StreamingTest do
       stream_to = fn _ -> :ok end
       params = [instruments: []]
 
-      assert_raise Jason.DecodeError, fn ->
+      assert_raise ExOanda.DecodeError, fn ->
         Streaming.price_stream(conn, account_id, stream_to, params)
       end
     end
@@ -136,12 +136,12 @@ defmodule ExOanda.StreamingTest do
       end
     end
 
-    test "raises Jason.DecodeError for empty instruments list (validated by API)" do
+    test "raises ExOanda.DecodeError for empty instruments list (validated by API)" do
       conn = %Connection{token: "test", api_server: "https://api-fxtrade.oanda.com", stream_server: "https://stream-fxtrade.oanda.com"}
       account_id = "101-004-22222222-001"
       stream_to = fn _ -> :ok end
 
-      assert_raise Jason.DecodeError, fn ->
+      assert_raise ExOanda.DecodeError, fn ->
         Streaming.price_stream!(conn, account_id, stream_to, [instruments: []])
       end
     end
@@ -154,7 +154,7 @@ defmodule ExOanda.StreamingTest do
       stream_to = fn _ -> :ok end
       params = [some: "param"]
 
-      assert_raise Jason.DecodeError, fn ->
+      assert_raise ExOanda.DecodeError, fn ->
         Streaming.transaction_stream(conn, account_id, stream_to, params)
       end
     end
@@ -164,7 +164,7 @@ defmodule ExOanda.StreamingTest do
       account_id = "101-004-22222222-001"
       stream_to = fn _ -> :ok end
 
-      assert_raise Jason.DecodeError, fn ->
+      assert_raise ExOanda.DecodeError, fn ->
         Streaming.transaction_stream(conn, account_id, stream_to)
       end
     end
@@ -185,7 +185,7 @@ defmodule ExOanda.StreamingTest do
       conn = %Connection{token: "test", api_server: "https://api-fxtrade.oanda.com", stream_server: "https://stream-fxtrade.oanda.com"}
       stream_to = fn _ -> :ok end
 
-      assert_raise Jason.DecodeError, fn ->
+      assert_raise ExOanda.DecodeError, fn ->
         Streaming.transaction_stream(conn, nil, stream_to)
       end
     end
@@ -194,7 +194,7 @@ defmodule ExOanda.StreamingTest do
       conn = %Connection{token: "test", api_server: "https://api-fxtrade.oanda.com", stream_server: "https://stream-fxtrade.oanda.com"}
       account_id = "101-004-22222222-001"
 
-      assert_raise Jason.DecodeError, fn ->
+      assert_raise ExOanda.DecodeError, fn ->
         Streaming.transaction_stream(conn, account_id, nil)
       end
     end
@@ -206,7 +206,7 @@ defmodule ExOanda.StreamingTest do
       account_id = "101-004-22222222-001"
       stream_to = fn _ -> :ok end
 
-      assert_raise Jason.DecodeError, fn ->
+      assert_raise ExOanda.DecodeError, fn ->
         Streaming.transaction_stream!(conn, account_id, stream_to)
       end
     end
@@ -216,7 +216,7 @@ defmodule ExOanda.StreamingTest do
       account_id = "101-004-22222222-001"
       stream_to = fn _ -> :ok end
 
-      assert_raise Jason.DecodeError, fn ->
+      assert_raise ExOanda.DecodeError, fn ->
         Streaming.transaction_stream!(conn, account_id, stream_to)
       end
     end
@@ -229,7 +229,7 @@ defmodule ExOanda.StreamingTest do
       stream_to = fn _ -> :ok end
       params = [instruments: ["EUR_USD", "GBP_USD"]]
 
-      assert_raise Jason.DecodeError, fn ->
+      assert_raise ExOanda.DecodeError, fn ->
         Streaming.price_stream(conn, account_id, stream_to, params)
       end
     end
@@ -240,7 +240,7 @@ defmodule ExOanda.StreamingTest do
       stream_to = fn _ -> :ok end
       params = [instruments: ["EUR_USD"]]
 
-      assert_raise Jason.DecodeError, fn ->
+      assert_raise ExOanda.DecodeError, fn ->
         Streaming.price_stream(conn, account_id, stream_to, params)
       end
     end
@@ -252,11 +252,11 @@ defmodule ExOanda.StreamingTest do
       account_id = "101-004-22222222-001"
       stream_to = fn _ -> :ok end
 
-      assert_raise Jason.DecodeError, fn ->
+      assert_raise ExOanda.DecodeError, fn ->
         Streaming.transaction_stream(conn, account_id, stream_to)
       end
 
-      assert_raise Jason.DecodeError, fn ->
+      assert_raise ExOanda.DecodeError, fn ->
         Streaming.price_stream(conn, account_id, stream_to, [instruments: ["EUR_USD"]])
       end
     end
@@ -271,7 +271,7 @@ defmodule ExOanda.StreamingTest do
       account_id = "101-004-22222222-001"
       stream_to = fn _ -> :ok end
 
-      assert_raise Jason.DecodeError, fn ->
+      assert_raise ExOanda.DecodeError, fn ->
         Streaming.transaction_stream(conn, account_id, stream_to)
       end
     end

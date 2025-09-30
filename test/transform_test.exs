@@ -311,7 +311,7 @@ defmodule ExOanda.TransformTest do
     end
 
     test "handles invalid JSON in transform_stream" do
-      assert_raise Jason.DecodeError, fn ->
+      assert_raise ExOanda.DecodeError, fn ->
         Transform.transform_stream("invalid json", :pricing)
       end
     end

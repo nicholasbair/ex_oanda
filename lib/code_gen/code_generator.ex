@@ -4,6 +4,7 @@ defmodule ExOanda.CodeGenerator do
   alias ExOanda.{
     APIError,
     Config,
+    DecodeError,
     TransportError,
     ValidationError
   }
@@ -144,7 +145,7 @@ defmodule ExOanda.CodeGenerator do
               unquote_splicing(arg_types),
               Keyword.t()
             ) :: {:ok, Res.t(unquote(response_model).t())} |
-                  {:error, Res.t() | ValidationError.t() | TransportError.t()}
+                  {:error, Res.t() | ValidationError.t() | TransportError.t() | DecodeError.t()}
       def unquote(String.to_atom(name))(%Conn{} = conn, unquote_splicing(formatted_args), params \\ []) do
         path_params =
           unquote(arg_names)
@@ -193,6 +194,7 @@ defmodule ExOanda.CodeGenerator do
           {:ok, res} -> res
           {:error, %ValidationError{} = validation_error} -> raise validation_error
           {:error, %TransportError{} = transport_error} -> raise transport_error
+          {:error, %DecodeError{} = decode_error} -> raise decode_error
           {:error, reason} -> raise APIError, reason
         end
       end
@@ -237,7 +239,7 @@ defmodule ExOanda.CodeGenerator do
               unquote_splicing(arg_types),
               Keyword.t()
             ) :: {:ok, Res.t(unquote(response_model).t())} |
-                  {:error, Res.t() | ValidationError.t() | TransportError.t()}
+                  {:error, Res.t() | ValidationError.t() | TransportError.t() | DecodeError.t()}
       def unquote(String.to_atom(name))(%Conn{} = conn, unquote_splicing(formatted_args), params \\ []) do
         path_params =
           unquote(arg_names)
@@ -299,6 +301,7 @@ defmodule ExOanda.CodeGenerator do
           {:ok, res} -> res
           {:error, %ValidationError{} = validation_error} -> raise validation_error
           {:error, %TransportError{} = transport_error} -> raise transport_error
+          {:error, %DecodeError{} = decode_error} -> raise decode_error
           {:error, reason} -> raise APIError, reason
         end
       end
@@ -340,7 +343,7 @@ defmodule ExOanda.CodeGenerator do
               unquote_splicing(arg_types),
               Keyword.t()
             ) :: {:ok, Res.t(unquote(response_model).t())} |
-                  {:error, Res.t() | ValidationError.t() | TransportError.t()}
+                  {:error, Res.t() | ValidationError.t() | TransportError.t() | DecodeError.t()}
       def unquote(String.to_atom(name))(%Conn{} = conn, unquote_splicing(formatted_args), params \\ []) do
         path_params =
           unquote(arg_names)
@@ -388,6 +391,7 @@ defmodule ExOanda.CodeGenerator do
           {:ok, res} -> res
           {:error, %ValidationError{} = validation_error} -> raise validation_error
           {:error, %TransportError{} = transport_error} -> raise transport_error
+          {:error, %DecodeError{} = decode_error} -> raise decode_error
           {:error, reason} -> raise APIError, reason
         end
       end
