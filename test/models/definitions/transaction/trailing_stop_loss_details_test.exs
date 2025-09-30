@@ -1,11 +1,12 @@
 defmodule ExOanda.TrailingStopLossDetailsTest do
   use ExUnit.Case, async: true
+  alias ExOanda.TrailingStopLossDetails
 
   describe "changeset/2" do
     test "changeset with empty params" do
       params = %{}
 
-      changeset = ExOanda.TrailingStopLossDetails.changeset(%ExOanda.TrailingStopLossDetails{}, params)
+      changeset = TrailingStopLossDetails.changeset(%TrailingStopLossDetails{}, params)
 
       assert is_map(changeset)
     end
@@ -91,7 +92,7 @@ defmodule ExOanda.TrailingStopLossDetailsTest do
         last_margin_call_extension_time: ~U[2023-01-01 00:00:00.000000Z]
       }
 
-      changeset = ExOanda.TrailingStopLossDetails.changeset(%ExOanda.TrailingStopLossDetails{}, params)
+      changeset = TrailingStopLossDetails.changeset(%TrailingStopLossDetails{}, params)
 
       assert is_map(changeset)
     end

@@ -27,7 +27,29 @@ defmodule ExOanda.ClientConfigureRejectTransaction do
   @doc false
   def changeset(struct, params) do
     struct
-    |> cast(params, [:id, :time, :user_id, :account_id, :batch_id, :request_id, :type, :alias, :marginRate, :reject_reason])
-    |> validate_required([:id, :time, :user_id, :account_id, :batch_id, :request_id, :type, :alias, :marginRate, :reject_reason])
+    |> cast(params, [
+      :id,
+      :time,
+      :user_id,
+      :account_id,
+      :batch_id,
+      :request_id,
+      :type,
+      :alias,
+      :marginRate,
+      :reject_reason
+    ])
+    |> validate_required([
+      :id,
+      :time,
+      :user_id,
+      :account_id,
+      :batch_id,
+      :request_id,
+      :type,
+      :alias,
+      :marginRate,
+      :reject_reason
+    ])
   end
 end

@@ -8,17 +8,17 @@ defmodule ExOanda.Response.UpdateTrade do
   use TypedEctoSchema
   import Ecto.Changeset
   alias ExOanda.{
-    OrderCancelTransaction,
-    TakeProfitOrderTransaction,
-    OrderFillTransaction,
-    OrderCancelRejectTransaction,
-    TakeProfitOrderRejectTransaction,
-    StopLossOrderTransaction,
-    StopLossOrderRejectTransaction,
-    TrailingStopLossOrderTransaction,
-    TrailingStopLossOrderRejectTransaction,
+    GuaranteedStopLossOrderRejectTransaction,
     GuaranteedStopLossOrderTransaction,
-    GuaranteedStopLossOrderRejectTransaction
+    OrderCancelRejectTransaction,
+    OrderCancelTransaction,
+    OrderFillTransaction,
+    StopLossOrderRejectTransaction,
+    StopLossOrderTransaction,
+    TakeProfitOrderRejectTransaction,
+    TakeProfitOrderTransaction,
+    TrailingStopLossOrderRejectTransaction,
+    TrailingStopLossOrderTransaction
   }
 
   @primary_key false

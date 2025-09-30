@@ -2,10 +2,10 @@ defmodule ExOanda.CodeGenerator do
   @moduledoc false
 
   alias ExOanda.{
-    Config,
     APIError,
-    ValidationError,
-    TransportError
+    Config,
+    TransportError,
+    ValidationError
   }
 
   defmacro __using__(_opts) do
@@ -81,23 +81,44 @@ defmodule ExOanda.CodeGenerator do
         quote do
           test "#{unquote(interface_module_name)}.#{unquote(function_name)} is generated." do
             Code.ensure_loaded(unquote(interface_module_name))
-            assert function_exported?(unquote(interface_module_name), unquote(String.to_atom(function_name)), unquote(arity))
+            function_name_atom = unquote(String.to_atom(function_name))
+            assert function_exported?(
+              unquote(interface_module_name),
+              function_name_atom,
+              unquote(arity)
+            )
           end
         end,
         quote do
           test "#{unquote(interface_module_name)}.#{unquote(function_name)}! is generated." do
             Code.ensure_loaded(unquote(interface_module_name))
-            assert function_exported?(unquote(interface_module_name), unquote(String.to_atom("#{function_name}!")), unquote(arity))
+            bang_function_name = unquote(String.to_atom("#{function_name}!"))
+            assert function_exported?(
+              unquote(interface_module_name),
+              bang_function_name,
+              unquote(arity)
+            )
           end
         end
       ]
     end)
   end
 
-  defp generate_functions(functions, docs_link), do: Enum.map(functions, &generate_function(&1, docs_link))
+  defp generate_functions(functions, docs_link) do
+    Enum.map(functions, &generate_function(&1, docs_link))
+  end
 
-  defp generate_function(%{http_method: method, request_schema: req} = config, docs_link) when method in ["POST", "PUT", "PATCH"] and is_nil(req) do
-    %{function_name: name, description: desc, http_method: method, path: path, arguments: args, parameters: parameters, response_schema: response_schema} = config
+  defp generate_function(%{http_method: method, request_schema: req} = config, docs_link)
+       when method in ["POST", "PUT", "PATCH"] and is_nil(req) do
+    %{
+      function_name: name,
+      description: desc,
+      http_method: method,
+      path: path,
+      arguments: args,
+      parameters: parameters,
+      response_schema: response_schema
+    } = config
     formatted_args = format_args(args)
     arg_names = Enum.map(args, & &1.name)
     formatted_params = format_params(parameters)
@@ -111,12 +132,19 @@ defmodule ExOanda.CodeGenerator do
 
       ## Examples
 
-          iex> {:ok, res} = #{ExOanda.CodeGenerator.format_module_name(__MODULE__)}.#{unquote(name)}(conn, #{Enum.map_join(unquote(arg_names), ", ", &"#{&1}")})
+          iex> {:ok, res} = #{ExOanda.CodeGenerator.format_module_name(__MODULE__)}.#{unquote(name)}(conn, #{
+            Enum.map_join(unquote(arg_names), ", ", &"#{&1}")
+          })
       #{unquote(supported_params)}
       ## Docs
       - [Oanda Docs](#{unquote(docs_link)})
       """
-      @spec unquote(String.to_atom(name))(Conn.t(), unquote_splicing(arg_types), Keyword.t()) :: {:ok, Res.t(unquote(response_model).t())} | {:error, Res.t() | ValidationError.t() | TransportError.t()}
+      @spec unquote(String.to_atom(name))(
+              Conn.t(),
+              unquote_splicing(arg_types),
+              Keyword.t()
+            ) :: {:ok, Res.t(unquote(response_model).t())} |
+                  {:error, Res.t() | ValidationError.t() | TransportError.t()}
       def unquote(String.to_atom(name))(%Conn{} = conn, unquote_splicing(formatted_args), params \\ []) do
         path_params =
           unquote(arg_names)
@@ -148,12 +176,18 @@ defmodule ExOanda.CodeGenerator do
 
       ## Examples
 
-          iex> res = #{ExOanda.CodeGenerator.format_module_name(__MODULE__)}.#{unquote(name)}!(conn, #{Enum.map_join(unquote(arg_names), ", ", &"#{&1}")})
+          iex> res = #{ExOanda.CodeGenerator.format_module_name(__MODULE__)}.#{unquote(name)}!(conn, #{
+            Enum.map_join(unquote(arg_names), ", ", &"#{&1}")
+          })
       #{unquote(supported_params)}
       ## Docs
       - [Oanda Docs](#{unquote(docs_link)})
       """
-      @spec unquote(String.to_atom("#{name}!"))(Conn.t(), unquote_splicing(arg_types), Keyword.t()) :: Res.t(unquote(response_model).t())
+      @spec unquote(String.to_atom("#{name}!"))(
+              Conn.t(),
+              unquote_splicing(arg_types),
+              Keyword.t()
+            ) :: Res.t(unquote(response_model).t())
       def unquote(String.to_atom("#{name}!"))(%Conn{} = conn, unquote_splicing(formatted_args), params \\ []) do
         case unquote(String.to_atom(name))(conn, unquote_splicing(formatted_args), params) do
           {:ok, res} -> res
@@ -165,8 +199,18 @@ defmodule ExOanda.CodeGenerator do
     end
   end
 
-  defp generate_function(%{http_method: method} = config, docs_link) when method in ["POST", "PUT", "PATCH"] do
-    %{function_name: name, description: desc, http_method: method, path: path, arguments: args, parameters: parameters, response_schema: response_schema, request_schema: request_schema} = config
+  defp generate_function(%{http_method: method} = config, docs_link)
+       when method in ["POST", "PUT", "PATCH"] do
+    %{
+      function_name: name,
+      description: desc,
+      http_method: method,
+      path: path,
+      arguments: args,
+      parameters: parameters,
+      response_schema: response_schema,
+      request_schema: request_schema
+    } = config
     formatted_args = format_args(args)
     arg_names = Enum.map(args, & &1.name)
     formatted_params = format_params(parameters)
@@ -181,12 +225,19 @@ defmodule ExOanda.CodeGenerator do
 
       ## Examples
 
-          iex> {:ok, res} = #{ExOanda.CodeGenerator.format_module_name(__MODULE__)}.#{unquote(name)}(conn, #{Enum.map_join(unquote(arg_names), ", ", &"#{&1}")})
+          iex> {:ok, res} = #{ExOanda.CodeGenerator.format_module_name(__MODULE__)}.#{unquote(name)}(conn, #{
+            Enum.map_join(unquote(arg_names), ", ", &"#{&1}")
+          })
       #{unquote(supported_params)}
       ## Docs
       - [Oanda Docs](#{unquote(docs_link)})
       """
-      @spec unquote(String.to_atom(name))(Conn.t(), unquote_splicing(arg_types), Keyword.t()) :: {:ok, Res.t(unquote(response_model).t())} | {:error, Res.t() | ValidationError.t() | TransportError.t()}
+      @spec unquote(String.to_atom(name))(
+              Conn.t(),
+              unquote_splicing(arg_types),
+              Keyword.t()
+            ) :: {:ok, Res.t(unquote(response_model).t())} |
+                  {:error, Res.t() | ValidationError.t() | TransportError.t()}
       def unquote(String.to_atom(name))(%Conn{} = conn, unquote_splicing(formatted_args), params \\ []) do
         path_params =
           unquote(arg_names)
@@ -231,12 +282,18 @@ defmodule ExOanda.CodeGenerator do
 
       ## Examples
 
-          iex> res = #{ExOanda.CodeGenerator.format_module_name(__MODULE__)}.#{unquote(name)}!(conn, #{Enum.map_join(unquote(arg_names), ", ", &"#{&1}")})
+          iex> res = #{ExOanda.CodeGenerator.format_module_name(__MODULE__)}.#{unquote(name)}!(conn, #{
+            Enum.map_join(unquote(arg_names), ", ", &"#{&1}")
+          })
       #{unquote(supported_params)}
       ## Docs
       - [Oanda Docs](#{unquote(docs_link)})
       """
-      @spec unquote(String.to_atom("#{name}!"))(Conn.t(), unquote_splicing(arg_types), Keyword.t()) :: Res.t(unquote(response_model).t())
+      @spec unquote(String.to_atom("#{name}!"))(
+              Conn.t(),
+              unquote_splicing(arg_types),
+              Keyword.t()
+            ) :: Res.t(unquote(response_model).t())
       def unquote(String.to_atom("#{name}!"))(%Conn{} = conn, unquote_splicing(formatted_args), params \\ []) do
         case unquote(String.to_atom(name))(conn, unquote_splicing(formatted_args), params) do
           {:ok, res} -> res
@@ -249,7 +306,15 @@ defmodule ExOanda.CodeGenerator do
   end
 
   defp generate_function(config, docs_link) do
-    %{function_name: name, description: desc, http_method: method, path: path, arguments: args, parameters: parameters, response_schema: response_schema} = config
+    %{
+      function_name: name,
+      description: desc,
+      http_method: method,
+      path: path,
+      arguments: args,
+      parameters: parameters,
+      response_schema: response_schema
+    } = config
     formatted_args = format_args(args)
     arg_names = Enum.map(args, & &1.name)
     formatted_params = format_params(parameters)
@@ -263,12 +328,19 @@ defmodule ExOanda.CodeGenerator do
 
       ## Examples
 
-          iex> {:ok, res} = #{ExOanda.CodeGenerator.format_module_name(__MODULE__)}.#{unquote(name)}(conn, #{Enum.map_join(unquote(arg_names), ", ", &"#{&1}")})
+          iex> {:ok, res} = #{ExOanda.CodeGenerator.format_module_name(__MODULE__)}.#{unquote(name)}(conn, #{
+            Enum.map_join(unquote(arg_names), ", ", &"#{&1}")
+          })
       #{unquote(supported_params)}
       ## Docs
       - [Oanda Docs](#{unquote(docs_link)})
       """
-      @spec unquote(String.to_atom(name))(Conn.t(), unquote_splicing(arg_types), Keyword.t()) :: {:ok, Res.t(unquote(response_model).t())} | {:error, Res.t() | ValidationError.t() | TransportError.t()}
+      @spec unquote(String.to_atom(name))(
+              Conn.t(),
+              unquote_splicing(arg_types),
+              Keyword.t()
+            ) :: {:ok, Res.t(unquote(response_model).t())} |
+                  {:error, Res.t() | ValidationError.t() | TransportError.t()}
       def unquote(String.to_atom(name))(%Conn{} = conn, unquote_splicing(formatted_args), params \\ []) do
         path_params =
           unquote(arg_names)
@@ -299,12 +371,18 @@ defmodule ExOanda.CodeGenerator do
 
       ## Examples
 
-          iex> res = #{ExOanda.CodeGenerator.format_module_name(__MODULE__)}.#{unquote(name)}!(conn, #{Enum.map_join(unquote(arg_names), ", ", &"#{&1}")})
+          iex> res = #{ExOanda.CodeGenerator.format_module_name(__MODULE__)}.#{unquote(name)}!(conn, #{
+            Enum.map_join(unquote(arg_names), ", ", &"#{&1}")
+          })
       #{unquote(supported_params)}
       ## Docs
       - [Oanda Docs](#{unquote(docs_link)})
       """
-      @spec unquote(String.to_atom("#{name}!"))(Conn.t(), unquote_splicing(arg_types), Keyword.t()) :: Res.t(unquote(response_model).t())
+      @spec unquote(String.to_atom("#{name}!"))(
+              Conn.t(),
+              unquote_splicing(arg_types),
+              Keyword.t()
+            ) :: Res.t(unquote(response_model).t())
       def unquote(String.to_atom("#{name}!"))(%Conn{} = conn, unquote_splicing(formatted_args), params \\ []) do
         case unquote(String.to_atom(name))(conn, unquote_splicing(formatted_args), params) do
           {:ok, res} -> res

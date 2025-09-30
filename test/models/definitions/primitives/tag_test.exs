@@ -1,11 +1,13 @@
 defmodule ExOanda.TagTest do
   use ExUnit.Case, async: true
 
+  alias ExOanda.Tag
+
   describe "changeset/2" do
     test "changeset with empty params" do
       params = %{}
 
-      changeset = ExOanda.Tag.changeset(%ExOanda.Tag{}, params)
+      changeset = Tag.changeset(%Tag{}, params)
 
       assert is_map(changeset)
     end
@@ -91,7 +93,7 @@ defmodule ExOanda.TagTest do
         last_margin_call_extension_time: ~U[2023-01-01 00:00:00.000000Z]
       }
 
-      changeset = ExOanda.Tag.changeset(%ExOanda.Tag{}, params)
+      changeset = Tag.changeset(%Tag{}, params)
 
       assert is_map(changeset)
     end

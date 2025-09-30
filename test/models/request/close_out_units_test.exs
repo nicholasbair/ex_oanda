@@ -9,11 +9,11 @@ defmodule ExOanda.CloseoutUnitsTest do
   end
 
   describe "cast/1" do
-    test "returns {:ok, \"ALL\"} for \"ALL\" string" do
+    test ~S/returns {:ok, "ALL"} for "ALL" string/ do
       assert CloseoutUnits.cast("ALL") == {:ok, "ALL"}
     end
 
-    test "returns {:ok, \"NONE\"} for \"NONE\" string" do
+    test ~S/returns {:ok, "NONE"} for "NONE" string/ do
       assert CloseoutUnits.cast("NONE") == {:ok, "NONE"}
     end
 
@@ -46,11 +46,11 @@ defmodule ExOanda.CloseoutUnitsTest do
   end
 
   describe "load/1" do
-    test "returns {:ok, \"ALL\"} for \"ALL\" string" do
+    test ~S/returns {:ok, "ALL"} for "ALL" string/ do
       assert CloseoutUnits.load("ALL") == {:ok, "ALL"}
     end
 
-    test "returns {:ok, \"NONE\"} for \"NONE\" string" do
+    test ~S/returns {:ok, "NONE"} for "NONE" string/ do
       assert CloseoutUnits.load("NONE") == {:ok, "NONE"}
     end
 
@@ -83,11 +83,11 @@ defmodule ExOanda.CloseoutUnitsTest do
   end
 
   describe "dump/1" do
-    test "returns {:ok, \"ALL\"} for \"ALL\" string" do
+    test ~S/returns {:ok, "ALL"} for "ALL" string/ do
       assert CloseoutUnits.dump("ALL") == {:ok, "ALL"}
     end
 
-    test "returns {:ok, \"NONE\"} for \"NONE\" string" do
+    test ~S/returns {:ok, "NONE"} for "NONE" string/ do
       assert CloseoutUnits.dump("NONE") == {:ok, "NONE"}
     end
 

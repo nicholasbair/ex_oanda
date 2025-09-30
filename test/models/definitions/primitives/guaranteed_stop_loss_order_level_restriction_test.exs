@@ -5,7 +5,11 @@ defmodule ExOanda.GuaranteedStopLossOrderLevelRestrictionTest do
     test "changeset with empty params" do
       params = %{}
 
-      changeset = ExOanda.GuaranteedStopLossOrderLevelRestriction.changeset(%ExOanda.GuaranteedStopLossOrderLevelRestriction{}, params)
+      changeset =
+        ExOanda.GuaranteedStopLossOrderLevelRestriction.changeset(
+          %ExOanda.GuaranteedStopLossOrderLevelRestriction{},
+          params
+        )
 
       assert is_map(changeset)
     end
@@ -91,7 +95,11 @@ defmodule ExOanda.GuaranteedStopLossOrderLevelRestrictionTest do
         last_margin_call_extension_time: ~U[2023-01-01 00:00:00.000000Z]
       }
 
-      changeset = ExOanda.GuaranteedStopLossOrderLevelRestriction.changeset(%ExOanda.GuaranteedStopLossOrderLevelRestriction{}, params)
+      changeset =
+        ExOanda.GuaranteedStopLossOrderLevelRestriction.changeset(
+          %ExOanda.GuaranteedStopLossOrderLevelRestriction{},
+          params
+        )
 
       assert is_map(changeset)
     end

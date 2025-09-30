@@ -1,11 +1,13 @@
 defmodule ExOanda.PositionSideTest do
   use ExUnit.Case, async: true
 
+  alias ExOanda.PositionSide
+
   describe "changeset/2" do
     test "changeset with empty params" do
       params = %{}
 
-      changeset = ExOanda.PositionSide.changeset(%ExOanda.PositionSide{}, params)
+      changeset = PositionSide.changeset(%PositionSide{}, params)
 
       assert is_map(changeset)
     end
@@ -91,7 +93,7 @@ defmodule ExOanda.PositionSideTest do
         last_margin_call_extension_time: ~U[2023-01-01 00:00:00.000000Z]
       }
 
-      changeset = ExOanda.PositionSide.changeset(%ExOanda.PositionSide{}, params)
+      changeset = PositionSide.changeset(%PositionSide{}, params)
 
       assert is_map(changeset)
     end

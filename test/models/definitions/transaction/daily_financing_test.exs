@@ -1,11 +1,12 @@
 defmodule ExOanda.DailyFinancingTransactionTest do
   use ExUnit.Case, async: true
+  alias ExOanda.DailyFinancingTransaction
 
   describe "changeset/2" do
     test "changeset with empty params" do
       params = %{}
 
-      changeset = ExOanda.DailyFinancingTransaction.changeset(%ExOanda.DailyFinancingTransaction{}, params)
+      changeset = DailyFinancingTransaction.changeset(%DailyFinancingTransaction{}, params)
 
       assert is_map(changeset)
     end
@@ -91,7 +92,7 @@ defmodule ExOanda.DailyFinancingTransactionTest do
         last_margin_call_extension_time: ~U[2023-01-01 00:00:00.000000Z]
       }
 
-      changeset = ExOanda.DailyFinancingTransaction.changeset(%ExOanda.DailyFinancingTransaction{}, params)
+      changeset = DailyFinancingTransaction.changeset(%DailyFinancingTransaction{}, params)
 
       assert is_map(changeset)
     end

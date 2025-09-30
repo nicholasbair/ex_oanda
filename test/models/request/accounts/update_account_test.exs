@@ -1,11 +1,13 @@
 defmodule ExOanda.Request.UpdateAccountTest do
   use ExUnit.Case, async: true
 
+  alias ExOanda.Request.UpdateAccount
+
   describe "changeset/2" do
     test "changeset with empty params" do
       params = %{}
 
-      changeset = ExOanda.Request.UpdateAccount.changeset(%ExOanda.Request.UpdateAccount{}, params)
+      changeset = UpdateAccount.changeset(%UpdateAccount{}, params)
 
       assert is_map(changeset)
     end
@@ -91,7 +93,7 @@ defmodule ExOanda.Request.UpdateAccountTest do
         last_margin_call_extension_time: ~U[2023-01-01 00:00:00.000000Z]
       }
 
-      changeset = ExOanda.Request.UpdateAccount.changeset(%ExOanda.Request.UpdateAccount{}, params)
+      changeset = UpdateAccount.changeset(%UpdateAccount{}, params)
 
       assert is_map(changeset)
     end

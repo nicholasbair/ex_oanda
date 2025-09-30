@@ -8,8 +8,8 @@ defmodule ExOanda.StopLossOrderTransaction do
   use TypedEctoSchema
   import Ecto.Changeset
   alias ExOanda.{
-    Type.Atom,
-    ClientExtensions
+    ClientExtensions,
+    Type.Atom
   }
 
   @primary_key false

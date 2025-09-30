@@ -9,9 +9,9 @@ defmodule ExOanda.OrderRequest do
   import Ecto.Changeset
   alias ExOanda.{
     ClientExtensions,
-    TakeProfitDetails,
-    StopLossDetails,
     GuaranteedStopLossDetails,
+    StopLossDetails,
+    TakeProfitDetails,
     TrailingStopLossDetails,
     Type.Atom
   }

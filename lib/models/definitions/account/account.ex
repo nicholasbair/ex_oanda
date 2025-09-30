@@ -9,9 +9,9 @@ defmodule ExOanda.Account do
   import Ecto.Changeset
   alias ExOanda.{
     GuaranteedStopLossOrderParameters,
-    TradeSummary,
+    Order,
     Position,
-    Order
+    TradeSummary
   }
 
   @primary_key false

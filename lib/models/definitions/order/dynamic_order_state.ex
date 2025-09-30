@@ -21,7 +21,19 @@ defmodule ExOanda.DynamicOrderState do
   @doc false
   def changeset(struct, params) do
     struct
-    |> cast(params, [:id, :trailing_stop_value, :trigger_price, :is_trigger_value_absolute, :is_trailing_stop_value_absolute])
-    |> validate_required([:id, :trailing_stop_value, :trigger_price, :is_trigger_value_absolute, :is_trailing_stop_value_absolute])
+    |> cast(params, [
+      :id,
+      :trailing_stop_value,
+      :trigger_price,
+      :is_trigger_value_absolute,
+      :is_trailing_stop_value_absolute
+    ])
+    |> validate_required([
+      :id,
+      :trailing_stop_value,
+      :trigger_price,
+      :is_trigger_value_absolute,
+      :is_trailing_stop_value_absolute
+    ])
   end
 end

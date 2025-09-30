@@ -1,11 +1,13 @@
 defmodule ExOanda.CalculatedTradeStateTest do
   use ExUnit.Case, async: true
 
+  alias ExOanda.CalculatedTradeState
+
   describe "changeset/2" do
     test "changeset with empty params" do
       params = %{}
 
-      changeset = ExOanda.CalculatedTradeState.changeset(%ExOanda.CalculatedTradeState{}, params)
+      changeset = CalculatedTradeState.changeset(%CalculatedTradeState{}, params)
 
       assert is_map(changeset)
     end

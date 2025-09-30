@@ -8,8 +8,8 @@ defmodule ExOanda.Response.CreateOrder do
   use TypedEctoSchema
   import Ecto.Changeset
   alias ExOanda.{
-    OrderFillTransaction,
     OrderCancelTransaction,
+    OrderFillTransaction,
     Transaction
   }
 

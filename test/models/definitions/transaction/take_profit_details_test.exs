@@ -1,11 +1,12 @@
 defmodule ExOanda.TakeProfitDetailsTest do
   use ExUnit.Case, async: true
+  alias ExOanda.TakeProfitDetails
 
   describe "changeset/2" do
     test "changeset with empty params" do
       params = %{}
 
-      changeset = ExOanda.TakeProfitDetails.changeset(%ExOanda.TakeProfitDetails{}, params)
+      changeset = TakeProfitDetails.changeset(%TakeProfitDetails{}, params)
 
       assert is_map(changeset)
     end
@@ -91,7 +92,7 @@ defmodule ExOanda.TakeProfitDetailsTest do
         last_margin_call_extension_time: ~U[2023-01-01 00:00:00.000000Z]
       }
 
-      changeset = ExOanda.TakeProfitDetails.changeset(%ExOanda.TakeProfitDetails{}, params)
+      changeset = TakeProfitDetails.changeset(%TakeProfitDetails{}, params)
 
       assert is_map(changeset)
     end

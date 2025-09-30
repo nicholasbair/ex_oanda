@@ -1,11 +1,13 @@
 defmodule ExOanda.Request.ClosePositionTest do
   use ExUnit.Case, async: true
 
+  alias ExOanda.Request.ClosePosition
+
   describe "changeset/2" do
     test "changeset with empty params" do
       params = %{}
 
-      changeset = ExOanda.Request.ClosePosition.changeset(%ExOanda.Request.ClosePosition{}, params)
+      changeset = ClosePosition.changeset(%ClosePosition{}, params)
 
       assert is_map(changeset)
     end
@@ -16,7 +18,7 @@ defmodule ExOanda.Request.ClosePositionTest do
         short_units: 500.0
       }
 
-      changeset = ExOanda.Request.ClosePosition.changeset(%ExOanda.Request.ClosePosition{}, params)
+      changeset = ClosePosition.changeset(%ClosePosition{}, params)
 
       assert is_map(changeset)
     end
@@ -26,7 +28,7 @@ defmodule ExOanda.Request.ClosePositionTest do
         long_units: 1000.0
       }
 
-      changeset = ExOanda.Request.ClosePosition.changeset(%ExOanda.Request.ClosePosition{}, params)
+      changeset = ClosePosition.changeset(%ClosePosition{}, params)
 
       # This test ensures the changeset function doesn't crash with only long_units
       assert is_map(changeset)
@@ -37,7 +39,7 @@ defmodule ExOanda.Request.ClosePositionTest do
         short_units: 500.0
       }
 
-      changeset = ExOanda.Request.ClosePosition.changeset(%ExOanda.Request.ClosePosition{}, params)
+      changeset = ClosePosition.changeset(%ClosePosition{}, params)
 
       # This test ensures the changeset function doesn't crash with only short_units
       assert is_map(changeset)
@@ -46,7 +48,7 @@ defmodule ExOanda.Request.ClosePositionTest do
     test "changeset with neither long_units nor short_units should add validation error" do
       params = %{}
 
-      changeset = ExOanda.Request.ClosePosition.changeset(%ExOanda.Request.ClosePosition{}, params)
+      changeset = ClosePosition.changeset(%ClosePosition{}, params)
 
       # This test ensures the validation error is added when neither field is present
       assert changeset.errors[:long_units] == {"at least one of [:long_units, :short_units] must be present", []}
@@ -59,7 +61,7 @@ defmodule ExOanda.Request.ClosePositionTest do
         short_units: nil
       }
 
-      changeset = ExOanda.Request.ClosePosition.changeset(%ExOanda.Request.ClosePosition{}, params)
+      changeset = ClosePosition.changeset(%ClosePosition{}, params)
 
       # This test ensures the validation error is added when both fields are nil
       assert changeset.errors[:long_units] == {"at least one of [:long_units, :short_units] must be present", []}
@@ -71,7 +73,7 @@ defmodule ExOanda.Request.ClosePositionTest do
         long_units: 1000.0
       }
 
-      changeset = ExOanda.Request.ClosePosition.changeset(%ExOanda.Request.ClosePosition{}, params)
+      changeset = ClosePosition.changeset(%ClosePosition{}, params)
 
       # This test ensures the validation passes when at least one field is present
       assert changeset.valid?
@@ -83,7 +85,7 @@ defmodule ExOanda.Request.ClosePositionTest do
         short_units: 500.0
       }
 
-      changeset = ExOanda.Request.ClosePosition.changeset(%ExOanda.Request.ClosePosition{}, params)
+      changeset = ClosePosition.changeset(%ClosePosition{}, params)
 
       # This test ensures the validation passes when at least one field is present
       assert changeset.valid?

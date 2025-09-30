@@ -1,11 +1,13 @@
 defmodule ExOanda.ClientConfigureTransactionTest do
   use ExUnit.Case, async: true
 
+  alias ExOanda.ClientConfigureTransaction
+
   describe "changeset/2" do
     test "changeset with empty params" do
       params = %{}
 
-      changeset = ExOanda.ClientConfigureTransaction.changeset(%ExOanda.ClientConfigureTransaction{}, params)
+      changeset = ClientConfigureTransaction.changeset(%ClientConfigureTransaction{}, params)
 
       assert is_map(changeset)
     end
@@ -91,7 +93,7 @@ defmodule ExOanda.ClientConfigureTransactionTest do
         last_margin_call_extension_time: ~U[2023-01-01 00:00:00.000000Z]
       }
 
-      changeset = ExOanda.ClientConfigureTransaction.changeset(%ExOanda.ClientConfigureTransaction{}, params)
+      changeset = ClientConfigureTransaction.changeset(%ClientConfigureTransaction{}, params)
 
       assert is_map(changeset)
     end

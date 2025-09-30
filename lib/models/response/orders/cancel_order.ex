@@ -8,8 +8,8 @@ defmodule ExOanda.Response.CancelOrder do
   use TypedEctoSchema
   import Ecto.Changeset
   alias ExOanda.{
-    OrderCancelTransaction,
-    OrderCancelRejectTransaction
+    OrderCancelRejectTransaction,
+    OrderCancelTransaction
   }
 
   @primary_key false

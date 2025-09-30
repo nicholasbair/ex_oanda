@@ -1,11 +1,13 @@
 defmodule ExOanda.InstrumentFinancingTest do
   use ExUnit.Case, async: true
 
+  alias ExOanda.InstrumentFinancing
+
   describe "changeset/2" do
     test "changeset with empty params" do
       params = %{}
 
-      changeset = ExOanda.InstrumentFinancing.changeset(%ExOanda.InstrumentFinancing{}, params)
+      changeset = InstrumentFinancing.changeset(%InstrumentFinancing{}, params)
 
       assert is_map(changeset)
     end
@@ -91,7 +93,7 @@ defmodule ExOanda.InstrumentFinancingTest do
         last_margin_call_extension_time: ~U[2023-01-01 00:00:00.000000Z]
       }
 
-      changeset = ExOanda.InstrumentFinancing.changeset(%ExOanda.InstrumentFinancing{}, params)
+      changeset = InstrumentFinancing.changeset(%InstrumentFinancing{}, params)
 
       assert is_map(changeset)
     end

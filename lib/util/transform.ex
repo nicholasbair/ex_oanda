@@ -4,12 +4,12 @@ defmodule ExOanda.Transform do
   import Ecto.Changeset
   require Logger
   alias ExOanda.{
+    ClientPrice,
     CodeGenerator,
     HttpStatus,
     Response,
-    Response.TransactionEvent,
     Response.PricingHeartbeat,
-    ClientPrice
+    Response.TransactionEvent
   }
 
   @spec transform(map(), atom()) :: Response.t()
@@ -82,7 +82,10 @@ defmodule ExOanda.Transform do
 
   defp log_validations(changeset, model) do
     traverse_errors(changeset, fn _changeset, field, {msg, opts} ->
-      Logger.warning("Validation error while transforming #{CodeGenerator.format_module_name(model)}: #{field} #{msg} #{inspect(opts)}")
+      module_name = CodeGenerator.format_module_name(model)
+      Logger.warning(
+        "Validation error while transforming #{module_name}: #{field} #{msg} #{inspect(opts)}"
+      )
     end)
 
     changeset

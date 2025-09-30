@@ -36,7 +36,6 @@ defmodule ExOanda.API do
       # Req HTTP errors
       {:error, %Req.HTTPError{} = error} -> {:error, TransportError.exception(error)}
 
-
       # Req redirect errors
       {:error, %Req.TooManyRedirectsError{} = error} -> {:error, TransportError.exception(error)}
 
