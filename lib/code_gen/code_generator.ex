@@ -249,33 +249,24 @@ defmodule ExOanda.CodeGenerator do
 
         body = binding()[:body] || %{}
 
-        validated_body =
-          unquote(request_model).changeset(unquote(request_model).__struct__(), body)
-          |> Ecto.Changeset.apply_action(:validate)
-
-        case validated_body do
-          {:error, err} ->
-            {:error, err}
-
-          {:ok, body} ->
-            case NimbleOptions.validate(params, unquote(formatted_params)) do
-              {:ok, _} ->
-                Req.new(
-                  auth: API.auth_bearer(conn),
-                  url: conn.api_server <> unquote(path),
-                  path_params: path_params,
-                  method: unquote(method),
-                  headers: API.base_headers(),
-                  params: params,
-                  json: ExOanda.CodeGenerator.transform_request_body(body)
-                )
-                |> API.maybe_attach_telemetry(conn)
-                |> Req.request(conn.options)
-                |> API.handle_response(unquote(response_model))
-
-              {:error, %NimbleOptions.ValidationError{} = validation_error} ->
-                {:error, ValidationError.exception(validation_error)}
-            end
+        with {:ok, validated_body} <- ExOanda.CodeGenerator.validate_request_body(body, unquote(request_model)),
+             {:ok, _} <- NimbleOptions.validate(params, unquote(formatted_params)) do
+          Req.new(
+            auth: API.auth_bearer(conn),
+            url: conn.api_server <> unquote(path),
+            path_params: path_params,
+            method: unquote(method),
+            headers: API.base_headers(),
+            params: params,
+            json: ExOanda.CodeGenerator.transform_request_body(validated_body)
+          )
+          |> API.maybe_attach_telemetry(conn)
+          |> Req.request(conn.options)
+          |> API.handle_response(unquote(response_model))
+        else
+          {:error, %NimbleOptions.ValidationError{} = validation_error} ->
+            {:error, ValidationError.exception(validation_error)}
+          {:error, err} -> {:error, err}
         end
       end
 
@@ -450,6 +441,12 @@ defmodule ExOanda.CodeGenerator do
   @doc false
   def format_args(args) do
     for %{name: name} <- args, do: {String.to_atom(name), [], nil}
+  end
+
+  @doc false
+  def validate_request_body(body, request_model) do
+    request_model.changeset(request_model.__struct__(), body)
+    |> Ecto.Changeset.apply_action(:validate)
   end
 
   @doc false
