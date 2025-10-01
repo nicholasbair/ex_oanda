@@ -1,6 +1,6 @@
 Unofficial Elixir SDK for the Oanda API.
 
-Note - this is highly experimental and in active development.
+Note - this SDK is in active development, not recommended for production use.
 
 ## Notes
 
@@ -11,7 +11,7 @@ Trading foreign exchange (forex) on margin carries a high level of risk and may 
 This SDK is provided "as-is," without any warranty of any kind, either expressed or implied, including but not limited to the implied warranties of merchantability, fitness for a particular purpose, or non-infringement. The use of this SDK is at your own risk, and we make no guarantees regarding its accuracy, reliability, or suitability for any specific trading strategy or purpose. Users are responsible for their own trading decisions and should seek independent financial advice if necessary.
 
 ## TODO / Known Issues
-1. Limited test coverage, validation of schemas
+1. Not all schemas have been validated against Oanda's live API
 2. Not yet available on hex
 
 ## Installation
@@ -23,7 +23,7 @@ def deps do
 end
 ```
 
-## Usage
+## General Usage
 1. Connection is a struct that stores your Oanda API credentials.
 ```elixir
 conn =
@@ -63,9 +63,76 @@ response = ExOanda.Accounts.first!(conn)
 
 3. Where supported, queries and filters can be passed as keyword list and are validated by NimbleOptions:
 ```elixir
+# Correct filter
 {:ok, accounts} =
   %ExOanda.Connection{token: "1234"}
   |> ExOanda.Accounts.list_changes("account_id", since_transaction_id: "5678")
+
+# Incorrect filter
+{:error, %ExOanda.ValidationError{}} =
+  %ExOanda.Connection{token: "1234"}
+  |> ExOanda.Accounts.list_changes("account_id", since_transaction_id: 1234)
 ```
 
-4. [Ecto](https://hex.pm/packages/ecto) is also used when transforming the API response from Oanda into structs.  Any validation errors are logged, but errors are not returned/raised in order to make to SDK resilient to changes to the API contract.
+4. [Ecto](https://hex.pm/packages/ecto) is used to validate request payloads and transform response payloads from Oanda into structs.
+
+## Examples
+### Open a trade
+```elixir
+alias ExOanda.{
+  Connection,
+  Orders
+}
+
+conn = %Connection{token: "1234"}
+
+# Market order, no TP/SL/TS, etc.
+payload = %{
+  order: %{
+    instrument: "EUR_USD",
+    units: 1000
+  }
+}
+
+case Orders.create(conn, "account_id", payload) do
+  {:ok, res} -> maybe_persist_trade(res) # Success status doesn't mean the order was filled, only that it was created/accepted
+  {:error, error} -> handle_error(error)
+end
+```
+
+### Close a position
+```elixir
+alias ExOanda.{
+  Connection,
+  Positions
+}
+
+conn = %Connection{token: "1234"}
+
+# Positions can be partially closed by passing an int here or fully closed by passing the string ALL
+payload = %{
+  long_units: "ALL"
+}
+
+case Positions.close(conn, "account_id", "EUR_USD", payload) do
+  {:ok, res} -> maybe_update_state(res) # Success status doesn't mean the close order was filled, only that it was created/accepted
+  {:error, error} -> handle_error(error)
+end
+```
+
+### Stream Prices
+```elixir
+alias ExOanda.{
+  Connection,
+  Streaming
+}
+
+# The HTTP connection with Oanda will periodically die, by default Req will retry the connection
+# Your application should also have a process to restart the stream if Req's retries fail
+Streaming.price_stream(
+  %Connection{token: "1234"},
+  "account_id",
+  &IO.inspect/1,
+  instruments: ["EUR_USD", "NZD_USD"]
+)
+```
