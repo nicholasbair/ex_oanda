@@ -61,6 +61,7 @@ defmodule ExOanda.OrderRequest do
     |> validate_inclusion(:time_in_force, ~w(GTC GTD GFD FOK IOC)a)
     |> validate_inclusion(:position_fill, ~w(DEFAULT REDUCE_ONLY)a)
     |> validate_inclusion(:trigger_condition, ~w(DEFAULT INVERSE BID ASK MID)a)
+    |> validate_required([:instrument, :units])
     |> cast_embed(:client_extensions)
     |> cast_embed(:take_profit_on_fill)
     |> cast_embed(:stop_loss_on_fill)
