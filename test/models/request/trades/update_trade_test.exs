@@ -9,7 +9,6 @@ defmodule ExOanda.Request.UpdateTradeTest do
 
       changeset = UpdateTrade.changeset(%UpdateTrade{}, params)
 
-      # This test ensures the validation error is added when no fields are present
       assert changeset.errors[:take_profit] == {"at least one of [:take_profit, :stop_loss, :trailing_stop_loss, :guaranteed_stop_loss] must be present", []}
       refute changeset.valid?
     end
@@ -24,7 +23,6 @@ defmodule ExOanda.Request.UpdateTradeTest do
 
       changeset = UpdateTrade.changeset(%UpdateTrade{}, params)
 
-      # This test ensures the validation error is added when all fields are nil
       assert changeset.errors[:take_profit] == {"at least one of [:take_profit, :stop_loss, :trailing_stop_loss, :guaranteed_stop_loss] must be present", []}
       refute changeset.valid?
     end
@@ -39,7 +37,6 @@ defmodule ExOanda.Request.UpdateTradeTest do
 
       changeset = UpdateTrade.changeset(%UpdateTrade{}, params)
 
-      # This test ensures the validation passes when at least one field is present
       assert changeset.valid?
       assert changeset.errors == []
     end
@@ -54,7 +51,6 @@ defmodule ExOanda.Request.UpdateTradeTest do
 
       changeset = UpdateTrade.changeset(%UpdateTrade{}, params)
 
-      # This test ensures the validation passes when at least one field is present
       assert changeset.valid?
       assert changeset.errors == []
     end
@@ -69,7 +65,6 @@ defmodule ExOanda.Request.UpdateTradeTest do
 
       changeset = UpdateTrade.changeset(%UpdateTrade{}, params)
 
-      # This test ensures the validation passes when at least one field is present
       assert changeset.valid?
       assert changeset.errors == []
     end
@@ -84,7 +79,6 @@ defmodule ExOanda.Request.UpdateTradeTest do
 
       changeset = UpdateTrade.changeset(%UpdateTrade{}, params)
 
-      # This test ensures the validation passes when at least one field is present
       assert changeset.valid?
       assert changeset.errors == []
     end
@@ -103,7 +97,6 @@ defmodule ExOanda.Request.UpdateTradeTest do
 
       changeset = UpdateTrade.changeset(%UpdateTrade{}, params)
 
-      # This test ensures the validation passes when multiple fields are present
       assert changeset.valid?
       assert changeset.errors == []
     end
@@ -130,7 +123,6 @@ defmodule ExOanda.Request.UpdateTradeTest do
 
       changeset = UpdateTrade.changeset(%UpdateTrade{}, params)
 
-      # This test ensures the validation passes when all fields are present
       assert changeset.valid?
       assert changeset.errors == []
     end

@@ -5,9 +5,6 @@ defmodule ExOanda.ValidationError do
   This error is raised when:
   - NimbleOptions validation fails for function parameters (error in `error` field, `validation_type: :parameter_validation`)
   - Ecto changeset validation fails for request body validation (changeset in `error` field, `validation_type: :request_body_validation`)
-
-  It provides a more user-friendly error message and structured error data.
-  The `validation_type` field indicates which type of validation failed.
   """
 
   @type validation_type :: :parameter_validation | :request_body_validation
