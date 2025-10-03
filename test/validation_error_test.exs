@@ -14,42 +14,70 @@ defmodule ExOanda.ValidationErrorTest do
 
       assert %ValidationError{} = exception
       assert exception.message == "Parameter validation failed: invalid value"
-      assert exception.errors == [nimble_error]
-    end
-
-    test "creates exception from list of NimbleOptions.ValidationError structs" do
-      nimble_errors = [
-        %NimbleOptions.ValidationError{key: :param1, message: "required"},
-        %NimbleOptions.ValidationError{key: :param2, message: "invalid type"}
-      ]
-
-      exception = ValidationError.exception(nimble_errors)
-
-      assert %ValidationError{} = exception
-      assert exception.message == "Parameter validation failed: param1: required, param2: invalid type"
-      assert exception.errors == nimble_errors
-    end
-
-    test "handles empty list of errors" do
-      exception = ValidationError.exception([])
-
-      assert %ValidationError{} = exception
-      assert exception.message == "Parameter validation failed: "
-      assert exception.errors == []
+      assert exception.error == nimble_error
+      assert exception.validation_type == :parameter_validation
     end
   end
 
-  describe "format_errors/1" do
-    test "formats multiple errors correctly" do
-      errors = [
-        %NimbleOptions.ValidationError{key: :name, message: "can't be blank"},
-        %NimbleOptions.ValidationError{key: :age, message: "must be a number"}
-      ]
 
-      formatted = ValidationError.exception(errors).message
+  describe "exception/1 with Ecto.Changeset" do
+    test "creates exception from Ecto.Changeset struct" do
+      changeset = %Ecto.Changeset{
+        valid?: false,
+        errors: [
+          name: {"can't be blank", [validation: :required]},
+          age: {"must be greater than 0", [validation: :number, kind: :greater_than, number: 0]}
+        ],
+        data: %{},
+        changes: %{name: "", age: -1}
+      }
 
-      assert formatted =~ "name: can't be blank"
-      assert formatted =~ "age: must be a number"
+      exception = ValidationError.exception(changeset)
+
+      assert %ValidationError{} = exception
+      assert exception.message =~ "Request body validation failed"
+      assert exception.message =~ "name: \"can't be blank\""
+      assert exception.message =~ "age: \"must be greater than 0\""
+      assert exception.error == changeset
+      assert exception.validation_type == :request_body_validation
+    end
+
+    test "handles changeset with no errors" do
+      changeset = %Ecto.Changeset{
+        valid?: true,
+        errors: [],
+        data: %{},
+        changes: %{}
+      }
+
+      exception = ValidationError.exception(changeset)
+
+      assert %ValidationError{} = exception
+      assert exception.message =~ "Request body validation failed"
+      assert exception.error == changeset
+      assert exception.validation_type == :request_body_validation
+    end
+
+    test "handles changeset with embedded schema errors" do
+      changeset = %Ecto.Changeset{
+        valid?: false,
+        errors: [
+          order: [
+            {:instrument, ["can't be blank"]},
+            {:units, ["must be greater than 0"]}
+          ]
+        ],
+        data: %{},
+        changes: %{}
+      }
+
+      exception = ValidationError.exception(changeset)
+
+      assert %ValidationError{} = exception
+      assert exception.message =~ "Request body validation failed"
+      assert exception.message =~ "order: [instrument: [\"can't be blank\"], units: [\"must be greater than 0\"]]"
+      assert exception.error == changeset
+      assert exception.validation_type == :request_body_validation
     end
   end
 end

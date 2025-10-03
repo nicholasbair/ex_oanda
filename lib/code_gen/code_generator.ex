@@ -266,7 +266,8 @@ defmodule ExOanda.CodeGenerator do
         else
           {:error, %NimbleOptions.ValidationError{} = validation_error} ->
             {:error, ValidationError.exception(validation_error)}
-          {:error, err} -> {:error, err}
+          {:error, %Ecto.Changeset{} = changeset} ->
+            {:error, ValidationError.exception(changeset)}
         end
       end
 

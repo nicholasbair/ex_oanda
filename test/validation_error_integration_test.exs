@@ -26,7 +26,7 @@ defmodule ExOanda.ValidationErrorIntegrationTest do
 
   describe "ValidationError exception behavior" do
     test "ValidationError can be raised and caught" do
-      error = %ValidationError{message: "test error", errors: []}
+      error = %ValidationError{message: "test error", error: nil, validation_type: :parameter_validation}
 
       assert_raise ValidationError, "test error", fn ->
         raise error

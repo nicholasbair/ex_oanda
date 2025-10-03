@@ -20,5 +20,6 @@ defmodule ExOanda.Request.ReplaceOrder do
     struct
     |> cast(params, [])
     |> cast_embed(:order)
+    |> validate_required([:order])
   end
 end

@@ -19,5 +19,6 @@ defmodule ExOanda.Request.CloseTrade do
   def changeset(struct, params) do
     struct
     |> cast(params, [:units])
+    |> validate_required([:units])
   end
 end

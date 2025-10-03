@@ -21,5 +21,6 @@ defmodule ExOanda.Request.OrderModifyClientExtensions do
     struct
     |> cast(params, [])
     |> cast_embed(:client_extensions)
+    |> validate_required([:client_extensions])
   end
 end
