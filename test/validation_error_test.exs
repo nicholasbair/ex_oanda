@@ -19,7 +19,6 @@ defmodule ExOanda.ValidationErrorTest do
     end
   end
 
-
   describe "exception/1 with Ecto.Changeset" do
     test "creates exception from Ecto.Changeset struct" do
       changeset = %Ecto.Changeset{
