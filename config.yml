@@ -279,7 +279,7 @@ interfaces:
           - name: "body"
             type: "map"
       - function_name: "update"
-        decription: "Create, replace and cancel a Trade's dependent Orders (Take Profit, Stop Loss and Trailing Stop Loss) through the Trade itself."
+        description: "Create, replace and cancel a Trade's dependent Orders (Take Profit, Stop Loss and Trailing Stop Loss) through the Trade itself."
         http_method: "PUT"
         path: "/accounts/:account_id/trades/:trade_id/orders"
         request_schema: "UpdateTrade"
