@@ -90,7 +90,8 @@ defmodule ExOanda.MixProject do
       name: "ex_oanda",
       licenses: ["MIT"],
       links: %{
-        github: url()
+        github: url(),
+        changelog: "#{url()}/blob/main/CHANGELOG.md"
       }
     ]
   end
