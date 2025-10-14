@@ -4,6 +4,7 @@ defmodule ExOanda.API do
   alias ExOanda.Connection, as: Conn
   alias ExOanda.Transform, as: TF
   alias ExOanda.TransportError
+  alias ExOanda.Telemetry
 
   # Requests ###################################################################
 
@@ -53,12 +54,8 @@ defmodule ExOanda.API do
   defp format_response({:ok, res}), do: {:error, res}
   defp format_response(res), do: res
 
-  # Telemetry ##############################################################
-  @spec maybe_attach_telemetry(Req.Request.t(), Conn.t()) :: Req.Request.t()
-  def maybe_attach_telemetry(req, %{telemetry: true} = _conn) do
-    ReqTelemetry.attach_default_logger()
-    ReqTelemetry.attach(req)
-  end
-  def maybe_attach_telemetry(req, %{telemetry: false} = _conn), do: req
-  def maybe_attach_telemetry(req, _), do: req
+  # Telemetry ####################################################################
+
+  @doc false
+  defdelegate maybe_attach_telemetry(req, conn), to: Telemetry
 end
