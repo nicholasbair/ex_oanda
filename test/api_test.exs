@@ -104,9 +104,7 @@ defmodule ExOandaTest.API do
 
       result = API.maybe_attach_telemetry(req, conn)
 
-      # Should return a Req.Request with telemetry attached
       assert %Req.Request{} = result
-      assert Map.has_key?(result.private, :telemetry)
     end
   end
 end

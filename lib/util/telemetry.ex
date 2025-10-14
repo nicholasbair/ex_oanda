@@ -92,6 +92,7 @@ defmodule ExOanda.Telemetry do
     options: []
   ]
 
+  @doc false
   @spec maybe_attach_telemetry(Req.Request.t(), Conn.t()) :: Req.Request.t()
   def maybe_attach_telemetry(req, %{telemetry: %{enabled: true}} = conn) do
     if conn.telemetry.use_default_logger do
