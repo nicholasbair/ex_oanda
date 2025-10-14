@@ -99,26 +99,12 @@ defmodule ExOandaTest.API do
       {:ok, req: req}
     end
 
-    test "attaches telemetry when telemetry is enabled in the connection", %{req: req} do
-      conn = %Conn{token: "abc", telemetry: true}
-      res = API.maybe_attach_telemetry(req, conn)
+    test "delegates to Telemetry.maybe_attach_telemetry/2", %{req: req} do
+      conn = %Conn{token: "abc", telemetry: %ExOanda.Telemetry{enabled: true}}
 
-      assert res.private.telemetry != nil
-    end
+      result = API.maybe_attach_telemetry(req, conn)
 
-    test "returns the request unchanged when telemetry is disabled", %{req: req} do
-      conn = %Conn{token: "abc", telemetry: false}
-      assert API.maybe_attach_telemetry(req, conn) == req
-    end
-
-    test "returns the request unchanged when telemetry key is missing", %{req: req} do
-      conn = %Conn{token: "abc"}
-      assert API.maybe_attach_telemetry(req, conn) == req
-    end
-
-    test "returns the request unchanged when connection has no telemetry key", %{req: req} do
-      conn = %{token: "abc", other_field: "value"}
-      assert API.maybe_attach_telemetry(req, conn) == req
+      assert %Req.Request{} = result
     end
   end
 end

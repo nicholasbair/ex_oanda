@@ -4,7 +4,7 @@ defmodule ExOanda.MixProject do
   def project do
     [
       app: :ex_oanda,
-      version: "0.0.20",
+      version: "0.0.21",
       elixir: "~> 1.14",
       start_permanent: Mix.env() == :prod,
       description: "Unofficial Elixir SDK for the Oanda API.",
@@ -80,6 +80,7 @@ defmodule ExOanda.MixProject do
       {:recase, "~> 0.8.1"},
       {:req, "~> 0.5.2"},
       {:req_telemetry, "~> 0.1.1"},
+      {:telemetry_test, "~> 0.1.0", only: :test},
       {:typed_ecto_schema, "~> 0.4.1", runtime: false},
       {:yaml_elixir, "~> 2.11"}
     ]
