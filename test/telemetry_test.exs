@@ -1,5 +1,6 @@
 defmodule ExOanda.TelemetryTest do
   use ExUnit.Case, async: true
+  import ExUnit.CaptureLog
 
   alias ExOanda.{Telemetry, Connection}
 
@@ -27,6 +28,11 @@ defmodule ExOanda.TelemetryTest do
 
   describe "maybe_attach_telemetry/2" do
     test "attaches telemetry when enabled is true" do
+      ref = :telemetry_test.attach_event_handlers(self(), [
+        [:req, :request, :pipeline, :start],
+        [:req, :request, :pipeline, :stop]
+      ])
+
       req = Req.new(url: "https://example.com")
       conn = %Connection{
         token: "test-token",
@@ -35,11 +41,28 @@ defmodule ExOanda.TelemetryTest do
 
       result = Telemetry.maybe_attach_telemetry(req, conn)
 
-      # Our function should return a Req.Request (potentially modified by ReqTelemetry)
       assert %Req.Request{} = result
+      assert result != req, "Request should be modified when telemetry is attached"
+
+      bypass = Bypass.open()
+      Bypass.expect(bypass, "GET", "/", fn conn ->
+        Plug.Conn.send_resp(conn, 200, "OK")
+      end)
+
+      Req.get(result, url: "http://localhost:#{bypass.port}")
+
+      assert_receive {[:req, :request, :pipeline, :start], ^ref, _measurements, _metadata}
+      assert_receive {[:req, :request, :pipeline, :stop], ^ref, _measurements, _metadata}
+
+      :telemetry.detach(ref)
     end
 
     test "attaches telemetry with default logger when use_default_logger is true" do
+      ref = :telemetry_test.attach_event_handlers(self(), [
+        [:req, :request, :pipeline, :start],
+        [:req, :request, :pipeline, :stop]
+      ])
+
       req = Req.new(url: "https://example.com")
       conn = %Connection{
         token: "test-token",
@@ -52,8 +75,28 @@ defmodule ExOanda.TelemetryTest do
 
       result = Telemetry.maybe_attach_telemetry(req, conn)
 
-      # Our function should return a Req.Request (potentially modified by ReqTelemetry)
       assert %Req.Request{} = result
+      assert result != req, "Request should be modified when telemetry is attached"
+
+      bypass = Bypass.open()
+      Bypass.expect(bypass, "GET", "/", fn conn ->
+        Plug.Conn.send_resp(conn, 200, "OK")
+      end)
+
+      log_output = capture_log(fn ->
+        Req.get(result, url: "http://localhost:#{bypass.port}")
+      end)
+
+      assert log_output =~ "Req:"
+      assert log_output =~ "GET"
+      assert log_output =~ "http://localhost:#{bypass.port}"
+      assert log_output =~ "(pipeline)"
+      assert log_output =~ "200"
+
+      assert_receive {[:req, :request, :pipeline, :start], ^ref, _measurements, _metadata}
+      assert_receive {[:req, :request, :pipeline, :stop], ^ref, _measurements, _metadata}
+
+      :telemetry.detach(ref)
     end
 
     test "returns request unchanged when telemetry is disabled" do
@@ -65,7 +108,6 @@ defmodule ExOanda.TelemetryTest do
 
       result = Telemetry.maybe_attach_telemetry(req, conn)
 
-      # When disabled, our function should return the request unchanged
       assert result == req
     end
 
@@ -75,7 +117,6 @@ defmodule ExOanda.TelemetryTest do
 
       result = Telemetry.maybe_attach_telemetry(req, conn)
 
-      # When telemetry field is missing, our function should return the request unchanged
       assert result == req
     end
 
@@ -85,11 +126,15 @@ defmodule ExOanda.TelemetryTest do
 
       result = Telemetry.maybe_attach_telemetry(req, conn)
 
-      # When connection has no telemetry key, our function should return the request unchanged
       assert result == req
     end
 
     test "attaches telemetry with custom options" do
+      ref = :telemetry_test.attach_event_handlers(self(), [
+        [:req, :request, :adapter, :start],
+        [:req, :request, :adapter, :stop]
+      ])
+
       req = Req.new(url: "https://example.com")
       custom_options = [
         pipeline: false,
@@ -108,11 +153,28 @@ defmodule ExOanda.TelemetryTest do
 
       result = Telemetry.maybe_attach_telemetry(req, conn)
 
-      # Our function should return a Req.Request (potentially modified by ReqTelemetry)
       assert %Req.Request{} = result
+      assert result != req, "Request should be modified when telemetry is attached"
+
+      bypass = Bypass.open()
+      Bypass.expect(bypass, "GET", "/", fn conn ->
+        Plug.Conn.send_resp(conn, 200, "OK")
+      end)
+
+      Req.get(result, url: "http://localhost:#{bypass.port}")
+
+      assert_receive {[:req, :request, :adapter, :start], ^ref, _measurements, _metadata}
+      assert_receive {[:req, :request, :adapter, :stop], ^ref, _measurements, _metadata}
+
+      :telemetry.detach(ref)
     end
 
     test "attaches telemetry with boolean true options" do
+      ref = :telemetry_test.attach_event_handlers(self(), [
+        [:req, :request, :pipeline, :start],
+        [:req, :request, :pipeline, :stop]
+      ])
+
       req = Req.new(url: "https://example.com")
       conn = %Connection{
         token: "test-token",
@@ -121,8 +183,20 @@ defmodule ExOanda.TelemetryTest do
 
       result = Telemetry.maybe_attach_telemetry(req, conn)
 
-      # Our function should return a Req.Request (potentially modified by ReqTelemetry)
       assert %Req.Request{} = result
+      assert result != req, "Request should be modified when telemetry is attached"
+
+      bypass = Bypass.open()
+      Bypass.expect(bypass, "GET", "/", fn conn ->
+        Plug.Conn.send_resp(conn, 200, "OK")
+      end)
+
+      Req.get(result, url: "http://localhost:#{bypass.port}")
+
+      assert_receive {[:req, :request, :pipeline, :start], ^ref, _measurements, _metadata}
+      assert_receive {[:req, :request, :pipeline, :stop], ^ref, _measurements, _metadata}
+
+      :telemetry.detach(ref)
     end
 
     test "attaches telemetry with boolean false options" do
@@ -134,8 +208,16 @@ defmodule ExOanda.TelemetryTest do
 
       result = Telemetry.maybe_attach_telemetry(req, conn)
 
-      # Our function should return a Req.Request (potentially modified by ReqTelemetry)
       assert %Req.Request{} = result
+      assert result != req, "Request should be modified when telemetry is attached"
+
+      bypass = Bypass.open()
+      Bypass.expect(bypass, "GET", "/", fn conn ->
+        Plug.Conn.send_resp(conn, 200, "OK")
+      end)
+
+      {:ok, response} = Req.get(result, url: "http://localhost:#{bypass.port}")
+      assert response.status == 200
     end
   end
 
@@ -149,14 +231,12 @@ defmodule ExOanda.TelemetryTest do
     end
 
     test "options type accepts boolean or list of options" do
-      # Test boolean options
       telemetry1 = %Telemetry{options: true}
       assert telemetry1.options == true
 
       telemetry2 = %Telemetry{options: false}
       assert telemetry2.options == false
 
-      # Test list of options
       options = [
         {:adapter, true},
         {:pipeline, false},
@@ -170,17 +250,33 @@ defmodule ExOanda.TelemetryTest do
 
   describe "integration with API module" do
     test "API.maybe_attach_telemetry delegates to Telemetry.maybe_attach_telemetry" do
+      ref = :telemetry_test.attach_event_handlers(self(), [
+        [:req, :request, :pipeline, :start],
+        [:req, :request, :pipeline, :stop]
+      ])
+
       req = Req.new(url: "https://example.com")
       conn = %Connection{
         token: "test-token",
         telemetry: %Telemetry{enabled: true, options: []}
       }
 
-      # Test that the API module delegates correctly by checking the result
       result = ExOanda.API.maybe_attach_telemetry(req, conn)
 
-      # Should return a Req.Request (potentially modified by ReqTelemetry)
       assert %Req.Request{} = result
+      assert result != req, "Request should be modified when telemetry is attached"
+
+      bypass = Bypass.open()
+      Bypass.expect(bypass, "GET", "/", fn conn ->
+        Plug.Conn.send_resp(conn, 200, "OK")
+      end)
+
+      Req.get(result, url: "http://localhost:#{bypass.port}")
+
+      assert_receive {[:req, :request, :pipeline, :start], ^ref, _measurements, _metadata}
+      assert_receive {[:req, :request, :pipeline, :stop], ^ref, _measurements, _metadata}
+
+      :telemetry.detach(ref)
     end
   end
 end

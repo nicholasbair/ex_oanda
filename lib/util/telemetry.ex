@@ -64,7 +64,7 @@ defmodule ExOanda.Telemetry do
 
   ## Usage
 
-  This module is typically used internally by ExOanda when making API requests.
+  This module is used internally by ExOanda when making API requests.
   The `maybe_attach_telemetry/2` function is called automatically based on
   your connection configuration.
 

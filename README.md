@@ -18,7 +18,7 @@ This SDK is provided "as-is," without any warranty of any kind, either expressed
 ```elixir
 def deps do
   [
-    {:ex_oanda, git: "https://github.com/nicholasbair/ex_oanda.git", tag: "v0.0.19"}
+    {:ex_oanda, git: "https://github.com/nicholasbair/ex_oanda.git", tag: "v0.0.20"}
   ]
 end
 ```
@@ -32,7 +32,11 @@ conn =
     api_server: "https://api-fxpractice.oanda.com/v3",
     stream_server: "https://stream-fxpractice.oanda.com/v3",
     options: [], # Passed to Req (HTTP client)
-    telemetry: true # Enables telemetry and the default telemetry logger (defaults to `false`)
+    telemetry: %ExOanda.Telemetry{
+      enabled: true,
+      use_default_logger: true,
+      options: []
+    }
   }
 ```
 
@@ -75,6 +79,63 @@ response = ExOanda.Accounts.first!(conn)
 ```
 
 4. [Ecto](https://hex.pm/packages/ecto) is used to validate request payloads and transform response payloads from Oanda into structs.
+
+## Telemetry
+
+ExOanda supports telemetry instrumentation using [ReqTelemetry](https://hexdocs.pm/req_telemetry/ReqTelemetry.html) to monitor HTTP requests and responses. This is useful for debugging, monitoring API performance, and integrating with observability tools.
+
+### Basic Usage
+
+Enable telemetry by setting the `telemetry` field in your connection:
+
+```elixir
+conn = %ExOanda.Connection{
+  token: "1234",
+  telemetry: %ExOanda.Telemetry{
+    enabled: true,
+    use_default_logger: true
+  }
+}
+```
+
+### Telemetry Events
+
+When enabled, ExOanda emits the following telemetry events:
+
+- `[:req, :request, :pipeline, :start]` - Request pipeline starts
+- `[:req, :request, :adapter, :start]` - HTTP adapter starts  
+- `[:req, :request, :adapter, :stop]` - HTTP adapter completes
+- `[:req, :request, :adapter, :error]` - HTTP adapter error
+- `[:req, :request, :pipeline, :stop]` - Request pipeline completes
+- `[:req, :request, :pipeline, :error]` - Request pipeline error
+
+### Configuration Options
+
+```elixir
+conn = %ExOanda.Connection{
+  token: "1234",
+  telemetry: %ExOanda.Telemetry{
+    enabled: true,
+    use_default_logger: false,  # Set to true for basic console logging
+    options: [
+      pipeline: true,           # Enable pipeline events (default: true)
+      adapter: true,            # Enable adapter events (default: true)
+      metadata: %{api_version: "v3", service: "oanda"}
+    ]
+  }
+}
+```
+
+### Default Logging
+
+When `use_default_logger` is enabled, you'll see output like:
+
+```
+Req:479128347 - GET https://api-fxtrade.oanda.com/v3/accounts (pipeline)
+Req:479128347 - GET https://api-fxtrade.oanda.com/v3/accounts (adapter)
+Req:479128347 - 200 in 403ms (adapter)
+Req:479128347 - 200 in 413ms (pipeline)
+```
 
 ## Examples
 ### Open a trade
