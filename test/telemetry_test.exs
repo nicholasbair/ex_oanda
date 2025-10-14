@@ -26,22 +26,20 @@ defmodule ExOanda.TelemetryTest do
   end
 
   describe "maybe_attach_telemetry/2" do
-    test "calls ReqTelemetry.attach when telemetry is enabled" do
+    test "attaches telemetry when enabled is true" do
       req = Req.new(url: "https://example.com")
       conn = %Connection{
         token: "test-token",
         telemetry: %Telemetry{enabled: true, use_default_logger: false, options: []}
       }
 
-      # We should test that our function calls the right ReqTelemetry functions
-      # but we don't need to test ReqTelemetry's internal behavior
       result = Telemetry.maybe_attach_telemetry(req, conn)
 
       # Our function should return a Req.Request (potentially modified by ReqTelemetry)
       assert %Req.Request{} = result
     end
 
-    test "calls ReqTelemetry.attach_default_logger when use_default_logger is true" do
+    test "attaches telemetry with default logger when use_default_logger is true" do
       req = Req.new(url: "https://example.com")
       conn = %Connection{
         token: "test-token",
@@ -91,7 +89,7 @@ defmodule ExOanda.TelemetryTest do
       assert result == req
     end
 
-    test "passes custom options to ReqTelemetry.attach" do
+    test "attaches telemetry with custom options" do
       req = Req.new(url: "https://example.com")
       custom_options = [
         pipeline: false,
@@ -114,7 +112,7 @@ defmodule ExOanda.TelemetryTest do
       assert %Req.Request{} = result
     end
 
-    test "passes boolean options to ReqTelemetry.attach" do
+    test "attaches telemetry with boolean true options" do
       req = Req.new(url: "https://example.com")
       conn = %Connection{
         token: "test-token",
@@ -127,7 +125,7 @@ defmodule ExOanda.TelemetryTest do
       assert %Req.Request{} = result
     end
 
-    test "passes boolean false options to ReqTelemetry.attach" do
+    test "attaches telemetry with boolean false options" do
       req = Req.new(url: "https://example.com")
       conn = %Connection{
         token: "test-token",
