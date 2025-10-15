@@ -50,6 +50,49 @@ defmodule ExOanda.Response.TransactionEvent do
 
   @primary_key false
 
+  @type t :: %__MODULE__{
+          event: transaction_event()
+        }
+
+  @type transaction_event ::
+          ExOanda.OrderFillTransaction.t()
+          | ExOanda.OrderCancelTransaction.t()
+          | ExOanda.OrderCancelRejectTransaction.t()
+          | ExOanda.OrderClientExtensionsModifyTransaction.t()
+          | ExOanda.OrderClientExtensionsModifyRejectTransaction.t()
+          | ExOanda.CreateTransaction.t()
+          | ExOanda.CloseTransaction.t()
+          | ExOanda.ReopenTransaction.t()
+          | ExOanda.ClientConfigureTransaction.t()
+          | ExOanda.ClientConfigureRejectTransaction.t()
+          | ExOanda.TransferFundsTransaction.t()
+          | ExOanda.TransferFundsRejectTransaction.t()
+          | ExOanda.MarketOrderTransaction.t()
+          | ExOanda.MarketOrderRejectTransaction.t()
+          | ExOanda.FixedPriceOrderTransaction.t()
+          | ExOanda.LimitOrderTransaction.t()
+          | ExOanda.LimitOrderRejectTransaction.t()
+          | ExOanda.StopLossOrderTransaction.t()
+          | ExOanda.StopLossOrderRejectTransaction.t()
+          | ExOanda.MarketIfTouchedOrderTransaction.t()
+          | ExOanda.MarketIfTouchedOrderRejectTransaction.t()
+          | ExOanda.TakeProfitOrderTransaction.t()
+          | ExOanda.TakeProfitOrderRejectTransaction.t()
+          | ExOanda.GuaranteedStopLossOrderTransaction.t()
+          | ExOanda.GuaranteedStopLossOrderRejectTransaction.t()
+          | ExOanda.TrailingStopLossOrderTransaction.t()
+          | ExOanda.TrailingStopLossOrderRejectTransaction.t()
+          | ExOanda.TradeClientExtensionsModifyTransaction.t()
+          | ExOanda.TradeClientExtensionsModifyRejectTransaction.t()
+          | ExOanda.MarginCallEnterTransaction.t()
+          | ExOanda.MarginCallExtendTransaction.t()
+          | ExOanda.MarginCallExitTransaction.t()
+          | ExOanda.DelayedTradeClosureTransaction.t()
+          | ExOanda.DailyFinancingTransaction.t()
+          | ExOanda.DividendAdjustmentTransaction.t()
+          | ExOanda.ResetResettablePLTransaction.t()
+          | ExOanda.Response.TransactionHeartbeat.t()
+
   embedded_schema do
     polymorphic_embeds_one(:event,
       types: [

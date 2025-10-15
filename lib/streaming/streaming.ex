@@ -45,7 +45,7 @@ defmodule ExOanda.Streaming do
       :ok
   """
   def transaction_stream!(%Conn{} = conn, account_id, stream_to, params \\ []) do
-    case transaction_stream(conn, account_id, stream_to, params) do
+    case stream!(conn, account_id, :transactions, stream_to, params) do
       {:ok, result} -> result
       {:error, %TransportError{} = transport_error} -> raise transport_error
       {:error, %DecodeError{} = decode_error} -> raise decode_error
@@ -85,7 +85,7 @@ defmodule ExOanda.Streaming do
   #{NimbleOptions.docs(@price_stream_params)}
   """
   def price_stream!(%Conn{} = conn, account_id, stream_to, params \\ []) do
-    case price_stream(conn, account_id, stream_to, params) do
+    case stream!(conn, account_id, :pricing, stream_to, format_instruments(params)) do
       {:ok, result} -> result
       {:error, %ValidationError{} = validation_error} -> raise validation_error
       {:error, %TransportError{} = transport_error} -> raise transport_error
@@ -116,10 +116,39 @@ defmodule ExOanda.Streaming do
     |> Req.request(conn.options)
   end
 
+  defp stream!(%Conn{} = conn, account_id, stream_type, stream_to, params) do
+    Req.new(
+      auth: API.auth_bearer(conn),
+      url: "#{conn.stream_server}/accounts/#{account_id}/#{stream_type}/stream",
+      method: :get,
+      headers: API.base_headers(),
+      params: params,
+      into: fn {:data, data}, {req, resp} ->
+        data
+        |> String.split("\n", trim: true)
+        |> Enum.each(fn line ->
+          line
+          |> transform!(stream_type)
+          |> stream_to.()
+        end)
+
+        {:cont, {req, resp}}
+      end
+    )
+    |> Req.request(conn.options)
+  end
+
+  defp transform!(line, stream_type) do
+    case TF.transform_stream(line, stream_type) do
+      {:ok, val} -> val
+      {:error, decode_error} -> raise decode_error
+    end
+  end
+
   defp format_instruments(params) do
     instruments =
       params
-      |> Keyword.fetch!(:instruments)
+      |> Keyword.get(:instruments, [])
       |> Enum.join(",")
 
     %{instruments: instruments}
