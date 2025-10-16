@@ -7,7 +7,7 @@ Unofficial Elixir SDK for the Oanda API.
 - Not all schemas have been validated against Oanda's live API
 - Not yet available on hex
 
-### *Forex Trading Risk Dislaimer*
+### *Forex Trading Risk Disclaimer*
 
 Trading foreign exchange (forex) on margin carries a high level of risk and may not be suitable for all investors. The leveraged nature of forex trading can amplify both profits and losses, potentially resulting in the loss of all invested capital. Before engaging in forex trading, please carefully consider your investment objectives, experience level, and risk tolerance.
 
@@ -68,7 +68,7 @@ response = ExOanda.Accounts.first!(conn)
 ```elixir
 # Correct filter
 > ExOanda.Accounts.list_changes(
-    %ExOanda.Connection{token: "1234"}
+    %ExOanda.Connection{token: "1234"},
     "account_id",
     since_transaction_id: "5678"
   )
@@ -76,7 +76,7 @@ response = ExOanda.Accounts.first!(conn)
 
 # Incorrect filter
 > ExOanda.Accounts.list_changes(
-    %ExOanda.Connection{token: "1234"}
+    %ExOanda.Connection{token: "1234"},
     "account_id",
     since_transaction_id: 1234
   )
