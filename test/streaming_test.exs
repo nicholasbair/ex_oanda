@@ -109,8 +109,8 @@ defmodule ExOanda.StreamingTest do
     end
   end
 
-  describe "price_stream!/4 validation" do
-    test "raises ValidationError when price_stream returns {:error, ValidationError}", %{conn: conn} do
+  describe "price_stream/4 validation" do
+    test "returns {:error, ValidationError} when instruments parameter is missing", %{conn: conn} do
       account_id = "101-004-22222222-001"
       stream_to = fn _ -> :ok end
 
@@ -118,7 +118,7 @@ defmodule ExOanda.StreamingTest do
       assert %ValidationError{} = error
     end
 
-    test "raises ValidationError for invalid instruments type", %{conn: conn} do
+    test "returns {:error, ValidationError} for invalid instruments type", %{conn: conn} do
       account_id = "101-004-22222222-001"
       stream_to = fn _ -> :ok end
       params = [instruments: "not_a_list"]
@@ -135,7 +135,7 @@ defmodule ExOanda.StreamingTest do
       assert %ValidationError{} = error
     end
 
-    test "raises ValidationError for non-string instruments", %{conn: conn} do
+    test "returns {:error, ValidationError} for non-string instruments", %{conn: conn} do
       account_id = "101-004-22222222-001"
       stream_to = fn _ -> :ok end
       params = [instruments: [123, :atom]]
@@ -144,6 +144,46 @@ defmodule ExOanda.StreamingTest do
       assert %ValidationError{} = error
     end
 
+  end
+
+  describe "price_stream!/4 validation" do
+    test "raises ValidationError when instruments parameter is missing", %{conn: conn} do
+      account_id = "101-004-22222222-001"
+      stream_to = fn _ -> :ok end
+
+      assert_raise ExOanda.ValidationError, fn ->
+        Streaming.price_stream!(conn, account_id, stream_to, [])
+      end
+    end
+
+    test "raises ValidationError for invalid instruments type", %{conn: conn} do
+      account_id = "101-004-22222222-001"
+      stream_to = fn _ -> :ok end
+      params = [instruments: "not_a_list"]
+
+      assert_raise ExOanda.ValidationError, fn ->
+        Streaming.price_stream!(conn, account_id, stream_to, params)
+      end
+    end
+
+    test "raises ValidationError when no params provided", %{conn: conn} do
+      account_id = "101-004-22222222-001"
+      stream_to = fn _ -> :ok end
+
+      assert_raise ExOanda.ValidationError, fn ->
+        Streaming.price_stream!(conn, account_id, stream_to)
+      end
+    end
+
+    test "raises ValidationError for non-string instruments", %{conn: conn} do
+      account_id = "101-004-22222222-001"
+      stream_to = fn _ -> :ok end
+      params = [instruments: [123, :atom]]
+
+      assert_raise ExOanda.ValidationError, fn ->
+        Streaming.price_stream!(conn, account_id, stream_to, params)
+      end
+    end
   end
 
   describe "transaction_stream/3" do
