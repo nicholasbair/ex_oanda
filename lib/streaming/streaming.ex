@@ -85,18 +85,16 @@ defmodule ExOanda.Streaming do
   #{NimbleOptions.docs(@price_stream_params)}
   """
   def price_stream!(%Conn{} = conn, account_id, stream_to, params \\ []) do
-    with {:ok, validated_params} <- NimbleOptions.validate(params, @price_stream_params),
-         {:ok, result} <- stream!(conn, account_id, :pricing, stream_to, format_instruments(validated_params)) do
-      result
-    else
+    case NimbleOptions.validate(params, @price_stream_params) do
+      {:ok, validated_params} ->
+        case stream!(conn, account_id, :pricing, stream_to, format_instruments(validated_params)) do
+          {:ok, result} -> result
+          {:error, %TransportError{} = transport_error} -> raise transport_error
+          {:error, %DecodeError{} = decode_error} -> raise decode_error
+          {:error, %APIError{} = api_error} -> raise api_error
+        end
       {:error, %NimbleOptions.ValidationError{} = validation_error} ->
         raise ValidationError.exception(validation_error)
-      {:error, %TransportError{} = transport_error} ->
-        raise transport_error
-      {:error, %DecodeError{} = decode_error} ->
-        raise decode_error
-      {:error, %APIError{} = api_error} ->
-        raise api_error
     end
   end
 
