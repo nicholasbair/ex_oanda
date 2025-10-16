@@ -4,8 +4,9 @@ Unofficial Elixir SDK for the Oanda API.
 - This SDK is in active development, not recommended for production use.
 
 ### TODO / Known Issues
-- Not all schemas have been validated against Oanda's live API
-- Not yet available on hex
+- Not all schemas have been validated against Oanda's live API.
+  - Note: this SDK is used for my own algo trading, but not every schema has been exercised, e.g. I've never been margin called, so that schema hasn't been officially tested.
+- Not yet available on hex (coming soon!).
 
 ### *Forex Trading Risk Disclaimer*
 
@@ -17,7 +18,7 @@ This SDK is provided "as-is," without any warranty of any kind, either expressed
 ```elixir
 def deps do
   [
-    {:ex_oanda, git: "https://github.com/nicholasbair/ex_oanda.git", tag: "v0.0.20"}
+    {:ex_oanda, git: "https://github.com/nicholasbair/ex_oanda.git", tag: "v0.0.21"}
   ]
 end
 ```
@@ -214,7 +215,7 @@ alias ExOanda.{
 # The HTTP connection with Oanda will periodically die, by default Req will retry the connection
 # Your application should also have a process to restart the stream with a backoff if Req's retries fail
 # IO.inspect/1 will receive {:ok, %ExOanda.ClientPrice{...}} or {:error, some_exception}
-# Use the bang version (price_stream!) if you would rather raise
+# Use the bang version (price_stream!) if you would rather receive the unwrapped value and/or raise on error
 Streaming.price_stream(
   %Connection{token: "1234"},
   "account_id",
