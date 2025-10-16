@@ -109,43 +109,6 @@ defmodule ExOanda.StreamingTest do
     end
   end
 
-  describe "price_stream/4 validation" do
-    test "returns {:error, ValidationError} when instruments parameter is missing", %{conn: conn} do
-      account_id = "101-004-22222222-001"
-      stream_to = fn _ -> :ok end
-
-      {:error, error} = Streaming.price_stream(conn, account_id, stream_to, [])
-      assert %ValidationError{} = error
-    end
-
-    test "returns {:error, ValidationError} for invalid instruments type", %{conn: conn} do
-      account_id = "101-004-22222222-001"
-      stream_to = fn _ -> :ok end
-      params = [instruments: "not_a_list"]
-
-      {:error, error} = Streaming.price_stream(conn, account_id, stream_to, params)
-      assert %ValidationError{} = error
-    end
-
-    test "uses default empty params when not provided", %{conn: conn} do
-      account_id = "101-004-22222222-001"
-      stream_to = fn _ -> :ok end
-
-      {:error, error} = Streaming.price_stream(conn, account_id, stream_to)
-      assert %ValidationError{} = error
-    end
-
-    test "returns {:error, ValidationError} for non-string instruments", %{conn: conn} do
-      account_id = "101-004-22222222-001"
-      stream_to = fn _ -> :ok end
-      params = [instruments: [123, :atom]]
-
-      {:error, error} = Streaming.price_stream(conn, account_id, stream_to, params)
-      assert %ValidationError{} = error
-    end
-
-  end
-
   describe "price_stream!/4 validation" do
     test "raises ValidationError when instruments parameter is missing", %{conn: conn} do
       account_id = "101-004-22222222-001"

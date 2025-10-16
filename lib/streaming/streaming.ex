@@ -33,7 +33,7 @@ defmodule ExOanda.Streaming do
       :ok
   """
   def transaction_stream(%Conn{} = conn, account_id, stream_to, params \\ []) do
-    stream(conn, account_id, :transactions, stream_to, params)
+    stream(conn, account_id, :transactions, stream_to, params, false)
   end
 
   @doc """
@@ -45,7 +45,7 @@ defmodule ExOanda.Streaming do
       :ok
   """
   def transaction_stream!(%Conn{} = conn, account_id, stream_to, params \\ []) do
-    case stream!(conn, account_id, :transactions, stream_to, params) do
+    case stream(conn, account_id, :transactions, stream_to, params, true) do
       {:ok, result} -> result
       {:error, %TransportError{} = transport_error} -> raise transport_error
       {:error, %DecodeError{} = decode_error} -> raise decode_error
@@ -67,7 +67,7 @@ defmodule ExOanda.Streaming do
   def price_stream(%Conn{} = conn, account_id, stream_to, params \\ []) do
     case NimbleOptions.validate(params, @price_stream_params) do
       {:ok, params} ->
-        stream(conn, account_id, :pricing, stream_to, format_instruments(params))
+        stream(conn, account_id, :pricing, stream_to, format_instruments(params), false)
       {:error, %NimbleOptions.ValidationError{} = validation_error} ->
         {:error, ValidationError.exception(validation_error)}
     end
@@ -87,7 +87,7 @@ defmodule ExOanda.Streaming do
   def price_stream!(%Conn{} = conn, account_id, stream_to, params \\ []) do
     case NimbleOptions.validate(params, @price_stream_params) do
       {:ok, validated_params} ->
-        case stream!(conn, account_id, :pricing, stream_to, format_instruments(validated_params)) do
+        case stream(conn, account_id, :pricing, stream_to, format_instruments(validated_params), true) do
           {:ok, result} -> result
           {:error, %TransportError{} = transport_error} -> raise transport_error
           {:error, %DecodeError{} = decode_error} -> raise decode_error
@@ -98,23 +98,8 @@ defmodule ExOanda.Streaming do
     end
   end
 
-  defp stream(%Conn{} = conn, account_id, stream_type, stream_to, params) do
-    transformer = create_transform_fn(stream_type, false)
-
-    Req.new(
-      auth: API.auth_bearer(conn),
-      url: "#{conn.stream_server}/accounts/#{account_id}/#{stream_type}/stream",
-      method: :get,
-      headers: API.base_headers(),
-      params: params,
-      into: into(stream_to, transformer)
-    )
-    |> Req.request(conn.options)
-    |> handle_streaming_response()
-  end
-
-  defp stream!(%Conn{} = conn, account_id, stream_type, stream_to, params) do
-    transformer = create_transform_fn(stream_type, true)
+  defp stream(%Conn{} = conn, account_id, stream_type, stream_to, params, raise?) do
+    transformer = create_transform_fn(stream_type, raise?)
 
     Req.new(
       auth: API.auth_bearer(conn),
