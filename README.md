@@ -1,18 +1,17 @@
 Unofficial Elixir SDK for the Oanda API.
 
-Note - this SDK is in active development, not recommended for production use.
-
 ## Notes
+- This SDK is in active development, not recommended for production use.
 
-*Forex Trading Risk Dislaimer*
+### TODO / Known Issues
+- Not all schemas have been validated against Oanda's live API
+- Not yet available on hex
+
+### *Forex Trading Risk Disclaimer*
 
 Trading foreign exchange (forex) on margin carries a high level of risk and may not be suitable for all investors. The leveraged nature of forex trading can amplify both profits and losses, potentially resulting in the loss of all invested capital. Before engaging in forex trading, please carefully consider your investment objectives, experience level, and risk tolerance.
 
 This SDK is provided "as-is," without any warranty of any kind, either expressed or implied, including but not limited to the implied warranties of merchantability, fitness for a particular purpose, or non-infringement. The use of this SDK is at your own risk, and we make no guarantees regarding its accuracy, reliability, or suitability for any specific trading strategy or purpose. Users are responsible for their own trading decisions and should seek independent financial advice if necessary.
-
-## TODO / Known Issues
-1. Not all schemas have been validated against Oanda's live API
-2. Not yet available on hex
 
 ## Installation
 ```elixir
@@ -33,8 +32,8 @@ conn =
     stream_server: "https://stream-fxpractice.oanda.com/v3",
     options: [], # Passed to Req (HTTP client)
     telemetry: %ExOanda.Telemetry{
-      enabled: true,
-      use_default_logger: true,
+      enabled: true, # Defaults to false
+      use_default_logger: true, # Defaults to false
       options: []
     }
   }
@@ -68,17 +67,41 @@ response = ExOanda.Accounts.first!(conn)
 3. Where supported, queries and filters can be passed as keyword list and are validated by NimbleOptions:
 ```elixir
 # Correct filter
-{:ok, accounts} =
-  %ExOanda.Connection{token: "1234"}
-  |> ExOanda.Accounts.list_changes("account_id", since_transaction_id: "5678")
+> ExOanda.Accounts.list_changes(
+    %ExOanda.Connection{token: "1234"},
+    "account_id",
+    since_transaction_id: "5678"
+  )
+{:ok, %ExOanda.Response{...}}
 
 # Incorrect filter
-{:error, %ExOanda.ValidationError{}} =
-  %ExOanda.Connection{token: "1234"}
-  |> ExOanda.Accounts.list_changes("account_id", since_transaction_id: 1234)
+> ExOanda.Accounts.list_changes(
+    %ExOanda.Connection{token: "1234"},
+    "account_id",
+    since_transaction_id: 1234
+  )
+{:error, %ExOanda.ValidationError{}}
 ```
 
 4. [Ecto](https://hex.pm/packages/ecto) is used to validate request payloads and transform response payloads from Oanda into structs.
+
+## Error Handling
+
+Most functions are available in two forms: non-bang (e.g., `list/2`) and bang (e.g., `list!/2`). The non-bang functions return `{:ok, result}` or `{:error, reason}` tuples, while bang functions return the result or raise an exception.
+
+| Scenario | Non-bang (no `!`) | Bang (`!`) |
+|---|---|---|
+| 2xx success | `{:ok, response_struct}` | `response_struct` |
+| Non-2xx HTTP status (Oanda API error) | `{:error, response_struct}` | raises `ExOanda.APIError` |
+| Transport/network error (timeouts, connection, HTTP adapter) | `{:error, %ExOanda.TransportError{}}` | raises `ExOanda.TransportError` |
+| Parameter validation failure (NimbleOptions) | `{:error, %ExOanda.ValidationError{validation_type: :parameter_validation}}` | raises `ExOanda.ValidationError` |
+| Request body validation failure (Ecto changeset) | `{:error, %ExOanda.ValidationError{validation_type: :request_body_validation}}` | raises `ExOanda.ValidationError` |
+| JSON decode error (e.g., streaming) | `{:error, %ExOanda.DecodeError{}}` | raises `ExOanda.DecodeError` |
+
+Notes:
+- **`response_struct`**: For non-2xx HTTP responses returned by Oanda, the SDK parses and returns a structured response under the appropriate `ExOanda.Response.*` schema.
+- Bang variants internally call the non-bang functions and raise on `{:error, reason}` according to the mapping above.
+- The top-level `ExOanda.Response` struct includes the underlying HTTP status as an atom in `status` (see `ExOanda.HttpStatus.status_to_atom/1`) and Oanda's `request_id` when available (from the `requestid` response header).
 
 ## Telemetry
 
@@ -130,7 +153,7 @@ conn = %ExOanda.Connection{
 
 When `use_default_logger` is enabled, you'll see output like:
 
-```
+```text
 Req:479128347 - GET https://api-fxtrade.oanda.com/v3/accounts (pipeline)
 Req:479128347 - GET https://api-fxtrade.oanda.com/v3/accounts (adapter)
 Req:479128347 - 200 in 403ms (adapter)
