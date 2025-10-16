@@ -2,6 +2,7 @@ defmodule ExOanda.TransformTest do
   use ExUnit.Case, async: true
   import ExUnit.CaptureLog
   alias ExOanda.ClientPrice
+  alias ExOanda.DecodeError
   alias ExOanda.Response
   alias ExOanda.Response.PricingHeartbeat
   alias ExOanda.Response.TransactionEvent
@@ -110,7 +111,7 @@ defmodule ExOanda.TransformTest do
         "half_spread_cost" => 0.0
       }
 
-      result = Transform.transform_stream(Jason.encode!(json_data), :transactions)
+      {:ok, result} = Transform.transform_stream(Jason.encode!(json_data), :transactions)
 
       assert %TransactionEvent{} = result
       assert result.event.__struct__ == ExOanda.OrderFillTransaction
@@ -122,7 +123,7 @@ defmodule ExOanda.TransformTest do
         "time" => "2023-01-01T00:00:00.000000000Z"
       }
 
-      result = Transform.transform_stream(Jason.encode!(json_data), :pricing)
+      {:ok, result} = Transform.transform_stream(Jason.encode!(json_data), :pricing)
 
       assert %PricingHeartbeat{} = result
       assert result.type == :HEARTBEAT
@@ -140,7 +141,7 @@ defmodule ExOanda.TransformTest do
         "asks" => []
       }
 
-      result = Transform.transform_stream(Jason.encode!(json_data), :pricing)
+      {:ok, result} = Transform.transform_stream(Jason.encode!(json_data), :pricing)
 
       assert %ClientPrice{} = result
       assert result.type == :PRICE
@@ -158,7 +159,7 @@ defmodule ExOanda.TransformTest do
         "asks" => []
       }
 
-      result = Transform.transform_stream(Jason.encode!(json_data), :pricing)
+      {:ok, result} = Transform.transform_stream(Jason.encode!(json_data), :pricing)
 
       assert %ClientPrice{} = result
       assert result.instrument == "EUR_USD"
@@ -311,9 +312,7 @@ defmodule ExOanda.TransformTest do
     end
 
     test "handles invalid JSON in transform_stream" do
-      assert_raise ExOanda.DecodeError, fn ->
-        Transform.transform_stream("invalid json", :pricing)
-      end
+      {:error, %DecodeError{}} = Transform.transform_stream("invalid json", :pricing)
     end
 
     test "covers preprocess_data with model and map data" do

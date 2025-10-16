@@ -212,7 +212,9 @@ alias ExOanda.{
 }
 
 # The HTTP connection with Oanda will periodically die, by default Req will retry the connection
-# Your application should also have a process to restart the stream if Req's retries fail
+# Your application should also have a process to restart the stream with a backoff if Req's retries fail
+# IO.inspect/1 will receive {:ok, %ExOanda.ClientPrice{...}} or {:error, some_exception}
+# Use the bang version (price_stream!) if you would rather raise
 Streaming.price_stream(
   %Connection{token: "1234"},
   "account_id",

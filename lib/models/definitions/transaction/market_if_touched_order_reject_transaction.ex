@@ -20,7 +20,7 @@ defmodule ExOanda.MarketIfTouchedOrderRejectTransaction do
 
   @primary_key false
 
-  embedded_schema do
+  typed_embedded_schema do
     field(:id, :string)
     field(:time, :utc_datetime_usec)
     field(:user_id, :integer)
