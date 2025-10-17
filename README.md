@@ -1,10 +1,14 @@
 Unofficial Elixir SDK for the Oanda API.
 
+[![Hex.pm version](https://img.shields.io/hexpm/v/ex_oanda)](https://hex.pm/packages/ex_oanda)
+[![Latest HexDocs](https://img.shields.io/badge/docs-latest-green.svg?style=flat-square)](https://hexdocs.pm/ex_oanda/)
+[![Elixir CI Status](https://github.com/nicholasbair/ex_oanda/workflows/Elixir%20CI/badge.svg)](https://github.com/nicholasbair/ex_oanda/actions?query=workflow%3A%22Elixir+CI%22)
+
 ## Notes
 
 ### TODO / Known Issues
 - Not all schemas have been validated against Oanda's live API.
-  - Note: this SDK is used for my own algo trading, but not every schema has been exercised, e.g. I've never been margin called, so that schema hasn't been officially tested.
+  - Note: this SDK is used for my own algo trading, but not every schema has been exercised with real data. For example, I haven't been margin called, so that schema hasn't been officially tested.
 
 ### *Forex Trading Risk Disclaimer*
 
@@ -38,7 +42,7 @@ conn =
   }
 ```
 
-Options from `ExOanda.Connection` are passed directly to [Req](https://hexdocs.pm/req/Req.html) and can be used to override the default behavior of the HTTP client.  You can find a complete list of options [here](https://hexdocs.pm/req/Req.html#new/1).  The most relevent Req defaults are listed below:
+Options from `ExOanda.Connection` are passed directly to [Req](https://hexdocs.pm/req/Req.html) and can be used to override the default behavior of the HTTP client. You can find a complete list of options [here](https://hexdocs.pm/req/Req.html#new/1). The most relevent Req defaults are listed below:
 ```elixir
 [
   retry: :safe_transient,
