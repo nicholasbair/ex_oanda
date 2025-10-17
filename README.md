@@ -42,7 +42,7 @@ conn =
   }
 ```
 
-Options from `ExOanda.Connection` are passed directly to [Req](https://hexdocs.pm/req/Req.html) and can be used to override the default behavior of the HTTP client. You can find a complete list of options [here](https://hexdocs.pm/req/Req.html#new/1). The most relevent Req defaults are listed below:
+Options from `ExOanda.Connection` are passed directly to [Req](https://hexdocs.pm/req/Req.html) and can be used to override the default behavior of the HTTP client. You can find a complete list of options [here](https://hexdocs.pm/req/Req.html#new/1). The most relevant Req defaults are listed below:
 ```elixir
 [
   retry: :safe_transient,
