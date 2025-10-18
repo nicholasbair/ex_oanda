@@ -90,6 +90,7 @@ defmodule ExOanda.MixProject do
     [
       name: "ex_oanda",
       licenses: ["MIT"],
+      files: ~w(lib config.yml mix.exs README.md LICENSE CHANGELOG.md),
       links: %{
         github: url(),
         changelog: "#{url()}/blob/main/CHANGELOG.md"
