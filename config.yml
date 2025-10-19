@@ -333,7 +333,7 @@ interfaces:
           - name: "instrument"
             type: "string"
           - name: "body"
-            type: "string"
+            type: "map"
   - module_name: "Transactions"
     description: "Interface for Oanda transactions."
     docs_link: "https://developer.oanda.com/rest-live-v20/transaction-ep/"
