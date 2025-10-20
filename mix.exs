@@ -77,7 +77,7 @@ defmodule ExOanda.MixProject do
       {:nested_filter, "~> 1.2"},
       {:nimble_options, "~> 1.1"},
       {:polymorphic_embed, "~> 5.0"},
-      {:recase, "~> 0.8.1"},
+      {:recase, "~> 0.9.0"},
       {:req, "~> 0.5.2"},
       {:req_telemetry, "~> 0.1.1"},
       {:telemetry_test, "~> 0.1.0", only: :test},
