@@ -8,11 +8,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## Unreleased
 
 ### Changed
-- Updated `req` from 0.5.6 to 0.5.15
-- Updated `polymorphic_embed` from 5.0.0 to 5.0.3
-- Updated `typed_ecto_schema` from 0.4.1 to 0.4.3
-- Updated `ecto` from 3.12.2 to 3.13.3
-- Updated `dialyxir` from 1.4.3 to 1.4.6
+- Updated dependencies:
+  - Bumped `req` from 0.5.6 to 0.5.15
+  - Bumped `polymorphic_embed` from 5.0.0 to 5.0.3
+  - Bumped `typed_ecto_schema` from 0.4.1 to 0.4.3
+  - Bumped `ecto` from 3.12.2 to 3.13.3
+  - Bumped `dialyxir` from 1.4.3 to 1.4.6
+  - Bumped `recase` from 0.8.1 to 0.9.0
+  - Bumped `yaml_elixir` from 2.11.0 to 2.12.0
+  - Bumped `ex_doc` from 0.34.2 to 0.38.4
+  - Bumped `credo` from 1.7.7 to 1.7.13
+  - Bumped `excoveralls` from 0.18.2 to 0.18.5
 
 ### Fixed
 - Fixed type for `Positions.close_position/5`, `body` was incorrectly marked as `String.t()` in the spec; updated to `map()`
