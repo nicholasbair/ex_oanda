@@ -129,8 +129,13 @@ defmodule ExOanda.Streaming do
   defp process_complete_lines(buffer, req, transformer, stream_to, resp) do
     case String.split(buffer, "\n", parts: 2) do
       [complete_line, remaining] ->
-        maybe_transform_and_stream(complete_line, transformer, stream_to, resp)
-        process_complete_lines(remaining, req, transformer, stream_to, resp)
+        case String.trim(complete_line) do
+          "" ->
+            process_complete_lines(remaining, req, transformer, stream_to, resp)
+          trimmed_line ->
+            maybe_transform_and_stream(trimmed_line, transformer, stream_to, resp)
+            process_complete_lines(remaining, req, transformer, stream_to, resp)
+        end
 
       [incomplete_line] ->
         {incomplete_line, req}

@@ -717,6 +717,39 @@ defmodule ExOanda.StreamingTest do
 
       refute_receive {:decode_error, _}, 100
     end
+
+    test "handles consecutive newlines and empty lines gracefully", %{bypass: bypass, conn: conn} do
+      account_id = "test_account"
+
+      stream_to = fn data ->
+        case data do
+          {:ok, valid_data} ->
+            send(self(), {:data_received, valid_data})
+          {:error, %ExOanda.DecodeError{}} ->
+            send(self(), {:decode_error, :incomplete_json})
+        end
+      end
+      params = [instruments: ["EUR_USD"]]
+
+      Bypass.expect(bypass, fn conn ->
+        assert conn.request_path == "/accounts/#{account_id}/pricing/stream"
+        assert conn.query_params == %{"instruments" => "EUR_USD"}
+
+        response = "{\"type\":\"HEARTBEAT\",\"time\":\"2023-01-01T12:00:00.000000000Z\"}\n\n{\"type\":\"PRICE\",\"instrument\":\"EUR_USD\",\"time\":\"2023-01-01T12:00:01.000000000Z\",\"bids\":[{\"price\":\"1.13101\",\"liquidity\":500000}],\"asks\":[{\"price\":\"1.13135\",\"liquidity\":500000}]}\n\n\n{\"type\":\"HEARTBEAT\",\"time\":\"2023-01-01T12:00:02.000000000Z\"}\n"
+        conn
+        |> Plug.Conn.put_resp_content_type("application/json")
+        |> Plug.Conn.send_resp(200, response)
+      end)
+
+      {:ok, result} = Streaming.price_stream(conn, account_id, stream_to, params)
+      assert %Req.Response{} = result
+
+      assert_receive {:data_received, %ExOanda.Response.PricingHeartbeat{}}, 1000
+      assert_receive {:data_received, %ExOanda.ClientPrice{}}, 1000
+      assert_receive {:data_received, %ExOanda.Response.PricingHeartbeat{}}, 1000
+
+      refute_receive {:decode_error, _}, 100
+    end
   end
 
   describe "streaming integration with Bypass" do
