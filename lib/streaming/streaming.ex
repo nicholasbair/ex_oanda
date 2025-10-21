@@ -115,13 +115,25 @@ defmodule ExOanda.Streaming do
 
   defp into(stream_to, transformer) do
     fn {:data, data}, {req, resp} ->
-      data
-      |> String.split("\n", trim: true)
-      |> Enum.each(fn line ->
-        maybe_transform_and_stream(line, transformer, stream_to, resp)
-      end)
+      {processed_buffer, updated_req} =
+        req.private
+        |> Map.get(:streaming_buffer, "")
+        |> Kernel.<>(data)
+        |> process_complete_lines(req, transformer, stream_to, resp)
 
-      {:cont, {req, resp}}
+      final_req = put_in(updated_req.private[:streaming_buffer], processed_buffer)
+      {:cont, {final_req, resp}}
+    end
+  end
+
+  defp process_complete_lines(buffer, req, transformer, stream_to, resp) do
+    case String.split(buffer, "\n", parts: 2) do
+      [complete_line, remaining] ->
+        maybe_transform_and_stream(complete_line, transformer, stream_to, resp)
+        process_complete_lines(remaining, req, transformer, stream_to, resp)
+
+      [incomplete_line] ->
+        {incomplete_line, req}
     end
   end
 

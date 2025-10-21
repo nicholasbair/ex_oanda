@@ -221,7 +221,7 @@ defmodule ExOanda.StreamingTest do
 
         conn
         |> Plug.Conn.put_resp_content_type("application/json")
-        |> Plug.Conn.send_resp(200, "{\"type\":\"ORDER_FILL\",\"id\":\"123\",\"time\":\"2023-01-01T00:00:00.000000000Z\"}")
+        |> Plug.Conn.send_resp(200, "{\"type\":\"ORDER_FILL\",\"id\":\"123\",\"time\":\"2023-01-01T00:00:00.000000000Z\"}\n")
       end)
 
       assert_raise BadFunctionError, fn ->
@@ -514,7 +514,7 @@ defmodule ExOanda.StreamingTest do
         assert conn.query_params == %{"instruments" => "EUR_USD"}
 
         # Send invalid JSON that should cause a decode error
-        response = "invalid json line"
+        response = "invalid json line\n"
         conn
         |> Plug.Conn.put_resp_content_type("application/json")
         |> Plug.Conn.send_resp(200, response)
@@ -560,8 +560,7 @@ defmodule ExOanda.StreamingTest do
       Bypass.expect(bypass, fn conn ->
         assert conn.request_path == "/accounts/#{account_id}/transactions/stream"
 
-        # Send invalid JSON that should cause a decode error
-        response = "invalid json line"
+        response = "invalid json line\n"
         conn
         |> Plug.Conn.put_resp_content_type("application/json")
         |> Plug.Conn.send_resp(200, response)
@@ -570,6 +569,153 @@ defmodule ExOanda.StreamingTest do
       assert_raise ExOanda.DecodeError, fn ->
         Streaming.transaction_stream!(conn, account_id, stream_to)
       end
+    end
+  end
+
+  describe "streaming buffering logic" do
+    setup do
+      bypass = Bypass.open()
+      conn = %Connection{
+        token: "test_token",
+        api_server: "https://api-fxtrade.oanda.com",
+        stream_server: "http://localhost:#{bypass.port}",
+        options: [retry: false]
+      }
+      {:ok, bypass: bypass, conn: conn}
+    end
+
+    test "handles complete JSON lines in single chunk", %{bypass: bypass, conn: conn} do
+      account_id = "test_account"
+
+      stream_to = fn data ->
+        case data do
+          {:ok, valid_data} ->
+            send(self(), {:data_received, valid_data})
+          {:error, %ExOanda.DecodeError{}} ->
+            send(self(), {:decode_error, :incomplete_json})
+        end
+      end
+      params = [instruments: ["EUR_USD"]]
+
+      Bypass.expect(bypass, fn conn ->
+        assert conn.request_path == "/accounts/#{account_id}/pricing/stream"
+        assert conn.query_params == %{"instruments" => "EUR_USD"}
+
+        response =
+          """
+          {"type":"HEARTBEAT","time":"2023-01-01T12:00:00.000000000Z"}
+          {"type":"PRICE","instrument":"EUR_USD","time":"2023-01-01T12:00:01.000000000Z","bids":[{"price":"1.13101","liquidity":500000}],"asks":[{"price":"1.13135","liquidity":500000}]}
+          """
+        conn
+        |> Plug.Conn.put_resp_content_type("application/json")
+        |> Plug.Conn.send_resp(200, response)
+      end)
+
+      {:ok, result} = Streaming.price_stream(conn, account_id, stream_to, params)
+      assert %Req.Response{} = result
+
+      assert_receive {:data_received, %ExOanda.Response.PricingHeartbeat{}}, 1000
+      assert_receive {:data_received, %ExOanda.ClientPrice{}}, 1000
+    end
+
+    test "handles the original decode error scenario - incomplete JSON chunk", %{bypass: bypass, conn: conn} do
+      account_id = "test_account"
+
+      stream_to = fn data ->
+        case data do
+          {:ok, valid_data} ->
+            send(self(), {:data_received, valid_data})
+          {:error, %ExOanda.DecodeError{}} ->
+            send(self(), {:decode_error, :incomplete_json})
+        end
+      end
+      params = [instruments: ["EUR_USD"]]
+
+      Bypass.expect(bypass, fn conn ->
+        assert conn.request_path == "/accounts/#{account_id}/pricing/stream"
+        assert conn.query_params == %{"instruments" => "EUR_USD"}
+
+        response = "{\"type\":\"PRICE\",\"time\":\"2025-10-21T15:46:42.479322546Z\",\"bids\":[{\"price\":\"1.13101\",\"liquidity\":500000},{\"price\":\"1.13100\",\"liquidity\":500000},{\"price\":\"1.13099\",\"liquidity\":2000000},{\"price\":\"1.13095\",\"liquidity\":7000000},{\"price\":\"1.13089\",\"liquidity\":10000000},{\"price\":\"1.13077\",\"liquidity\":10000000},{\"price\":\"1.13053\",\"liquidity\":15000000}],\"asks\":[{\"price\":\"1.13135\",\"liquidity\":500000},{\"price\":\"1.13137\",\"liquidity\":500000},{\"price\":\"1.13138\",\"liquidi"
+        conn
+        |> Plug.Conn.put_resp_content_type("application/json")
+        |> Plug.Conn.send_resp(200, response)
+      end)
+
+      {:ok, result} = Streaming.price_stream(conn, account_id, stream_to, params)
+      assert %Req.Response{} = result
+
+      refute_receive {:data_received, _}, 100
+      refute_receive {:decode_error, _}, 100
+    end
+
+    test "handles multiple complete lines in single chunk", %{bypass: bypass, conn: conn} do
+      account_id = "test_account"
+
+      stream_to = fn data ->
+        case data do
+          {:ok, valid_data} ->
+            send(self(), {:data_received, valid_data})
+          {:error, %ExOanda.DecodeError{}} ->
+            send(self(), {:decode_error, :incomplete_json})
+        end
+      end
+      params = [instruments: ["EUR_USD"]]
+
+      Bypass.expect(bypass, fn conn ->
+        assert conn.request_path == "/accounts/#{account_id}/pricing/stream"
+        assert conn.query_params == %{"instruments" => "EUR_USD"}
+
+        response =
+          """
+          {"type":"HEARTBEAT","time":"2023-01-01T12:00:00.000000000Z"}
+          {"type":"PRICE","instrument":"EUR_USD","time":"2023-01-01T12:00:01.000000000Z","bids":[{"price":"1.13101","liquidity":500000}],"asks":[{"price":"1.13135","liquidity":500000}]}
+          {"type":"HEARTBEAT","time":"2023-01-01T12:00:02.000000000Z"}
+          {"type":"PRICE","instrument":"EUR_USD","time":"2023-01-01T12:00:03.000000000Z","bids":[{"price":"1.13102","liquidity":500000}],"asks":[{"price":"1.13136","liquidity":500000}]}
+          """
+        conn
+        |> Plug.Conn.put_resp_content_type("application/json")
+        |> Plug.Conn.send_resp(200, response)
+      end)
+
+      {:ok, result} = Streaming.price_stream(conn, account_id, stream_to, params)
+      assert %Req.Response{} = result
+
+      assert_receive {:data_received, %ExOanda.Response.PricingHeartbeat{}}, 1000
+      assert_receive {:data_received, %ExOanda.ClientPrice{}}, 1000
+      assert_receive {:data_received, %ExOanda.Response.PricingHeartbeat{}}, 1000
+      assert_receive {:data_received, %ExOanda.ClientPrice{}}, 1000
+    end
+
+    test "handles incomplete JSON at end of stream", %{bypass: bypass, conn: conn} do
+      account_id = "test_account"
+
+      stream_to = fn data ->
+        case data do
+          {:ok, valid_data} ->
+            send(self(), {:data_received, valid_data})
+          {:error, %ExOanda.DecodeError{}} ->
+            send(self(), {:decode_error, :incomplete_json})
+        end
+      end
+      params = [instruments: ["EUR_USD"]]
+
+      Bypass.expect(bypass, fn conn ->
+        assert conn.request_path == "/accounts/#{account_id}/pricing/stream"
+        assert conn.query_params == %{"instruments" => "EUR_USD"}
+
+        response = "{\"type\":\"HEARTBEAT\",\"time\":\"2023-01-01T12:00:00.000000000Z\"}\n{\"type\":\"PRICE\",\"instrument\":\"EUR_USD\",\"time\":\"2023-01-01T12:00:01.000000000Z\",\"bids\":[{\"price\":\"1.13101\",\"liquidity\":500000}],\"asks\":[{\"price\":\"1.13135\",\"liquidity\":500000}]}\n{\"type\":\"PRICE\",\"instrument\":\"EUR_USD\",\"time\":\"2023-01-01T12:00:02.000000000Z\",\"bids\":[{\"price\":\"1.13102\",\"liquidity\":500000}],\"asks\":[{\"price\":\"1.13136\",\"liquidity\":500000}],\"incomplete"
+        conn
+        |> Plug.Conn.put_resp_content_type("application/json")
+        |> Plug.Conn.send_resp(200, response)
+      end)
+
+      {:ok, result} = Streaming.price_stream(conn, account_id, stream_to, params)
+      assert %Req.Response{} = result
+
+      assert_receive {:data_received, %ExOanda.Response.PricingHeartbeat{}}, 1000
+      assert_receive {:data_received, %ExOanda.ClientPrice{}}, 1000
+
+      refute_receive {:decode_error, _}, 100
     end
   end
 

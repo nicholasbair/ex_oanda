@@ -22,6 +22,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 - Fixed type for `Positions.close_position/5`, `body` was incorrectly marked as `String.t()` in the spec; updated to `map()`
+- Fixed streaming JSON decode errors caused by incomplete JSON chunks by implementing proper buffering logic
 
 ## [0.1.0] - 2025-10-18
 
