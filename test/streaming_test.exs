@@ -750,6 +750,72 @@ defmodule ExOanda.StreamingTest do
 
       refute_receive {:decode_error, _}, 100
     end
+
+    test "handles CRLF-delimited lines", %{bypass: bypass, conn: conn} do
+      account_id = "test_account"
+
+      stream_to = fn data ->
+        case data do
+          {:ok, valid_data} ->
+            send(self(), {:data_received, valid_data})
+          {:error, %ExOanda.DecodeError{}} ->
+            send(self(), {:decode_error, :incomplete_json})
+        end
+      end
+      params = [instruments: ["EUR_USD"]]
+
+      Bypass.expect(bypass, fn conn ->
+        assert conn.request_path == "/accounts/#{account_id}/pricing/stream"
+        assert conn.query_params == %{"instruments" => "EUR_USD"}
+
+        response = "{\"type\":\"HEARTBEAT\",\"time\":\"2023-01-01T12:00:00.000000000Z\"}\r\n{\"type\":\"PRICE\",\"instrument\":\"EUR_USD\",\"time\":\"2023-01-01T12:00:01.000000000Z\",\"bids\":[{\"price\":\"1.13101\",\"liquidity\":500000}],\"asks\":[{\"price\":\"1.13135\",\"liquidity\":500000}]}\r\n"
+        conn
+        |> Plug.Conn.put_resp_content_type("application/json")
+        |> Plug.Conn.send_resp(200, response)
+      end)
+
+      {:ok, result} = Streaming.price_stream(conn, account_id, stream_to, params)
+      assert %Req.Response{} = result
+
+      assert_receive {:data_received, %ExOanda.Response.PricingHeartbeat{}}, 1000
+      assert_receive {:data_received, %ExOanda.ClientPrice{}}, 1000
+
+      refute_receive {:decode_error, _}, 100
+    end
+
+    test "handles JSON split across multiple chunks", %{bypass: bypass, conn: conn} do
+      account_id = "test_account"
+
+      stream_to = fn data ->
+        case data do
+          {:ok, valid_data} ->
+            send(self(), {:data_received, valid_data})
+          {:error, %ExOanda.DecodeError{}} ->
+            send(self(), {:decode_error, :incomplete_json})
+        end
+      end
+      params = [instruments: ["EUR_USD"]]
+
+      Bypass.expect(bypass, fn conn ->
+        assert conn.request_path == "/accounts/#{account_id}/pricing/stream"
+        assert conn.query_params == %{"instruments" => "EUR_USD"}
+
+        # Simulate the exact scenario from the original error - JSON split across chunks
+        # This tests that our buffering correctly handles incomplete JSON
+        response = "{\"type\":\"PRICE\",\"time\":\"2025-10-21T15:46:42.479322546Z\",\"bids\":[{\"price\":\"1.13101\",\"liquidity\":500000},{\"price\":\"1.13100\",\"liquidity\":500000},{\"price\":\"1.13099\",\"liquidity\":2000000},{\"price\":\"1.13095\",\"liquidity\":7000000},{\"price\":\"1.13089\",\"liquidity\":10000000},{\"price\":\"1.13077\",\"liquidity\":10000000},{\"price\":\"1.13053\",\"liquidity\":15000000}],\"asks\":[{\"price\":\"1.13135\",\"liquidity\":500000},{\"price\":\"1.13137\",\"liquidity\":500000},{\"price\":\"1.13138\",\"liquidi"
+        conn
+        |> Plug.Conn.put_resp_content_type("application/json")
+        |> Plug.Conn.send_resp(200, response)
+      end)
+
+      {:ok, result} = Streaming.price_stream(conn, account_id, stream_to, params)
+      assert %Req.Response{} = result
+
+      # Should not receive any data (incomplete JSON gets buffered)
+      # Should not receive any decode errors either
+      refute_receive {:data_received, _}, 100
+      refute_receive {:decode_error, _}, 100
+    end
   end
 
   describe "streaming integration with Bypass" do
