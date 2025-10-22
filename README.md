@@ -20,7 +20,7 @@ This SDK is provided "as-is," without any warranty of any kind, either expressed
 ```elixir
 def deps do
   [
-    {:ex_oanda, "~> 0.1.0"}
+    {:ex_oanda, "~> 0.1.1"}
   ]
 end
 ```
@@ -129,7 +129,7 @@ conn = %ExOanda.Connection{
 When enabled, ExOanda emits the following telemetry events:
 
 - `[:req, :request, :pipeline, :start]` - Request pipeline starts
-- `[:req, :request, :adapter, :start]` - HTTP adapter starts  
+- `[:req, :request, :adapter, :start]` - HTTP adapter starts
 - `[:req, :request, :adapter, :stop]` - HTTP adapter completes
 - `[:req, :request, :adapter, :error]` - HTTP adapter error
 - `[:req, :request, :pipeline, :stop]` - Request pipeline completes
