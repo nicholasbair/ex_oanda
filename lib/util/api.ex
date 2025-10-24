@@ -2,9 +2,9 @@ defmodule ExOanda.API do
   @moduledoc false
 
   alias ExOanda.Connection, as: Conn
+  alias ExOanda.Telemetry
   alias ExOanda.Transform, as: TF
   alias ExOanda.TransportError
-  alias ExOanda.Telemetry
 
   # Requests ###################################################################
 

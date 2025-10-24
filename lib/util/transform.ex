@@ -20,7 +20,8 @@ defmodule ExOanda.Transform do
     |> apply_changes()
   end
 
-  @spec transform_stream(String.t(), atom()) :: {:ok, TransactionEvent.t() | PricingHeartbeat.t() | ClientPrice.t()} | {:error, DecodeError.t()}
+  @spec transform_stream(String.t(), atom()) ::
+          {:ok, TransactionEvent.t() | PricingHeartbeat.t() | ClientPrice.t()} | {:error, DecodeError.t()}
   def transform_stream(val, stream_type) do
     case Jason.decode(val) do
       {:ok, decoded} ->
