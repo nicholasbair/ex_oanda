@@ -104,7 +104,7 @@ Most functions are available in two forms: non-bang (e.g., `list/2`) and bang (e
 Notes:
 - **`response_struct`**: For non-2xx HTTP responses returned by Oanda, the SDK parses and returns a structured response under the appropriate `ExOanda.Response.*` schema.
 - Bang variants internally call the non-bang functions and raise on `{:error, reason}` according to the mapping above.
-- The top-level `ExOanda.Response` struct includes the underlying HTTP status as an atom in `status` (see `ExOanda.Response.t/0`) and Oanda's `request_id` when available (from the `requestid` response header).
+- The top-level `ExOanda.Response` struct includes the underlying HTTP status as an atom in `status` (see `ExOanda.Response.t()`) and Oanda's `request_id` when available (from the `requestid` response header).
 
 ## Telemetry
 
