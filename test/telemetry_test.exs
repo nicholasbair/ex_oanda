@@ -2,7 +2,10 @@ defmodule ExOanda.TelemetryTest do
   use ExUnit.Case, async: true
   import ExUnit.CaptureLog
 
-  alias ExOanda.{Telemetry, Connection}
+  alias ExOanda.{
+    Connection,
+    Telemetry
+  }
 
   describe "struct creation" do
     test "creates struct with default values" do
