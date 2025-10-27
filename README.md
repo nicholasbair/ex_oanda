@@ -173,16 +173,25 @@ alias ExOanda.{
 
 conn = %Connection{token: "1234"}
 
-# Market order, no TP/SL/TS, etc.
+# Oanda's API will default to a market order with time in force=FOK.
 payload = %{
   order: %{
     instrument: "EUR_USD",
-    units: 1000
+    units: 1000 # Use negative units for short
+    take_profit_on_fill: %{
+      price: 1.0000
+    },
+    stop_loss_on_fill: %{
+      distance: 0.0050 # Price value is also supported
+    }
   }
 }
 
+# Success status doesn't always mean the order was filled (depending on the options passed in payload)
+# If the order was filled immediately, the response will include `order_fill_transaction` (`ExOanda.OrderFillTransaction`)
+# with details about the trade that was opened
 case Orders.create(conn, "account_id", payload) do
-  {:ok, res} -> maybe_persist_trade(res) # Success status doesn't mean the order was filled, only that it was created/accepted
+  {:ok, res} -> maybe_persist_trade(res)
   {:error, error} -> handle_error(error)
 end
 ```
@@ -197,27 +206,55 @@ alias ExOanda.{
 conn = %Connection{token: "1234"}
 
 # Positions can be partially closed by passing an int here or fully closed by passing the string ALL
+# Note: when partially closing the position, units will always be positive, even if the position is short
 payload = %{
   long_units: "ALL"
 }
 
 case Positions.close(conn, "account_id", "EUR_USD", payload) do
-  {:ok, res} -> maybe_update_state(res) # Success status doesn't mean the close order was filled, only that it was created/accepted
+  {:ok, res} -> maybe_update_state(res)
   {:error, error} -> handle_error(error)
 end
 ```
 
-### Stream Prices
+### Close a trade
+```elixir
+alias ExOanda.{
+  Connection,
+  Trades
+}
+
+conn = %Connection{token: "1234"}
+
+# Trades can also be partially closed by passing an int here or fully closed by passing the string ALL
+# Note: when partially closing the position, units will always be positive, even if the position is short
+# Unlike positions, a direction specific units key is not used here
+res = Trades.close(
+  %Connection{token: "1234"},
+  "account_id",
+  "trade_id",
+  %{units: "ALL"}
+)
+
+case res do
+  {:ok, res} -> maybe_update_state(res)
+  {:error, error} -> handle_error(error)
+end
+```
+
+### Stream Prices (in IEx)
 ```elixir
 alias ExOanda.{
   Connection,
   Streaming
 }
 
-# The HTTP connection with Oanda will periodically die, by default Req will retry the connection
-# Your application should also have a process to restart the stream with a backoff if Req's retries fail
-# IO.inspect/1 will receive {:ok, %ExOanda.ClientPrice{...}} or {:error, some_exception}
+# Running the following in IEx is a good way to test out streaming prices
+# In this example, IO.inspect/1 will receive {:ok, %ExOanda.ClientPrice{...}} or {:error, some_exception}
+# For realworld use, you should expect roughly 1 event every 250ms per instrument max
 # Use the bang version (price_stream!) if you would rather receive the unwrapped value and/or raise on error
+# The HTTP connection with Oanda will periodically die, by default Req will retry the connection
+# Your application should also have a process to restart the stream with a backoff if Req's retries fail (depending on how critial realtime prices are to your application)
 Streaming.price_stream(
   %Connection{token: "1234"},
   "account_id",
