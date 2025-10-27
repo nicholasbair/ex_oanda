@@ -226,8 +226,6 @@ alias ExOanda.{
   Trades
 }
 
-conn = %Connection{token: "1234"}
-
 # Much like positions, trades can also be partially closed or fully closed by passing the string ALL
 # Note: when partially closing the trade, units will always be positive, even if the trade is short
 # Unlike positions, a direction specific units key is not used here
