@@ -206,7 +206,9 @@ alias ExOanda.{
 conn = %Connection{token: "1234"}
 
 # Positions can be partially closed by passing an int here or fully closed by passing the string ALL
-# Note: when partially closing the position, units will always be positive, even if the position is short
+# Note:
+# - When partially closing the position, units will always be positive, even if the position is short
+# - The units key is direction specific
 payload = %{
   long_units: "ALL"
 }
@@ -226,8 +228,8 @@ alias ExOanda.{
 
 conn = %Connection{token: "1234"}
 
-# Trades can also be partially closed by passing an int here or fully closed by passing the string ALL
-# Note: when partially closing the position, units will always be positive, even if the position is short
+# Much like positions, trades can also be partially closed or fully closed by passing the string ALL
+# Note: when partially closing the trade, units will always be positive, even if the trade is short
 # Unlike positions, a direction specific units key is not used here
 res = Trades.close(
   %Connection{token: "1234"},
