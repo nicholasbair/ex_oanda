@@ -11,6 +11,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Add basic security policy (`SECURITY.md`)
 - Add Elixir `1.18` and `1.19` to CI
 
+### Changed
+- Updated dependencies:
+  - Bumped `ecto` from 3.13.3 to 3.13.4
+  - Bumped `recase` from 0.9.0 to 0.9.1
+  - Bumped `ex_doc` from 0.38.4 to 0.39.1
+
 ## [0.1.1] - 2025-10-22
 
 ### Changed
