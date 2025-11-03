@@ -25,7 +25,7 @@ defmodule ExOanda.StopOrderRequest do
     field(:units, :integer)
     field(:price, :float)
     field(:price_bound, :float)
-    field(:time_in_force, Ecto.Enum, values: ~w(GTC GTD GFD)a, default: :GTC)
+    field(:time_in_force, Ecto.Enum, values: ~w(GTC GTD GFD FOK IOC)a, default: :GTC)
     field(:gtd_time, :utc_datetime_usec)
     field(:position_fill, Ecto.Enum, values: ~w(DEFAULT REDUCE_ONLY)a, default: :DEFAULT)
     field(:trigger_condition, Ecto.Enum, values: ~w(DEFAULT INVERSE BID ASK MID)a, default: :DEFAULT)
@@ -52,7 +52,7 @@ defmodule ExOanda.StopOrderRequest do
       :position_fill,
       :trigger_condition
     ])
-    |> validate_inclusion(:time_in_force, ~w(GTC GTD GFD)a)
+    |> validate_inclusion(:time_in_force, ~w(GTC GTD GFD FOK IOC)a)
     |> validate_inclusion(:position_fill, ~w(DEFAULT REDUCE_ONLY)a)
     |> validate_inclusion(:trigger_condition, ~w(DEFAULT INVERSE BID ASK MID)a)
     |> validate_required([:instrument, :units, :price])

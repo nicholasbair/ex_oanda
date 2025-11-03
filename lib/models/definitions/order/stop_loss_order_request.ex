@@ -40,7 +40,22 @@ defmodule ExOanda.StopLossOrderRequest do
     ])
     |> validate_inclusion(:time_in_force, ~w(GTC GTD GFD)a)
     |> validate_inclusion(:trigger_condition, ~w(DEFAULT INVERSE BID ASK MID)a)
-    |> validate_required([:price, :trade_id])
+    |> validate_required([:trade_id])
+    |> validate_price_or_distance()
     |> cast_embed(:client_extensions)
+  end
+
+  defp validate_price_or_distance(changeset) do
+    price = get_field(changeset, :price)
+    distance = get_field(changeset, :distance)
+
+    cond do
+      price && distance ->
+        add_error(changeset, :base, "only one of price or distance may be specified")
+      price || distance ->
+        changeset
+      true ->
+        add_error(changeset, :base, "either price or distance must be specified")
+    end
   end
 end

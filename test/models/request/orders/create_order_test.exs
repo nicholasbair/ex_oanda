@@ -204,7 +204,10 @@ defmodule ExOanda.Request.CreateOrderTest do
       }
 
       changeset = CreateOrder.changeset(%CreateOrder{}, params)
-      refute changeset.valid? || length(changeset.errors) > 0
+      refute changeset.valid?
+
+      order_changeset = Ecto.Changeset.get_change(changeset, :order)
+      assert length(order_changeset.errors) > 0
     end
 
     test "trailing stop loss order requires distance and trade_id" do
@@ -216,7 +219,10 @@ defmodule ExOanda.Request.CreateOrderTest do
       }
 
       changeset = CreateOrder.changeset(%CreateOrder{}, params)
-      refute changeset.valid? || length(changeset.errors) > 0
+      refute changeset.valid?
+
+      order_changeset = Ecto.Changeset.get_change(changeset, :order)
+      assert length(order_changeset.errors) > 0
     end
 
     test "market order default time_in_force is FOK" do
