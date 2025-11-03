@@ -16,6 +16,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Bumped `ecto` from 3.13.3 to 3.13.4
   - Bumped `recase` from 0.9.0 to 0.9.1
   - Bumped `ex_doc` from 0.38.4 to 0.39.1
+- Updated `ecto` enums to align with API defaults:
+  - `OrderRequest.time_in_force` default is now `:FOK`
+  - `OrderRequest.position_fill` default is now `:DEFAULT`
+  - `GuaranteedStopLossDetails.time_in_force` default is now `:GTC`
+  - `StopLossDetails.time_in_force` default is now `:GTC`
+  - `TakeProfitDetails.time_in_force` default is now `:GTC`
+  - `TrailingStopLossDetails.time_in_force` default is now `:GTC`
+
 
 ## [0.1.1] - 2025-10-22
 

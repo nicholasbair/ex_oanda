@@ -14,7 +14,7 @@ defmodule ExOanda.StopLossDetails do
   typed_embedded_schema do
     field(:price, :float)
     field(:distance, :float)
-    field(:time_in_force, Ecto.Enum, values: ~w(GTC GTD GFD FOK IOC)a)
+    field(:time_in_force, Ecto.Enum, values: ~w(GTC GTD GFD FOK IOC)a, default: :GTC)
     field(:gtd_time, :utc_datetime_usec)
 
     embeds_one :client_extensions, ClientExtensions
