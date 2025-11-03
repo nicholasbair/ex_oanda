@@ -1,12 +1,13 @@
-defmodule ExOanda.OrderRequest do
+defmodule ExOanda.LimitOrderRequest do
   @moduledoc """
-  Schema for Oanda order request.
+  Schema for Oanda limit order request.
 
-  [Oanda Docs](https://developer.oanda.com/rest-live-v20/order-df/)
+  [Oanda Docs](https://developer.oanda.com/rest-live-v20/order-df/#LimitOrderRequest)
   """
 
   use TypedEctoSchema
   import Ecto.Changeset
+
   alias ExOanda.{
     ClientExtensions,
     GuaranteedStopLossDetails,
@@ -19,18 +20,14 @@ defmodule ExOanda.OrderRequest do
   @primary_key false
 
   typed_embedded_schema do
-    field(:type, Ecto.Enum, values: ~w(MARKET LIMIT STOP MARKET_IF_TOUCHED TAKE_PROFIT STOP_LOSS GUARANTEED_STOP_LOSS TRAILING_STOP_LOSS)a, default: :MARKET)
+    field(:type, Ecto.Enum, values: [:LIMIT], default: :LIMIT)
     field(:instrument, Atom)
     field(:units, :integer)
     field(:price, :float)
-    field(:time_in_force, Ecto.Enum, values: ~w(GTC GTD GFD FOK IOC)a, default: :FOK)
-    field(:price_bound, :float)
-    field(:trade_id, :string)
-    field(:client_trade_id, :string)
-    field(:position_fill, Ecto.Enum, values: ~w(DEFAULT REDUCE_ONLY)a, default: :DEFAULT)
-    field(:distance, :float)
+    field(:time_in_force, Ecto.Enum, values: ~w(GTC GTD GFD)a, default: :GTC)
     field(:gtd_time, :utc_datetime_usec)
-    field(:trigger_condition, Ecto.Enum, values: ~w(DEFAULT INVERSE BID ASK MID)a)
+    field(:position_fill, Ecto.Enum, values: ~w(DEFAULT REDUCE_ONLY)a, default: :DEFAULT)
+    field(:trigger_condition, Ecto.Enum, values: ~w(DEFAULT INVERSE BID ASK MID)a, default: :DEFAULT)
 
     embeds_one :client_extensions, ClientExtensions
     embeds_one :take_profit_on_fill, TakeProfitDetails
@@ -49,19 +46,14 @@ defmodule ExOanda.OrderRequest do
       :units,
       :price,
       :time_in_force,
-      :price_bound,
-      :trade_id,
-      :client_trade_id,
-      :position_fill,
-      :distance,
       :gtd_time,
+      :position_fill,
       :trigger_condition
     ])
-    |> validate_inclusion(:type, ~w(MARKET LIMIT STOP MARKET_IF_TOUCHED TAKE_PROFIT STOP_LOSS GUARANTEED_STOP_LOSS TRAILING_STOP_LOSS)a)
-    |> validate_inclusion(:time_in_force, ~w(GTC GTD GFD FOK IOC)a)
+    |> validate_inclusion(:time_in_force, ~w(GTC GTD GFD)a)
     |> validate_inclusion(:position_fill, ~w(DEFAULT REDUCE_ONLY)a)
     |> validate_inclusion(:trigger_condition, ~w(DEFAULT INVERSE BID ASK MID)a)
-    |> validate_required([:instrument, :units])
+    |> validate_required([:instrument, :units, :price])
     |> cast_embed(:client_extensions)
     |> cast_embed(:take_profit_on_fill)
     |> cast_embed(:stop_loss_on_fill)

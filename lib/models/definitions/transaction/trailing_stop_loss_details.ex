@@ -13,7 +13,7 @@ defmodule ExOanda.TrailingStopLossDetails do
 
   typed_embedded_schema do
     field(:distance, :float)
-    field(:time_in_force, Ecto.Enum, values: ~w(GTC GTD GFD FOK IOC)a)
+    field(:time_in_force, Ecto.Enum, values: ~w(GTC GTD GFD FOK IOC)a, default: :GTC)
     field(:gtd_time, :naive_datetime)
     embeds_one :client_extensions, ClientExtensions
   end

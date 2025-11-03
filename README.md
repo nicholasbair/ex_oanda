@@ -173,9 +173,9 @@ alias ExOanda.{
 
 conn = %Connection{token: "1234"}
 
-# Oanda's API will default to a market order with time in force=FOK.
 payload = %{
   order: %{
+    type: :MARKET,
     instrument: "EUR_USD",
     units: 1000 # Use negative units for short
     take_profit_on_fill: %{
