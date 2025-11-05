@@ -49,7 +49,7 @@ defmodule ExOanda.Request.ReplaceOrder do
         TRAILING_STOP_LOSS: TrailingStopLossOrderRequest
       ],
       type_field_name: :type,
-      on_type_not_found: :raise,
+      on_type_not_found: :changeset_error,
       on_replace: :update
     )
   end

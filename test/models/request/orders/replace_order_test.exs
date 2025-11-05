@@ -177,9 +177,10 @@ defmodule ExOanda.Request.ReplaceOrderTest do
         }
       }
 
-      assert_raise RuntimeError, fn ->
-        ReplaceOrder.changeset(%ReplaceOrder{}, params)
-      end
+      changeset = ReplaceOrder.changeset(%ReplaceOrder{}, params)
+
+      refute changeset.valid?
+      assert {:order, {"is invalid", []}} in changeset.errors
     end
 
     test "limit order requires price" do
