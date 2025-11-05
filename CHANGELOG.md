@@ -25,6 +25,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - `TakeProfitDetails.time_in_force` default is now `:GTC`
   - `TrailingStopLossDetails.time_in_force` default is now `:GTC`
 - **BREAKING** `CreateOrder` now uses polymorphic embeds with separate schemas per order type. The `type` field must now be explicitly provided when creating orders; it no longer defaults to `:MARKET`. Each order type now has type-specific defaults for `time_in_force` (e.g., `MARKET` defaults to `FOK`, `LIMIT` defaults to `GTC`) and type-specific required field validations (e.g., `LIMIT` orders require `price`, `TRAILING_STOP_LOSS` orders require `distance` and `trade_id`)
+- **BREAKING** `ReplaceOrder` now uses polymorphic embeds with separate schemas per order type, matching the `CreateOrder` implementation. The `type` field must now be explicitly provided when replacing orders. Each order type now has type-specific defaults for `time_in_force` and type-specific required field validations.
+
+### Removed
+- Removed `OrderRequest` schema module as it has been superseded by type-specific order request schemas (`MarketOrderRequest`, `LimitOrderRequest`, etc.)
 
 
 ## [0.1.1] - 2025-10-22
