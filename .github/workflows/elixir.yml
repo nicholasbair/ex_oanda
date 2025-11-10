@@ -52,10 +52,13 @@ jobs:
           key: hexmix-${{ runner.os }}-elixir-${{ matrix.elixir }}-otp-${{ matrix.otp }}-${{ hashFiles('**/mix.lock') }}
 
       - name: Cache PLTs
+        id: plt-cache
         uses: actions/cache@v4
         with:
           path: priv/plts
-          key: plts-${{ runner.os }}-elixir-${{ matrix.elixir }}-otp-${{ matrix.otp }}
+          key: plts-${{ runner.os }}-elixir-${{ matrix.elixir }}-otp-${{ matrix.otp }}-lock-${{ hashFiles('**/mix.lock') }}
+          restore-keys: |
+            plts-${{ runner.os }}-elixir-${{ matrix.elixir }}-otp-${{ matrix.otp }}-
 
       - name: Install deps
         env: { MIX_ENV: test }
@@ -66,6 +69,10 @@ jobs:
         run: |
           mix deps.compile --force
           mix compile --warnings-as-errors
+
+      - name: Build PLTs if cache missed
+        if: steps.plt-cache.outputs.cache-hit != 'true'
+        run: mix dialyzer --plt
 
       - name: Test
         env: { MIX_ENV: test }
