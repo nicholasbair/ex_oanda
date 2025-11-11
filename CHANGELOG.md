@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## Unpublished
+
+### Changed
+- Updated dependencies:
+  - Bumped `ecto` from 3.13.4 to 3.13.5
+  - Bumped `dialyxir` from 1.4.6 to 1.4.7
+  - Bumped `req` from 0.5.15 to 0.5.16
+
 ## [0.2.0] - 2025-11-07
 
 ### Added
@@ -32,7 +40,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Removed
 - Removed `OrderRequest` schema module as it has been superseded by type-specific order request schemas (`MarketOrderRequest`, `LimitOrderRequest`, etc.)
-
 
 ## [0.1.1] - 2025-10-22
 
