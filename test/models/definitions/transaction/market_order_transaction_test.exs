@@ -110,7 +110,7 @@ defmodule ExOanda.MarketOrderTransactionTest do
       changeset = MarketOrderTransaction.changeset(%MarketOrderTransaction{}, params)
 
       refute changeset.valid?
-      assert length(changeset.errors) > 0
+      refute Enum.empty?(changeset.errors)
     end
 
     test "changeset with valid enum values" do

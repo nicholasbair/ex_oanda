@@ -50,7 +50,7 @@ defmodule ExOanda.LimitOrderRequestTest do
       changeset = LimitOrderRequest.changeset(%LimitOrderRequest{}, params)
 
       refute changeset.valid?
-      assert length(changeset.errors) > 0
+      refute Enum.empty?(changeset.errors)
     end
 
     test "default time_in_force is GTC" do
@@ -79,7 +79,7 @@ defmodule ExOanda.LimitOrderRequestTest do
       changeset = LimitOrderRequest.changeset(%LimitOrderRequest{}, params)
 
       refute changeset.valid?
-      assert length(changeset.errors) > 0
+      refute Enum.empty?(changeset.errors)
     end
   end
 end

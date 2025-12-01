@@ -55,7 +55,7 @@ defmodule ExOanda.AccountTest do
       changeset = Account.changeset(%Account{}, params)
 
       refute changeset.valid?
-      assert length(changeset.errors) > 0
+      refute Enum.empty?(changeset.errors)
     end
 
     test "changeset with embedded fields" do

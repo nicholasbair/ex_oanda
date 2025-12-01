@@ -165,7 +165,7 @@ defmodule ExOanda.Request.ReplaceOrderTest do
       changeset = ReplaceOrder.changeset(%ReplaceOrder{}, params)
 
       refute changeset.valid?
-      assert length(changeset.errors) > 0
+      refute Enum.empty?(changeset.errors)
     end
 
     test "changeset with invalid order type" do
@@ -208,7 +208,7 @@ defmodule ExOanda.Request.ReplaceOrderTest do
       refute changeset.valid?
 
       order_changeset = Ecto.Changeset.get_change(changeset, :order)
-      assert length(order_changeset.errors) > 0
+      refute Enum.empty?(order_changeset.errors)
     end
 
     test "trailing stop loss order requires distance and trade_id" do
@@ -223,7 +223,7 @@ defmodule ExOanda.Request.ReplaceOrderTest do
       refute changeset.valid?
 
       order_changeset = Ecto.Changeset.get_change(changeset, :order)
-      assert length(order_changeset.errors) > 0
+      refute Enum.empty?(order_changeset.errors)
     end
 
     test "market order default time_in_force is FOK" do

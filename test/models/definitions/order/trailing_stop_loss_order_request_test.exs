@@ -47,7 +47,7 @@ defmodule ExOanda.TrailingStopLossOrderRequestTest do
       changeset = TrailingStopLossOrderRequest.changeset(%TrailingStopLossOrderRequest{}, params)
 
       refute changeset.valid?
-      assert length(changeset.errors) > 0
+      refute Enum.empty?(changeset.errors)
     end
 
     test "default time_in_force is GTC" do

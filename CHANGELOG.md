@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Bumped `ecto` from 3.13.4 to 3.13.5
   - Bumped `dialyxir` from 1.4.6 to 1.4.7
   - Bumped `req` from 0.5.15 to 0.5.16
+  - Bumped `credo` from 1.7.13 to 1.7.14
 
 ## [0.2.0] - 2025-11-07
 
