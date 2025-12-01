@@ -91,7 +91,7 @@ defmodule ExOanda.InstrumentTest do
       changeset = Instrument.changeset(%Instrument{}, params)
 
       refute changeset.valid?
-      assert length(changeset.errors) > 0
+      refute Enum.empty?(changeset.errors)
     end
 
     test "changeset with valid enum values" do

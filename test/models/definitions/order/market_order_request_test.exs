@@ -60,7 +60,7 @@ defmodule ExOanda.MarketOrderRequestTest do
       changeset = MarketOrderRequest.changeset(%MarketOrderRequest{}, params)
 
       refute changeset.valid?
-      assert length(changeset.errors) > 0
+      refute Enum.empty?(changeset.errors)
     end
 
     test "requires instrument and units" do
@@ -71,7 +71,7 @@ defmodule ExOanda.MarketOrderRequestTest do
       changeset = MarketOrderRequest.changeset(%MarketOrderRequest{}, params)
 
       refute changeset.valid?
-      assert length(changeset.errors) > 0
+      refute Enum.empty?(changeset.errors)
     end
   end
 end
