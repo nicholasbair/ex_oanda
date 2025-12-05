@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unpublished
 
+### Fixed
+- Fixed `BadMapError` when Cloudflare returns HTML error page with 200 status code instead of JSON. The SDK now properly returns `{:error, %ExOanda.DecodeError{}}` instead of raising `BadMapError` when the response body is HTML (string) instead of decoded JSON (map).
+
 ### Changed
 - Updated dependencies:
   - Bumped `ecto` from 3.13.4 to 3.13.5

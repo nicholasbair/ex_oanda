@@ -91,6 +91,18 @@ defmodule ExOandaTest.API do
       unexpected_response = {:unexpected, "data"}
       assert API.handle_response(unexpected_response, nil) == unexpected_response
     end
+
+    test "returns DecodeError when 200 response has HTML body instead of JSON" do
+      html_body = """
+      <html>\r\n<head><title>500 Internal Server Error</title></head>\r\n<body>\r\n<center><h1>500 Internal Server Error</h1></center>\r\n<hr><center>cloudflare</center>\r\n</body>\r\n</html>\r\n
+      """
+
+      response = {:ok, %{status: 200, body: html_body, headers: %{}}}
+
+      result = API.handle_response(response, ExOanda.Response.CreateOrder)
+
+      assert {:error, %ExOanda.DecodeError{}} = result
+    end
   end
 
   describe "maybe_attach_telemetry/2" do
