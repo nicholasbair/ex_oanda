@@ -30,7 +30,8 @@ defmodule ExOanda.API do
   def handle_response(res, transform_to \\ nil) do
     case format_response(res) do
       # The SDK always expects JSON for non-streaming responses
-      # if decoding is skipped by Req due to receiving HTML, its likely a 200 w/ an HTML error page from CloudFlare (e.g. 5xx)
+      # if decoding is skipped by Req due to receiving HTML
+      # its likely a 200 status w/ an HTML error page from CloudFlare
       # and further processing should be skipped
       {_, %{body: body}} when is_bitstring(body) -> {:error, DecodeError.exception(body)}
 
