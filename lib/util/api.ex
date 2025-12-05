@@ -2,6 +2,7 @@ defmodule ExOanda.API do
   @moduledoc false
 
   alias ExOanda.Connection, as: Conn
+  alias ExOanda.DecodeError
   alias ExOanda.Telemetry
   alias ExOanda.Transform, as: TF
   alias ExOanda.TransportError
@@ -28,6 +29,12 @@ defmodule ExOanda.API do
   @spec handle_response({atom(), Req.Response.t() | map()}, atom() | nil) :: {:ok, any()} | {:error, any()}
   def handle_response(res, transform_to \\ nil) do
     case format_response(res) do
+      # The SDK always expects JSON for non-streaming responses
+      # if decoding is skipped by Req due to receiving HTML
+      # its likely a 200 status w/ an HTML error page from CloudFlare
+      # and further processing should be skipped
+      {_, %{body: body}} when is_bitstring(body) -> {:error, DecodeError.exception(body)}
+
       # 2xx status codes
       {:ok, fr} -> {:ok, TF.transform(fr, transform_to)}
 
