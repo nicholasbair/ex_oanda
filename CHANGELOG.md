@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## Unpublished
+## [0.2.1] - 2025-12-17
 
 ### Fixed
 - Fixed `BadMapError` when Cloudflare returns HTML error page with 200 status code instead of JSON. The SDK now properly returns `{:error, %ExOanda.DecodeError{}}` instead of raising `BadMapError` when the response body is HTML (string) instead of decoded JSON (map).
@@ -16,6 +16,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Bumped `dialyxir` from 1.4.6 to 1.4.7
   - Bumped `req` from 0.5.15 to 0.5.16
   - Bumped `credo` from 1.7.13 to 1.7.14
+  - Bumped `ex_doc` from 0.39.2 to 0.39.3
 
 ## [0.2.0] - 2025-11-07
 
