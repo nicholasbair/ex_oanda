@@ -5,6 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Fixed
+- Fixed flaky test `preprocess_data/2 does not log warnings for valid changesets` by checking for absence of warning messages instead of empty log output, preventing failures when info-level logs from Req are captured during parallel test execution.
+
+### Changed
+- Updated dependencies:
+  - Bumped `credo` from 1.7.14 to 1.7.15
+  - Bumped `req` from 0.5.16 to 0.5.17
+  - Bumped `polymorphic_embed` from 5.0.3 to 5.0.6
+
 ## [0.2.1] - 2025-12-17
 
 ### Fixed
