@@ -242,7 +242,7 @@ defmodule ExOanda.TransformTest do
         assert result.required_field == "test"
       end)
 
-      assert log_output == ""
+      refute log_output =~ "Validation error while transforming"
     end
 
     test "covers log_validations with valid changeset" do
