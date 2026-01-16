@@ -17,8 +17,9 @@ Thank you for your interest in contributing to ExOanda! This document provides a
 
 ExOanda is an Elixir SDK for the Oanda Forex API. The SDK uses:
 
-- **Macro-based code generation** to create API interface modules from a YAML configuration
+- **Macro-based code generation** to create API modules from a YAML configuration
 - **Ecto schemas** for request/response validation and transformation
+- **NimbleOptions** for validating keyword list parameters
 - **Req** as the HTTP client with telemetry integration
 - **Polymorphic embeds** for variant data types (different order types, transaction types, etc.)
 
@@ -105,6 +106,37 @@ interfaces:
           - name: "account_id"
             type: "string"
 ```
+
+### Parameter Validation with NimbleOptions
+
+Keyword list parameters (query params, filters, etc.) are validated using [NimbleOptions](https://hexdocs.pm/nimble_options/). The parameter schema is defined in `config.yml` and converted to a NimbleOptions schema at compile time.
+
+```yaml
+# In config.yml
+parameters:
+  - name: "instrument"
+    type: "string"
+    required: false
+    doc: "Filter by instrument name"
+  - name: "count"
+    type: "integer"
+    required: false
+    default: 50
+```
+
+This generates validation that checks types, required fields, and provides helpful error messages:
+
+```elixir
+# Valid usage
+ExOanda.Trades.list(conn, account_id, instrument: "EUR_USD", count: 100)
+
+# Invalid - returns {:error, %ValidationError{}}
+ExOanda.Trades.list(conn, account_id, count: "not_an_integer")
+```
+
+The two layers of validation are:
+1. **NimbleOptions** - Validates the keyword list parameters passed to functions
+2. **Ecto changesets** - Validates request body structs for POST/PUT/PATCH requests
 
 ## Data Models
 
