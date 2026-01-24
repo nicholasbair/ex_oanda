@@ -136,5 +136,35 @@ defmodule ExOanda.TransportErrorTest do
       assert exception.reason == [1, 2, 3]
       assert exception.error_type == :other
     end
+
+    test "handles Req.TransportError with complex reason" do
+      transport_error = %Req.TransportError{reason: {:error, :some_complex_error}}
+      exception = TransportError.exception(transport_error)
+
+      assert %TransportError{} = exception
+      assert exception.message =~ "HTTP transport error:"
+      assert exception.reason == {:error, :some_complex_error}
+      assert exception.error_type == :transport
+    end
+
+    test "handles Req.HTTPError with string reason" do
+      http_error = %Req.HTTPError{protocol: :http2, reason: "connection failed"}
+      exception = TransportError.exception(http_error)
+
+      assert %TransportError{} = exception
+      assert exception.message == "HTTP http2 error: connection failed"
+      assert exception.reason == "connection failed"
+      assert exception.error_type == :http
+    end
+
+    test "handles Req.HTTPError with complex reason" do
+      http_error = %Req.HTTPError{protocol: :http2, reason: {:error, :stream_closed}}
+      exception = TransportError.exception(http_error)
+
+      assert %TransportError{} = exception
+      assert exception.message =~ "HTTP http2 error:"
+      assert exception.reason == {:error, :stream_closed}
+      assert exception.error_type == :http
+    end
   end
 end
