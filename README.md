@@ -5,6 +5,19 @@ Unofficial Elixir SDK for the Oanda API.
 [![Elixir CI Status](https://github.com/nicholasbair/ex_oanda/workflows/Elixir%20CI/badge.svg)](https://github.com/nicholasbair/ex_oanda/actions?query=workflow%3A%22Elixir+CI%22)
 [![Coverage Status](https://coveralls.io/repos/github/nicholasbair/ex_oanda/badge.svg?branch=main)](https://coveralls.io/github/nicholasbair/ex_oanda?branch=main)
 
+## Table of Contents
+
+- [Notes](#notes)
+- [Installation](#installation)
+- [General Usage](#general-usage)
+- [Error Handling](#error-handling)
+- [Telemetry](#telemetry)
+- [Examples](#examples)
+  - [Open a trade](#open-a-trade)
+  - [Close a position](#close-a-position)
+  - [Close a trade](#close-a-trade)
+  - [Stream Prices (in IEx)](#stream-prices-in-iex)
+
 ## Notes
 
 ### TODO / Known Issues
