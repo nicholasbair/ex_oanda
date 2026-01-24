@@ -58,7 +58,7 @@ defmodule ExOanda.StopLossOrderRequestTest do
         trade_id: "trade-123",
         client_trade_id: "client-trade-123",
         distance: 0.0100,
-        time_in_force: :GFD,
+        time_in_force: :GTD,
         gtd_time: ~U[2023-12-31 23:59:59.000000Z],
         trigger_condition: :ASK,
         client_extensions: %{
