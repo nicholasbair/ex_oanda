@@ -6,6 +6,7 @@ defmodule ExOanda.MixProject do
       app: :ex_oanda,
       version: "0.2.1",
       elixir: "~> 1.14",
+      elixirc_paths: elixirc_paths(Mix.env()),
       start_permanent: Mix.env() == :prod,
       description: "Unofficial Elixir SDK for the Oanda API.",
       package: package(),
@@ -57,14 +58,15 @@ defmodule ExOanda.MixProject do
     ]
   end
 
-  # Run "mix help compile.app" to learn about applications.
+  defp elixirc_paths(:test), do: ["lib", "test/support"]
+  defp elixirc_paths(_), do: ["lib"]
+
   def application do
     [
       extra_applications: [:logger]
     ]
   end
 
-  # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
       {:bypass, "~> 2.1", only: :test},

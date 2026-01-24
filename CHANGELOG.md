@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+- Added integration tests for HTTP request construction across all generated API modules (Accounts, Orders, Trades, Positions, Pricing, Instruments, Transactions).
+
 ### Fixed
 - Fixed flaky test `preprocess_data/2 does not log warnings for valid changesets` by checking for absence of warning messages instead of empty log output, preventing failures when info-level logs from Req are captured during parallel test execution.
 

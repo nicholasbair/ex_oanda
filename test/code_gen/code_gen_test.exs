@@ -1,4 +1,4 @@
-defmodule ExOanda.CodeGenIntegrationTest do
+defmodule ExOanda.CodeGenTest do
   use ExUnit.Case, async: true
 
   alias ExOanda.CodeGenerator
