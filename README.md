@@ -3,6 +3,7 @@ Unofficial Elixir SDK for the Oanda API.
 [![Hex.pm version](https://img.shields.io/hexpm/v/ex_oanda)](https://hex.pm/packages/ex_oanda)
 [![Latest HexDocs](https://img.shields.io/badge/docs-latest-green.svg?style=flat-square)](https://hexdocs.pm/ex_oanda/)
 [![Elixir CI Status](https://github.com/nicholasbair/ex_oanda/workflows/Elixir%20CI/badge.svg)](https://github.com/nicholasbair/ex_oanda/actions?query=workflow%3A%22Elixir+CI%22)
+[![Coverage Status](https://coveralls.io/repos/github/nicholasbair/ex_oanda/badge.svg?branch=main)](https://coveralls.io/github/nicholasbair/ex_oanda?branch=main)
 
 ## Notes
 
