@@ -18,7 +18,7 @@ defmodule ExOanda.CodeGenerator do
   defmacro __before_compile__(_env) do
     config =
       case Mix.env() do
-        :test -> load_test_config()
+        :test -> Config.load_config() ++ load_test_config()
         _ -> Config.load_config()
       end
 
