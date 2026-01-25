@@ -1055,8 +1055,8 @@ defmodule ExOanda.StreamingTest do
     test "price_stream returns ValidationError tuple for invalid params" do
       conn = %Connection{
         token: "test_token",
-        api_server: "http://localhost:9999",
-        stream_server: "http://localhost:9999",
+        api_server: "http://localhost:0",
+        stream_server: "http://localhost:0",
         options: [retry: false]
       }
       account_id = "test_account"
@@ -1072,8 +1072,8 @@ defmodule ExOanda.StreamingTest do
     test "price_stream returns ValidationError tuple for missing instruments" do
       conn = %Connection{
         token: "test_token",
-        api_server: "http://localhost:9999",
-        stream_server: "http://localhost:9999",
+        api_server: "http://localhost:0",
+        stream_server: "http://localhost:0",
         options: [retry: false]
       }
       account_id = "test_account"
