@@ -890,4 +890,199 @@ defmodule ExOanda.StreamingTest do
       assert %Req.Response{} = result
     end
   end
+
+  describe "error response handling with Bypass" do
+    setup do
+      bypass = Bypass.open()
+      conn = %Connection{
+        token: "test_token",
+        api_server: "https://api-fxtrade.oanda.com",
+        stream_server: "http://localhost:#{bypass.port}",
+        options: [retry: false]
+      }
+      {:ok, bypass: bypass, conn: conn}
+    end
+
+    test "handles error response with empty body", %{bypass: bypass, conn: conn} do
+      Bypass.expect(bypass, fn conn ->
+        conn
+        |> Plug.Conn.put_resp_content_type("application/json")
+        |> Plug.Conn.send_resp(400, "")
+      end)
+
+      account_id = "test_account"
+      stream_to = fn _ -> :ok end
+      params = [instruments: ["EUR_USD"]]
+
+      {:error, error} = Streaming.price_stream(conn, account_id, stream_to, params)
+
+      assert %ExOanda.APIError{} = error
+    end
+
+    test "handles server error with empty body", %{bypass: bypass, conn: conn} do
+      Bypass.expect(bypass, fn conn ->
+        conn
+        |> Plug.Conn.put_resp_content_type("application/json")
+        |> Plug.Conn.send_resp(500, "")
+      end)
+
+      account_id = "test_account"
+      stream_to = fn _ -> :ok end
+      params = [instruments: ["EUR_USD"]]
+
+      {:error, error} = Streaming.price_stream(conn, account_id, stream_to, params)
+
+      assert %ExOanda.APIError{} = error
+    end
+
+    test "handles 403 forbidden error", %{bypass: bypass, conn: conn} do
+      Bypass.expect(bypass, fn conn ->
+        conn
+        |> Plug.Conn.put_resp_content_type("text/plain")
+        |> Plug.Conn.send_resp(403, "")
+      end)
+
+      account_id = "test_account"
+      stream_to = fn _ -> :ok end
+      params = [instruments: ["EUR_USD"]]
+
+      {:error, error} = Streaming.price_stream(conn, account_id, stream_to, params)
+
+      assert %ExOanda.APIError{} = error
+    end
+
+    test "transaction_stream handles error with empty body", %{bypass: bypass, conn: conn} do
+      Bypass.expect(bypass, fn conn ->
+        conn
+        |> Plug.Conn.put_resp_content_type("application/json")
+        |> Plug.Conn.send_resp(403, "")
+      end)
+
+      account_id = "test_account"
+      stream_to = fn _ -> :ok end
+
+      {:error, error} = Streaming.transaction_stream(conn, account_id, stream_to)
+
+      assert %ExOanda.APIError{} = error
+    end
+
+    test "handles connection refused (simulates transport error)", %{bypass: bypass, conn: conn} do
+      Bypass.down(bypass)
+
+      account_id = "test_account"
+      stream_to = fn _ -> :ok end
+      params = [instruments: ["EUR_USD"]]
+
+      {:error, error} = Streaming.price_stream(conn, account_id, stream_to, params)
+
+      assert %ExOanda.TransportError{} = error
+    end
+
+    test "price_stream! raises on connection error", %{bypass: bypass, conn: conn} do
+      Bypass.down(bypass)
+
+      account_id = "test_account"
+      stream_to = fn _ -> :ok end
+      params = [instruments: ["EUR_USD"]]
+
+      assert_raise ExOanda.TransportError, fn ->
+        Streaming.price_stream!(conn, account_id, stream_to, params)
+      end
+    end
+
+    test "transaction_stream! raises on connection error", %{bypass: bypass, conn: conn} do
+      Bypass.down(bypass)
+
+      account_id = "test_account"
+      stream_to = fn _ -> :ok end
+
+      assert_raise ExOanda.TransportError, fn ->
+        Streaming.transaction_stream!(conn, account_id, stream_to)
+      end
+    end
+  end
+
+  describe "bang function success paths" do
+    setup do
+      bypass = Bypass.open()
+      conn = %Connection{
+        token: "test_token",
+        api_server: "https://api-fxtrade.oanda.com",
+        stream_server: "http://localhost:#{bypass.port}",
+        options: [retry: false]
+      }
+      {:ok, bypass: bypass, conn: conn}
+    end
+
+    test "transaction_stream! returns response on success", %{bypass: bypass, conn: conn} do
+      account_id = "test_account"
+      stream_to = fn _ -> :ok end
+
+      Bypass.expect(bypass, fn conn ->
+        assert conn.request_path == "/accounts/#{account_id}/transactions/stream"
+
+        conn
+        |> Plug.Conn.put_resp_content_type("application/json")
+        |> Plug.Conn.send_resp(200, "{\"type\":\"ORDER_FILL\",\"id\":\"123\",\"time\":\"2023-01-01T00:00:00.000000000Z\"}\n")
+      end)
+
+      result = Streaming.transaction_stream!(conn, account_id, stream_to)
+
+      assert %Req.Response{} = result
+    end
+
+    test "price_stream! returns response on success", %{bypass: bypass, conn: conn} do
+      account_id = "test_account"
+      stream_to = fn _ -> :ok end
+      params = [instruments: ["EUR_USD"]]
+
+      Bypass.expect(bypass, fn conn ->
+        assert conn.request_path == "/accounts/#{account_id}/pricing/stream"
+        assert conn.query_params == %{"instruments" => "EUR_USD"}
+
+        conn
+        |> Plug.Conn.put_resp_content_type("application/json")
+        |> Plug.Conn.send_resp(200, "{\"type\":\"HEARTBEAT\",\"time\":\"2023-01-01T00:00:00.000000000Z\"}\n")
+      end)
+
+      result = Streaming.price_stream!(conn, account_id, stream_to, params)
+
+      assert %Req.Response{} = result
+    end
+  end
+
+  describe "validation error handling" do
+    test "price_stream returns ValidationError tuple for invalid params" do
+      conn = %Connection{
+        token: "test_token",
+        api_server: "http://localhost:0",
+        stream_server: "http://localhost:0",
+        options: [retry: false]
+      }
+      account_id = "test_account"
+      stream_to = fn _ -> :ok end
+      params = [instruments: 123]
+
+      {:error, error} = Streaming.price_stream(conn, account_id, stream_to, params)
+
+      assert %ExOanda.ValidationError{} = error
+      assert error.message =~ "Parameter validation failed"
+    end
+
+    test "price_stream returns ValidationError tuple for missing instruments" do
+      conn = %Connection{
+        token: "test_token",
+        api_server: "http://localhost:0",
+        stream_server: "http://localhost:0",
+        options: [retry: false]
+      }
+      account_id = "test_account"
+      stream_to = fn _ -> :ok end
+      params = []
+
+      result = Streaming.price_stream(conn, account_id, stream_to, params)
+
+      assert {:error, %ExOanda.ValidationError{}} = result
+    end
+  end
 end
