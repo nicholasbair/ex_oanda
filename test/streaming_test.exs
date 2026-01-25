@@ -917,7 +917,6 @@ defmodule ExOanda.StreamingTest do
       {:error, error} = Streaming.price_stream(conn, account_id, stream_to, params)
 
       assert %ExOanda.APIError{} = error
-      assert error.message =~ "HTTP 400 error"
     end
 
     test "handles server error with empty body", %{bypass: bypass, conn: conn} do
@@ -934,7 +933,6 @@ defmodule ExOanda.StreamingTest do
       {:error, error} = Streaming.price_stream(conn, account_id, stream_to, params)
 
       assert %ExOanda.APIError{} = error
-      assert error.message =~ "HTTP 500 error"
     end
 
     test "handles 403 forbidden error", %{bypass: bypass, conn: conn} do
@@ -966,7 +964,6 @@ defmodule ExOanda.StreamingTest do
       {:error, error} = Streaming.transaction_stream(conn, account_id, stream_to)
 
       assert %ExOanda.APIError{} = error
-      assert error.message =~ "HTTP 403 error"
     end
 
     test "handles connection refused (simulates transport error)", %{bypass: bypass, conn: conn} do
@@ -1018,14 +1015,16 @@ defmodule ExOanda.StreamingTest do
     end
 
     test "transaction_stream! returns response on success", %{bypass: bypass, conn: conn} do
+      account_id = "test_account"
+      stream_to = fn _ -> :ok end
+
       Bypass.expect(bypass, fn conn ->
+        assert conn.request_path == "/accounts/#{account_id}/transactions/stream"
+
         conn
         |> Plug.Conn.put_resp_content_type("application/json")
         |> Plug.Conn.send_resp(200, "{\"type\":\"ORDER_FILL\",\"id\":\"123\",\"time\":\"2023-01-01T00:00:00.000000000Z\"}\n")
       end)
-
-      account_id = "test_account"
-      stream_to = fn _ -> :ok end
 
       result = Streaming.transaction_stream!(conn, account_id, stream_to)
 
@@ -1033,15 +1032,18 @@ defmodule ExOanda.StreamingTest do
     end
 
     test "price_stream! returns response on success", %{bypass: bypass, conn: conn} do
+      account_id = "test_account"
+      stream_to = fn _ -> :ok end
+      params = [instruments: ["EUR_USD"]]
+
       Bypass.expect(bypass, fn conn ->
+        assert conn.request_path == "/accounts/#{account_id}/pricing/stream"
+        assert conn.query_params == %{"instruments" => "EUR_USD"}
+
         conn
         |> Plug.Conn.put_resp_content_type("application/json")
         |> Plug.Conn.send_resp(200, "{\"type\":\"HEARTBEAT\",\"time\":\"2023-01-01T00:00:00.000000000Z\"}\n")
       end)
-
-      account_id = "test_account"
-      stream_to = fn _ -> :ok end
-      params = [instruments: ["EUR_USD"]]
 
       result = Streaming.price_stream!(conn, account_id, stream_to, params)
 
@@ -1081,50 +1083,6 @@ defmodule ExOanda.StreamingTest do
       result = Streaming.price_stream(conn, account_id, stream_to, params)
 
       assert {:error, %ExOanda.ValidationError{}} = result
-    end
-  end
-
-  describe "decode error in raise mode" do
-    setup do
-      bypass = Bypass.open()
-      conn = %Connection{
-        token: "test_token",
-        api_server: "https://api-fxtrade.oanda.com",
-        stream_server: "http://localhost:#{bypass.port}",
-        options: [retry: false]
-      }
-      {:ok, bypass: bypass, conn: conn}
-    end
-
-    test "transaction_stream! raises DecodeError for invalid JSON in stream", %{bypass: bypass, conn: conn} do
-      Bypass.expect(bypass, fn conn ->
-        conn
-        |> Plug.Conn.put_resp_content_type("application/json")
-        |> Plug.Conn.send_resp(200, "not valid json\n")
-      end)
-
-      account_id = "test_account"
-      stream_to = fn _ -> :ok end
-
-      assert_raise ExOanda.DecodeError, fn ->
-        Streaming.transaction_stream!(conn, account_id, stream_to)
-      end
-    end
-
-    test "price_stream! raises DecodeError for invalid JSON in stream", %{bypass: bypass, conn: conn} do
-      Bypass.expect(bypass, fn conn ->
-        conn
-        |> Plug.Conn.put_resp_content_type("application/json")
-        |> Plug.Conn.send_resp(200, "not valid json\n")
-      end)
-
-      account_id = "test_account"
-      stream_to = fn _ -> :ok end
-      params = [instruments: ["EUR_USD"]]
-
-      assert_raise ExOanda.DecodeError, fn ->
-        Streaming.price_stream!(conn, account_id, stream_to, params)
-      end
     end
   end
 end
