@@ -1053,8 +1053,8 @@ defmodule ExOanda.StreamingTest do
     test "price_stream returns ValidationError tuple for invalid params" do
       conn = %Connection{
         token: "test_token",
-        api_server: "https://api-fxtrade.oanda.com",
-        stream_server: "https://stream-fxtrade.oanda.com",
+        api_server: "http://localhost:9999",
+        stream_server: "http://localhost:9999",
         options: [retry: false]
       }
       account_id = "test_account"
@@ -1070,8 +1070,8 @@ defmodule ExOanda.StreamingTest do
     test "price_stream returns ValidationError tuple for missing instruments" do
       conn = %Connection{
         token: "test_token",
-        api_server: "https://api-fxtrade.oanda.com",
-        stream_server: "https://stream-fxtrade.oanda.com",
+        api_server: "http://localhost:9999",
+        stream_server: "http://localhost:9999",
         options: [retry: false]
       }
       account_id = "test_account"
