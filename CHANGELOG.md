@@ -13,10 +13,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 - Fixed flaky test `preprocess_data/2 does not log warnings for valid changesets` by checking for absence of warning messages instead of empty log output, preventing failures when info-level logs from Req are captured during parallel test execution.
+- Fixed `Account` schema fields that were incorrectly marked as required: `last_margin_call_extension_time`, `margin_call_extension_count`, `margin_call_enter_time`, `resettabled_pl_time`
 
 ### Changed
 - Updated dependencies:
-  - Bumped `credo` from 1.7.14 to 1.7.15
+  - Bumped `credo` from 1.7.14 to 1.7.16
   - Bumped `req` from 0.5.16 to 0.5.17
   - Bumped `polymorphic_embed` from 5.0.3 to 5.0.6
 
