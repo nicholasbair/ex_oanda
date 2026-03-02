@@ -79,15 +79,14 @@ defmodule ExOanda.Account do
     |> cast_embed(:positions)
     |> cast_embed(:orders)
     |> validate_required([
-      :id, :alias, :currency, :created_by_user_id, :created_time, :resettabled_pl_time,
+      :id, :alias, :currency, :created_by_user_id, :created_time,
       :margin_rate, :open_trade_count, :open_position_count, :pending_order_count,
       :hedging_enabled, :unrealized_pl, :nav, :margin_used, :margin_available,
       :position_value, :margin_closeout_unrealized_pl, :margin_closeout_nav,
       :margin_closeout_margin_used, :margin_closeout_percent, :margin_closeout_position_value,
       :withdrawal_limit, :margin_call_margin_used, :margin_call_percent, :balance,
       :pl, :resettable_pl, :financing, :commission, :dividend_adjustment,
-      :guaranteed_execution_fees, :margin_call_enter_time, :margin_call_extension_count,
-      :last_margin_call_extension_time, :last_transaction_id, :guaranteed_stop_loss_order_mode
+      :guaranteed_execution_fees, :last_transaction_id, :guaranteed_stop_loss_order_mode
     ])
   end
 end
