@@ -5,8 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## Unreleased
+## [0.2.3] - 2026-05-20
+
+### Fixed
 - Fixed `OrderCancelTransaction` model, `replaced_by_order_id` is not always included in API response.
+
+### Changed
+- Updated dependencies:
+  - Bumped `credo` from 1.7.16 to 1.7.18
+  - Bumped `ecto` from 3.13.5 to 3.13.6
+  - Bumped `ex_doc` from 0.40.1 to 0.40.2
 
 ## [0.2.2] - 2026-03-02
 
@@ -21,8 +29,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - Updated dependencies:
   - Bumped `credo` from 1.7.14 to 1.7.16
-  - Bumped `req` from 0.5.16 to 0.5.17
+  - Bumped `ex_doc` from 0.39.3 to 0.40.1
   - Bumped `polymorphic_embed` from 5.0.3 to 5.0.6
+  - Bumped `req` from 0.5.16 to 0.5.17
+  - Bumped `yaml_elixir` from 2.12.0 to 2.12.1
 
 ## [0.2.1] - 2025-12-17
 
