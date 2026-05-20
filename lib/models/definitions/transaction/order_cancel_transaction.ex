@@ -50,8 +50,7 @@ defmodule ExOanda.OrderCancelTransaction do
       :request_id,
       :type,
       :order_id,
-      :reason,
-      :replaced_by_order_id
+      :reason
     ])
   end
 end
