@@ -4,7 +4,7 @@ defmodule ExOanda.MixProject do
   def project do
     [
       app: :ex_oanda,
-      version: "0.2.2",
+      version: "0.2.3",
       elixir: "~> 1.14",
       elixirc_paths: elixirc_paths(Mix.env()),
       start_permanent: Mix.env() == :prod,
