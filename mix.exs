@@ -5,7 +5,7 @@ defmodule ExOanda.MixProject do
     [
       app: :ex_oanda,
       version: "0.2.3",
-      elixir: "~> 1.14",
+      elixir: "~> 1.15",
       elixirc_paths: elixirc_paths(Mix.env()),
       start_permanent: Mix.env() == :prod,
       description: "Unofficial Elixir SDK for the Oanda API.",
@@ -80,7 +80,7 @@ defmodule ExOanda.MixProject do
       {:nimble_options, "~> 1.1"},
       {:polymorphic_embed, "~> 5.0"},
       {:recase, "~> 0.9.0"},
-      {:req, "~> 0.5.2"},
+      {:req, "~> 0.5.18"},
       {:req_telemetry, "~> 0.1.1"},
       {:telemetry_test, "~> 0.1.0", only: :test},
       {:typed_ecto_schema, "~> 0.4.1", runtime: false},
