@@ -7,13 +7,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+> **Breaking:** the `req` requirement is raised from `~> 0.5.18` to `~> 0.6.2`
+> (see Security below). Apps pinned to `req` 0.5.x — or with another dependency
+> that requires `req ~> 0.5` — must upgrade to `req` 0.6.x. The `override: true`
+> in this package's `mix.exs` does **not** relax the constraint for downstream
+> apps; Mix only honors `override` in the top-level project.
+
 ### Security
 - Bumped runtime HTTP-stack dependencies to resolve reported advisories: `req` 0.5.18 → 0.6.2 (CVE-2026-49755 HIGH, CVE-2026-49756 LOW), `mint` 1.9.0 → 1.9.1 (CVE-2026-56810 HIGH), and `hpax` 1.0.3 → 1.0.4 (CVE-2026-58226 HIGH). The `req` bump requires a `mix.exs` `override: true` because `req_telemetry` 0.1.1 still pins `req ~> 0.5.0`; `req_telemetry` is compatible with `req` 0.6.x and the override can be removed once it ships a release widening that constraint.
 - Bumped transitive test-only dependencies to resolve reported advisories in the Cowboy stack (pulled in via `bypass`): `cowboy` 2.12.0 → 2.17.0, `cowlib` 2.13.0 → 2.18.0, `plug_cowboy` 2.7.1 → 2.9.0, `plug` 1.19.2 → 1.20.3, `ranch` 1.8.0 → 1.8.1. These are only used by the test suite and are not shipped in the published package.
 
 ### Changed
-- **Minimum Elixir version is now 1.15** (was 1.14) and **minimum Erlang/OTP is now 25** (was 24). This follows `req` 0.5.18, which requires `finch` ~> 0.21/0.22; `finch` 0.22 requires Elixir ~> 1.15 and uses an OTP 25+ `:ets` option.
+- **Minimum Elixir version is now 1.15** (was 1.14) and **minimum Erlang/OTP is now 25** (was 24). This follows the `req`/`finch` HTTP stack: `finch` 0.22 requires Elixir ~> 1.15 and uses an OTP 25+ `:ets` option.
 - Added Elixir 1.20 to the CI test matrix (OTP 27+).
+- Added a `mix hex.audit` security-advisory check to CI that fails the build on known advisories in the dependency tree.
 - Updated dependencies:
   - Bumped `credo` from 1.7.18 to 1.7.19
   - Bumped `ecto` from 3.13.6 to 3.14.0
