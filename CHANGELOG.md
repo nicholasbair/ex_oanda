@@ -12,7 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 - **Minimum Elixir version is now 1.15** (was 1.14) and **minimum Erlang/OTP is now 25** (was 24). This follows `req` 0.5.18, which requires `finch` ~> 0.21/0.22; `finch` 0.22 requires Elixir ~> 1.15 and uses an OTP 25+ `:ets` option.
-- Added Elixir 1.20 to the CI test matrix (OTP 26+).
+- Added Elixir 1.20 to the CI test matrix (OTP 27+).
 - Updated dependencies:
   - Bumped `credo` from 1.7.18 to 1.7.19
   - Bumped `ecto` from 3.13.6 to 3.14.0
