@@ -192,8 +192,11 @@ defmodule ExOanda.StreamingTest do
       account_id = "101-004-22222222-001"
       stream_to = fn _ -> :ok end
 
+      # Intentionally pass a non-Connection struct to assert the runtime guard.
+      # Dispatched via apply/3 so the compile-time type checker does not flag the
+      # deliberate mismatch (Elixir 1.20+ --warnings-as-errors).
       assert_raise FunctionClauseError, fn ->
-        Streaming.transaction_stream(invalid_conn, account_id, stream_to)
+        apply(Streaming, :transaction_stream, [invalid_conn, account_id, stream_to])
       end
     end
 
