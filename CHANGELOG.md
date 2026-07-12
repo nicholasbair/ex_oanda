@@ -7,8 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Security
+- Bumped transitive test-only dependencies to resolve reported advisories in the Cowboy stack (pulled in via `bypass`): `cowboy` 2.12.0 → 2.17.0, `cowlib` 2.13.0 → 2.18.0, `plug_cowboy` 2.7.1 → 2.9.0, `plug` 1.19.2 → 1.20.3, `ranch` 1.8.0 → 1.8.1. These are only used by the test suite and are not shipped in the published package.
+
 ### Changed
 - **Minimum Elixir version is now 1.15** (was 1.14) and **minimum Erlang/OTP is now 25** (was 24). This follows `req` 0.5.18, which requires `finch` ~> 0.21/0.22; `finch` 0.22 requires Elixir ~> 1.15 and uses an OTP 25+ `:ets` option.
+- Added Elixir 1.20 to the CI test matrix (OTP 26+).
 - Updated dependencies:
   - Bumped `credo` from 1.7.18 to 1.7.19
   - Bumped `ecto` from 3.13.6 to 3.14.0
