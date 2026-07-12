@@ -1086,8 +1086,11 @@ defmodule ExOanda.StreamingTest do
   end
 
   # Intentionally not a %Connection{} struct, used to assert the runtime guard
-  # raises FunctionClauseError. Typed as term() so the compile-time type checker
-  # does not flag the deliberate mismatch (Elixir 1.20+ --warnings-as-errors).
+  # raises FunctionClauseError. Sourced via Application.get_env/3 (spec'd to
+  # return term()) so the compile-time type checker cannot narrow it to a map
+  # literal and flag the deliberate mismatch (Elixir 1.20+ --warnings-as-errors).
   @spec invalid_connection() :: term()
-  defp invalid_connection, do: %{token: "test"}
+  defp invalid_connection do
+    Application.get_env(:ex_oanda, :__nonexistent_test_connection__, %{token: "test"})
+  end
 end

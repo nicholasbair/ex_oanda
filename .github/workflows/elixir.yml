@@ -86,3 +86,12 @@ jobs:
 
       - name: Dialyzer
         run: mix dialyzer
+
+      - name: Security audit (deps)
+        if: matrix.elixir == '1.20' && matrix.otp == '28.1.0'
+        # Fails the build on known advisories (OSV) in the dependency tree.
+        # Ignored: cowlib CVEs are test-only (pulled in via bypass) with no
+        # upstream fix released yet — revisit when a patched cowlib ships.
+        env:
+          HEX_IGNORE_ADVISORIES: "CVE-2026-43966,CVE-2026-43969"
+        run: mix hex.audit

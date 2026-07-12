@@ -80,7 +80,11 @@ defmodule ExOanda.MixProject do
       {:nimble_options, "~> 1.1"},
       {:polymorphic_embed, "~> 5.0"},
       {:recase, "~> 0.9.0"},
-      {:req, "~> 0.5.18"},
+      # override: req_telemetry 0.1.1 pins `req ~> 0.5.0`, but req < 0.6.1 has a
+      # HIGH decompression-bomb advisory (CVE-2026-49755). req_telemetry works
+      # fine against req 0.6.x; drop the override once it publishes a release
+      # widening its constraint (zachallaun/req_telemetry#13).
+      {:req, "~> 0.6.2", override: true},
       {:req_telemetry, "~> 0.1.1"},
       {:telemetry_test, "~> 0.1.0", only: :test},
       {:typed_ecto_schema, "~> 0.4.1", runtime: false},

@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Security
+- Bumped runtime HTTP-stack dependencies to resolve reported advisories: `req` 0.5.18 → 0.6.2 (CVE-2026-49755 HIGH, CVE-2026-49756 LOW), `mint` 1.9.0 → 1.9.1 (CVE-2026-56810 HIGH), and `hpax` 1.0.3 → 1.0.4 (CVE-2026-58226 HIGH). The `req` bump requires a `mix.exs` `override: true` because `req_telemetry` 0.1.1 still pins `req ~> 0.5.0`; `req_telemetry` is compatible with `req` 0.6.x and the override can be removed once it ships a release widening that constraint.
 - Bumped transitive test-only dependencies to resolve reported advisories in the Cowboy stack (pulled in via `bypass`): `cowboy` 2.12.0 → 2.17.0, `cowlib` 2.13.0 → 2.18.0, `plug_cowboy` 2.7.1 → 2.9.0, `plug` 1.19.2 → 1.20.3, `ranch` 1.8.0 → 1.8.1. These are only used by the test suite and are not shipped in the published package.
 
 ### Changed
@@ -17,7 +18,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Bumped `credo` from 1.7.18 to 1.7.19
   - Bumped `ecto` from 3.13.6 to 3.14.0
   - Bumped `ex_doc` from 0.40.2 to 0.40.3
-  - Bumped `req` from 0.5.17 to 0.5.18
   - Bumped `yaml_elixir` from 2.12.1 to 2.12.2
 
 ## [0.2.3] - 2026-05-20

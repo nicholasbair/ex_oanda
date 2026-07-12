@@ -1,8 +1,6 @@
 defmodule ExOanda.CodeGeneratorMacroTest do
   use ExUnit.Case, async: true
 
-  require ExOanda.CodeGenerator
-
   describe "macro functionality" do
     test "__using__ macro sets up before_compile" do
       assert ExOanda.CodeGenerator.__info__(:macros) |> Keyword.has_key?(:__using__)
