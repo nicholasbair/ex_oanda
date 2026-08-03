@@ -188,12 +188,11 @@ defmodule ExOanda.StreamingTest do
 
   describe "error handling" do
     test "handles invalid connection struct" do
-      invalid_conn = %{token: "test"}
       account_id = "101-004-22222222-001"
       stream_to = fn _ -> :ok end
 
       assert_raise FunctionClauseError, fn ->
-        Streaming.transaction_stream(invalid_conn, account_id, stream_to)
+        Streaming.transaction_stream(invalid_connection(), account_id, stream_to)
       end
     end
 
@@ -1084,5 +1083,14 @@ defmodule ExOanda.StreamingTest do
 
       assert {:error, %ExOanda.ValidationError{}} = result
     end
+  end
+
+  # Intentionally not a %Connection{} struct, used to assert the runtime guard
+  # raises FunctionClauseError. Sourced via Application.get_env/3 (spec'd to
+  # return term()) so the compile-time type checker cannot narrow it to a map
+  # literal and flag the deliberate mismatch (Elixir 1.20+ --warnings-as-errors).
+  @spec invalid_connection() :: term()
+  defp invalid_connection do
+    Application.get_env(:ex_oanda, :__nonexistent_test_connection__, %{token: "test"})
   end
 end

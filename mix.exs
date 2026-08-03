@@ -4,7 +4,7 @@ defmodule ExOanda.MixProject do
   def project do
     [
       app: :ex_oanda,
-      version: "0.2.3",
+      version: "0.3.0",
       elixir: "~> 1.15",
       elixirc_paths: elixirc_paths(Mix.env()),
       start_permanent: Mix.env() == :prod,
@@ -80,8 +80,8 @@ defmodule ExOanda.MixProject do
       {:nimble_options, "~> 1.1"},
       {:polymorphic_embed, "~> 5.0"},
       {:recase, "~> 0.9.0"},
-      {:req, "~> 0.5.18"},
-      {:req_telemetry, "~> 0.1.1"},
+      {:req, "~> 0.7"},
+      {:req_tele, "~> 0.3.0"},
       {:telemetry_test, "~> 0.1.0", only: :test},
       {:typed_ecto_schema, "~> 0.4.1", runtime: false},
       {:yaml_elixir, "~> 2.11"}

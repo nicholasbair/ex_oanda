@@ -3,7 +3,7 @@ defmodule ExOanda.Telemetry do
   Telemetry configuration and utilities for ExOanda HTTP requests.
 
   This module provides telemetry instrumentation for OANDA API requests using
-  [ReqTelemetry](https://hexdocs.pm/req_telemetry/ReqTelemetry.html).
+  [ReqTele](https://hexdocs.pm/req_tele/ReqTele.html).
 
   ## Telemetry Events
 
@@ -50,7 +50,7 @@ defmodule ExOanda.Telemetry do
 
   ## Default Logging
 
-  When `use_default_logger` is enabled, ReqTelemetry will automatically attach
+  When `use_default_logger` is enabled, ReqTele will automatically attach
   a basic logger that outputs request information and timing to the console.
   This is useful for development and debugging.
 
@@ -94,13 +94,12 @@ defmodule ExOanda.Telemetry do
 
   @doc false
   @spec maybe_attach_telemetry(Req.Request.t(), Conn.t()) :: Req.Request.t()
-  def maybe_attach_telemetry(req, %{telemetry: %{enabled: true}} = conn) do
-    if conn.telemetry.use_default_logger do
-      ReqTelemetry.attach_default_logger()
-    end
-
-    ReqTelemetry.attach(req, conn.telemetry.options)
+  def maybe_attach_telemetry(req, %{telemetry: %{enabled: true, use_default_logger: true}} = conn) do
+    ReqTele.attach_default_logger()
+    ReqTele.attach(req, conn.telemetry.options)
   end
-  def maybe_attach_telemetry(req, %{telemetry: %{enabled: false}} = _conn), do: req
+  def maybe_attach_telemetry(req, %{telemetry: %{enabled: true}} = conn) do
+    ReqTele.attach(req, conn.telemetry.options)
+  end
   def maybe_attach_telemetry(req, _), do: req
 end

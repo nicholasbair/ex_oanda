@@ -2,7 +2,6 @@ defmodule ExOanda.CodeGeneratorTest do
   use ExUnit.Case, async: true
 
   alias ExOanda.CodeGenerator
-  require ExOanda.CodeGenerator
 
   describe "format_module_name/1" do
     test "formats module name correctly" do
