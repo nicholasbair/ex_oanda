@@ -94,13 +94,12 @@ defmodule ExOanda.Telemetry do
 
   @doc false
   @spec maybe_attach_telemetry(Req.Request.t(), Conn.t()) :: Req.Request.t()
-  def maybe_attach_telemetry(req, %{telemetry: %{enabled: true}} = conn) do
-    if conn.telemetry.use_default_logger do
-      ReqTele.attach_default_logger()
-    end
-
+  def maybe_attach_telemetry(req, %{telemetry: %{enabled: true, use_default_logger: true}} = conn) do
+    ReqTele.attach_default_logger()
     ReqTele.attach(req, conn.telemetry.options)
   end
-  def maybe_attach_telemetry(req, %{telemetry: %{enabled: false}} = _conn), do: req
+  def maybe_attach_telemetry(req, %{telemetry: %{enabled: true}} = conn) do
+    ReqTele.attach(req, conn.telemetry.options)
+  end
   def maybe_attach_telemetry(req, _), do: req
 end
