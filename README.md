@@ -122,7 +122,7 @@ Notes:
 
 ## Telemetry
 
-ExOanda supports telemetry instrumentation using [ReqTelemetry](https://hexdocs.pm/req_telemetry/ReqTelemetry.html) to monitor HTTP requests and responses. This is useful for debugging, monitoring API performance, and integrating with observability tools.
+ExOanda supports telemetry instrumentation using [ReqTele](https://hexdocs.pm/req_tele/ReqTele.html) to monitor HTTP requests and responses. This is useful for debugging, monitoring API performance, and integrating with observability tools.
 
 ### Basic Usage
 
