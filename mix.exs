@@ -83,7 +83,7 @@ defmodule ExOanda.MixProject do
       {:req, "~> 0.7"},
       {:req_tele, "~> 0.3.0"},
       {:telemetry_test, "~> 0.1.0", only: :test},
-      {:typed_ecto_schema, "~> 0.4.1", runtime: false},
+      {:typed_ecto_schema, "~> 0.5.0", runtime: false},
       {:yaml_elixir, "~> 2.11"}
     ]
   end
