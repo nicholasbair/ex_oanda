@@ -93,5 +93,5 @@ jobs:
         # Ignored: cowlib CVEs are test-only (pulled in via bypass) with no
         # upstream fix released yet — revisit when a patched cowlib ships.
         env:
-          HEX_IGNORE_ADVISORIES: "CVE-2026-43966,CVE-2026-43969"
+          HEX_IGNORE_ADVISORIES: "CVE-2026-43966,CVE-2026-43969,CVE-2026-43971"
         run: mix hex.audit
